@@ -1,0 +1,114 @@
+---
+title: "Statistical Methods for Neuroimaging"
+---
+
+
+## Course Goals
+- **Goal 1:** Provide basic knowledge of neuroimaging so that you (Biostatisticians) can read and understand neuroimaging research.
+- **Goal 2:** Cover modern contributions of biostatistics to neuroimaging methods so you can contribute to novel research in the field.
+- **Goal 3:** Hopefully, we can get you pretty close to doing novel research in statistical neuroimaging.
+
+## Course Description
+This course covers standard and advanced methods for neuroimage analysis from a biostatistical perspective. Students will learn to analyze and interpret common modalities such as fMRI, structural MRI, cortical thickness, diffusion-weighted imaging, and resting-state connectivity using popular neuroimaging analysis software and visualization tools. Advanced topics may include site/scanner correction, first-level and group-level models, network analysis, AI/machine learning, circularity analysis, multivariate/spatial inference, confidence set methods, and centile methods. Upon completion, students will be prepared to understand and contribute to statistical research in neuroimaging.
+
+## Learning objectives
+
+- Gain a foundational understanding of key neuroimaging modalities and their applications in research.
+- Develop practical skills for preprocessing neuroimaging data using FSL.
+- Apply statistical analysis techniques to neuroimaging data, including first-level, group-level, and functional connectivity analyses.
+- Understand/apply modern topics in neuroimaging data analysis such as site/scanner effects, circularity, multiple testing, machine learning, and Bayesian approaches.
+
+## Course Context
+- **Who are you (the student):** Graduate students with a background in biostatistics or related fields.
+- **Prerequisites:** Prior coursework in statistics or biostatistics and experience with R or Python (I will use R).
+
+## Grading (Tentative)
+
+Your grade will be determined from
+
+* **Quizzes (25%):** These will be basic questions about terminology and course content. Grading is based on correct/incorrect answers.
+* **Mini projects (50%):** These will be smaller hands on projects to get you basic exposure to the data and analysis pipelines. We will use a rubric with instructor (me)/peer (you)/ChatGPT (AI) review. TBD.
+* **Final project (25%):** These will be a bigger hands on project to get you basic exposure to the data and analysis pipelines. Probably in groups. We will use a rubric with instructor (me)/peer (you)/ChatGPT (AI) review. TBD.
+
+## Potential Course Topics (Tentative)
+
+### Introduction
+- Introduction and setup
+  - Course Introduction
+  - Accessing repository data, Data Use Agreements (DUA)
+  - Installing FSL
+
+### Data Modalities
+- Introduction to Neuroimaging Modalities
+  - fMRI and rs-fMRI Overview
+  - DTI
+  - Structural Imaging
+
+### Preprocessing and First-Level Analysis
+- Preprocessing Pipeline
+  - Structural
+  - fMRI, rs-fMRI
+- Preprocessing with FSL: Practical Session
+- Preprocessing: Brainlife.io/Docker
+- First-Level Statistical Analysis
+  - fMRI, rs-fMRI Analysis
+- Practical implementation
+
+### Group-Level Analysis
+- Multiplicity, Type 1 error, FWER, FDR
+- Cluster extent inference, Gaussian field theory, TFCE, Excursion set inference
+- Functional Connectivity: basic group-level analysis
+- In-class activity: implementation in FSL and R
+- "Voodoo" correlation
+- Advanced group-level analysis (distance-based)
+  - MDMR, PermANOVA, Semi-parametrics
+
+
+### Modern Topics: Reproducibility and Replicability
+- Reproducibility
+  - "The Garden of Forking Paths"
+- Replicability
+  - Sample sizes
+  - Effect sizes
+
+### Modern Topics: Machine Learning in Neuroimaging
+- Brain-behavior associations (e.g. "Multivariate BWAS")
+  - Prediction
+  - Statistical inference
+- Replicability in ML Methods
+  - Circularity, Data Leakage, and Feature Selection
+  - Cross-validation, Bootstrapping
+- Guest lecture from Megan?
+- Brain Age
+  - In-class activity
+- Other topics
+  - MVPA
+  - ML methods
+  - Deep learning
+
+
+
+### Modern Topics: Batch Effects
+- Illustration with data so far
+- ComBat
+- CovBat
+- Deep learning
+
+### Modern Topics: Misc
+- Centile Analysis
+- Multimodal Image Analysis
+
+
+## Course Schedule
+
+```{r}
+library(knitr)
+library(kableExtra)
+
+# Read the CSV file
+schedule = read.csv("courseSchedule.csv", na.strings="NA", check.names=FALSE)
+
+# Display nicely
+ kable(schedule, caption = "Neuroimaging Course Schedule", align = "l", escape=FALSE)
+```
+

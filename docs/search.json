@@ -1,0 +1,576 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "",
+    "text": "Goal 1: Provide basic knowledge of neuroimaging so that you (Biostatisticians) can read and understand neuroimaging research.\nGoal 2: Cover modern contributions of biostatistics to neuroimaging methods so you can contribute to novel research in the field.\nGoal 3: Hopefully, we can get you pretty close to doing novel research in statistical neuroimaging."
+  },
+  {
+    "objectID": "index.html#course-goals",
+    "href": "index.html#course-goals",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "",
+    "text": "Goal 1: Provide basic knowledge of neuroimaging so that you (Biostatisticians) can read and understand neuroimaging research.\nGoal 2: Cover modern contributions of biostatistics to neuroimaging methods so you can contribute to novel research in the field.\nGoal 3: Hopefully, we can get you pretty close to doing novel research in statistical neuroimaging."
+  },
+  {
+    "objectID": "index.html#course-description",
+    "href": "index.html#course-description",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Course Description",
+    "text": "Course Description\nThis course covers standard and advanced methods for neuroimage analysis from a biostatistical perspective. Students will learn to analyze and interpret common modalities such as fMRI, structural MRI, cortical thickness, diffusion-weighted imaging, and resting-state connectivity using popular neuroimaging analysis software and visualization tools. Advanced topics may include site/scanner correction, first-level and group-level models, network analysis, AI/machine learning, circularity analysis, multivariate/spatial inference, confidence set methods, and centile methods. Upon completion, students will be prepared to understand and contribute to statistical research in neuroimaging."
+  },
+  {
+    "objectID": "index.html#learning-objectives",
+    "href": "index.html#learning-objectives",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Learning objectives",
+    "text": "Learning objectives\n\nGain a foundational understanding of key neuroimaging modalities and their applications in research.\nDevelop practical skills for preprocessing neuroimaging data using FSL.\nApply statistical analysis techniques to neuroimaging data, including first-level, group-level, and functional connectivity analyses.\nUnderstand/apply modern topics in neuroimaging data analysis such as site/scanner effects, circularity, multiple testing, machine learning, and Bayesian approaches."
+  },
+  {
+    "objectID": "index.html#course-context",
+    "href": "index.html#course-context",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Course Context",
+    "text": "Course Context\n\nWho are you (the student): Graduate students with a background in biostatistics or related fields.\nPrerequisites: Prior coursework in statistics or biostatistics and experience with R or Python (I will use R)."
+  },
+  {
+    "objectID": "index.html#grading-tentative",
+    "href": "index.html#grading-tentative",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Grading (Tentative)",
+    "text": "Grading (Tentative)\nYour grade will be determined from\n\nQuizzes (25%): These will be basic questions about terminology and course content. Grading is based on correct/incorrect answers.\nMini projects (50%): These will be smaller hands on projects to get you basic exposure to the data and analysis pipelines. We will use a rubric with instructor (me)/peer (you)/ChatGPT (AI) review. TBD.\nFinal project (25%): These will be a bigger hands on project to get you basic exposure to the data and analysis pipelines. Probably in groups. We will use a rubric with instructor (me)/peer (you)/ChatGPT (AI) review. TBD."
+  },
+  {
+    "objectID": "index.html#potential-course-topics-tentative",
+    "href": "index.html#potential-course-topics-tentative",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Potential Course Topics (Tentative)",
+    "text": "Potential Course Topics (Tentative)\n\nIntroduction\n\nIntroduction and setup\n\nCourse Introduction\nAccessing repository data, Data Use Agreements (DUA)\nInstalling FSL\n\n\n\n\nData Modalities\n\nIntroduction to Neuroimaging Modalities\n\nfMRI and rs-fMRI Overview\nDTI\nStructural Imaging\n\n\n\n\nPreprocessing and First-Level Analysis\n\nPreprocessing Pipeline\n\nStructural\nfMRI, rs-fMRI\n\nPreprocessing with FSL: Practical Session\nPreprocessing: Brainlife.io/Docker\nFirst-Level Statistical Analysis\n\nfMRI, rs-fMRI Analysis\n\nPractical implementation\n\n\n\nGroup-Level Analysis\n\nMultiplicity, Type 1 error, FWER, FDR\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\nFunctional Connectivity: basic group-level analysis\nIn-class activity: implementation in FSL and R\n“Voodoo” correlation\nAdvanced group-level analysis (distance-based)\n\nMDMR, PermANOVA, Semi-parametrics\n\n\n\n\nModern Topics: Reproducibility and Replicability\n\nReproducibility\n\n“The Garden of Forking Paths”\n\nReplicability\n\nSample sizes\nEffect sizes\n\n\n\n\nModern Topics: Machine Learning in Neuroimaging\n\nBrain-behavior associations (e.g. “Multivariate BWAS”)\n\nPrediction\nStatistical inference\n\nReplicability in ML Methods\n\nCircularity, Data Leakage, and Feature Selection\nCross-validation, Bootstrapping\n\nGuest lecture from Megan?\nBrain Age\n\nIn-class activity\n\nOther topics\n\nMVPA\nML methods\nDeep learning\n\n\n\n\nModern Topics: Batch Effects\n\nIllustration with data so far\nComBat\nCovBat\nDeep learning\n\n\n\nModern Topics: Misc\n\nCentile Analysis\nMultimodal Image Analysis"
+  },
+  {
+    "objectID": "index.html#course-schedule",
+    "href": "index.html#course-schedule",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Course Schedule",
+    "text": "Course Schedule\n\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\nNeuroimaging Course Schedule\n\n\n\n\n\n\n\n\n\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\n\n\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nFunctional preprocessing\nDespicable Me preprocessing\nDespicable Me preprocessing\n\n\n\n10-Sep\nWednesday\nFirst-Level Analysis\nFirst-Level Statistical Analysis\n\n\n\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level Statistical Analysis with FSL\n\nFirst-level fMRI analysis of Despicable Me data\n\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nrs-fMRI First-Level Statistical Analysis with FSL\n\n\n\n\n\n22-Sep\nMonday\nFirst-level Analysis\nQuality control and misc\n\n\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nMultiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level analysis of Despicable Me\nGroup-level analysis of Despicable Me\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\nFunctional Connectivity group-level analysis, implementation in FSL and R\n\n\n\n\n\n8-Oct\nWednesday\n\nAdvanced group-level analysis (distance-based)\n\n\n\n\n\n13-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage\n\n\n\n\n\n15-Oct\nWednesday\nModern Topics: Batch Effects\n\n\n\n\n\n\n20-Oct\nMonday\nModern Topics: Batch Effects\nPractical implementation\n\n\n\n\n\n22-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nBrain-behavior associations\n\n\n\n\n\n27-Oct\nMonday\nModern Topics: Machine Learning in Neuroimaging\nReplicability in ML Methods\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Machine Learning in Neuroimaging\nBrain Age\n\n\n\n\n\n5-Nov\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nOther topics\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\nCommon Mistakes and Ongoing Challenges\nData leakage in ML\n\n\n\n\n\n12-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\nReproducibility\n\n\n\n\n\n17-Nov\nMonday\nModern Topics: Reproducibility and Replicability\nReplicability\n\n\n\n\n\n19-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\nModern Topics: Misc\nCentile Analysis\n\n\n\n\n\n3-Dec\nWednesday\nModern Topics: Misc\nMultimodal Imaging"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html",
+    "href": "3first-level_analysis/first-level_analysis.html",
+    "title": "First-level Analysis",
+    "section": "",
+    "text": "knitr::opts_chunk$set(echo = TRUE, eval=FALSE)"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#temporal-filtering",
+    "href": "3first-level_analysis/first-level_analysis.html#temporal-filtering",
+    "title": "First-level Analysis",
+    "section": "Temporal filtering",
+    "text": "Temporal filtering"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#convolution",
+    "href": "3first-level_analysis/first-level_analysis.html#convolution",
+    "title": "First-level Analysis",
+    "section": "Convolution",
+    "text": "Convolution"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#temporal-derivative",
+    "href": "3first-level_analysis/first-level_analysis.html#temporal-derivative",
+    "title": "First-level Analysis",
+    "section": "Temporal derivative",
+    "text": "Temporal derivative"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#temporal-filtering-1",
+    "href": "3first-level_analysis/first-level_analysis.html#temporal-filtering-1",
+    "title": "First-level Analysis",
+    "section": "Temporal filtering",
+    "text": "Temporal filtering"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#time-series",
+    "href": "3first-level_analysis/first-level_analysis.html#time-series",
+    "title": "First-level Analysis",
+    "section": "Time series",
+    "text": "Time series\n\ndm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')\nplot(as.numeric(dm$negativeBlock))"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html",
+    "href": "2preprocessing/preprocessing.html",
+    "title": "Preprocessing",
+    "section": "",
+    "text": "knitr::opts_chunk$set(echo = TRUE, eval=FALSE)"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#general",
+    "href": "2preprocessing/preprocessing.html#general",
+    "title": "Preprocessing",
+    "section": "General",
+    "text": "General\n\nInhomogeneity correction\nBrain extraction\nRegistration (also called [spatial] normalization)\nSpatial smoothing (applied downstream prior to analysis)"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#structural",
+    "href": "2preprocessing/preprocessing.html#structural",
+    "title": "Preprocessing",
+    "section": "Structural",
+    "text": "Structural\n\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz\n\n\nInhomogeneity correction\nBrain extraction\nRegistration\nTissue segmentation\nVolume estimation\nSurface reconstruction and cortical thickness estimation\nSpatial smoothing"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#functional",
+    "href": "2preprocessing/preprocessing.html#functional",
+    "title": "Preprocessing",
+    "section": "Functional",
+    "text": "Functional\n\nInhomogeneity correction\nBrain extraction (via structural image)\nRegistration\nMotion correction\nSlice timing correction\nDistortion correction (if field map available)\nTemporal filtering & confound regression\nSpatial smoothing"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#inhomogeneity-correction-and-brain-extraction",
+    "href": "2preprocessing/preprocessing.html#inhomogeneity-correction-and-brain-extraction",
+    "title": "Preprocessing",
+    "section": "Inhomogeneity correction and brain extraction",
+    "text": "Inhomogeneity correction and brain extraction\n\nI won’t go into detail here, but know that these are preprocessing steps\nInhomogeneity correction adjusts for systematic differences in the brightness of the image\nBrain extraction removes the skull, eyes, and surrounding tissue"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#goal",
+    "href": "2preprocessing/preprocessing.html#goal",
+    "title": "Preprocessing",
+    "section": "Goal",
+    "text": "Goal\n\nBrains are structurally very different\nBrains as functions/images can have different coordinate systems\nTo compare features such as function or anatomy it helps if the coordinates are comparable\nMaking coordinates comparable is the goal of registration"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#terminology",
+    "href": "2preprocessing/preprocessing.html#terminology",
+    "title": "Preprocessing",
+    "section": "Terminology",
+    "text": "Terminology\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz\n\nInput/moving image \\(I(v)\\), \\(v \\in \\mathbb{R}^3\\)\nReference/target/template image \\(R(v)\\), \\(v \\in \\mathbb{R}^3\\)\nWe want to find a transformation \\(T\\) such that\n\n\\[\nI(T(v)) \\approx R(v)\n\\]"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#general-theory",
+    "href": "2preprocessing/preprocessing.html#general-theory",
+    "title": "Preprocessing",
+    "section": "General theory",
+    "text": "General theory\n\nEstimation: minimizes cost (or maximizes similarity)\nSimilarity metrics/cost functions\n\nLeast squares (images have the same scale) \\[\nC\\{ R(v), I(T(v))\\} = \\int_{v \\subset \\mathbb{R}^3} \\{ I(T(v)) - R(v)\\}^2 dv\n\\]\nCorrelation (images on different scales)\nMutual information (images with different contrasts/distributions) \\[\n\\mathrm{MI}(R, I) = \\sum_{r,i} \\mathbb{P}_{RI}(r, i) \\log \\left( \\frac{\\mathbb{P}_{RI}(r, i)}{\\mathbb{P}_R(r), \\mathbb{P}_I(i)} \\right)\n\\]\nwhere \\(\\mathbb{P}_{RI}(r, i)\\): is the joint probability, and \\(\\mathbb{P}_R(r), \\mathbb{P}_I(i)\\) are the marginal probabilities\n\nTransformation computed to minimize \\[\n\\min_T C\\{R(v), I(T(v))\\}\n\\]\nSome of these cost functions are convex given some assumptions on the images\nThat would imply a global optimum, given some assumtions on \\(I\\) and \\(R\\)\nThose assumptions are not met, so many adhoc approaches are implemented2\nPenalty terms are often useful\nRegistration is a challenging problem"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#rigid-body",
+    "href": "2preprocessing/preprocessing.html#rigid-body",
+    "title": "Preprocessing",
+    "section": "Rigid-body",
+    "text": "Rigid-body\n\nSix parameter rigid registration\nUsed to align functional images over time (motion correction)\nAlso used to align images from the same participant collect in the same scan session.\n\\(y = (y_1, y_2, y_3, 1)\\) - template coordinates, \\(x = (x_1, x_2, x_3, 1)\\) input coordinates\nAppended with an intercept for transformation\nCan be described as the composition of four transformations\n\n\\[\n\\begin{bmatrix}\ny_1 \\\\\ny_2 \\\\\ny_3\\\\\n1\n\\end{bmatrix}\n= T_4 T_3 T_2  T_1 \\cdot\n\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\nx_3\\\\\n1\n\\end{bmatrix}\n\\]\nTranslation of image \\[\nT_4 = \\begin{bmatrix}\n1 & 0 & 0 & q_1 \\\\\n0 & 1 & 0 & q_2 \\\\\n0 & 0 & 1 & q_3\\\\\n0 & 0 & 0 & 1\n\\end{bmatrix}\n\\]\nRotation around the x-axis:\n\\[\nT_1 = \\begin{bmatrix}\n1 & 0 & 0 & 0 \\\\\n0 & \\cos(q_4) & \\sin(q_4) & 0 \\\\\n0 & -\\sin(q_4) & \\cos(q_4) & 0\\\\\n0 & 0 & 0 & 1\n\\end{bmatrix}\n\\]\nOther rotations are defined similarly. See the reference above."
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#affine-linear-registration",
+    "href": "2preprocessing/preprocessing.html#affine-linear-registration",
+    "title": "Preprocessing",
+    "section": "Affine (linear) registration",
+    "text": "Affine (linear) registration\n\nLinear (Affine, actually) registration is 12 parameters\nThe rigid body transformations are further augmented with “zoom” and “shear”\nAll registrations should be invertible so that the reference can be moved to the space of the input"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#example-of-registration-results",
+    "href": "2preprocessing/preprocessing.html#example-of-registration-results",
+    "title": "Preprocessing",
+    "section": "Example of registration results",
+    "text": "Example of registration results\nCommands I ran:\n\nbet images/simon.nii.gz images/simonReg/simon_brain.nii.gz\n# dof controls number of parameters 6 is rigid-body\nflirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -dof 6 -o images/simonReg/simon_brain_rigidReg.nii.gz -omat images/simonReg/rigidReg.txt\n# defaults to 12 for affine transformation\nflirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -o images/simonReg/simon_brain_affineReg.nii.gz -omat images/simonReg/affineReg.txt\n\nTo view the results with the MNI template\n\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain.nii.gz images/simonReg/simon_brain_rigidReg.nii.gz images/simonReg/simon_brain_affineReg.nii.gz\n\nTo view transformation matrices\n\ncat images/simonReg/rigidReg.txt\ncat images/simonReg/affineReg.txt\n\n\nBrain extraction\nRigid-body\nAffine"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#interpolation",
+    "href": "2preprocessing/preprocessing.html#interpolation",
+    "title": "Preprocessing",
+    "section": "Interpolation",
+    "text": "Interpolation\n\nImages are measured on a grid, so applying the transformation \\(T\\) may require evaluation of the image, \\(I\\), at locations not represented by a grid coordinate\nInterpolation computes \\(I(T(v))\\) at non-grid locations\nRequired for evaluating cost function and when applying the resulting transformation matrix.\nInterpolation methods\nNearest neighbor interpolation is important when registering atlas images\n\nAtlas images are integer valued and nearest neighbor ensures output is integer valued"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#nonlinear-deformable-registration",
+    "href": "2preprocessing/preprocessing.html#nonlinear-deformable-registration",
+    "title": "Preprocessing",
+    "section": "Nonlinear (deformable) registration",
+    "text": "Nonlinear (deformable) registration\n\nDeformable registration allows different parts of the image to have a unique transformation matrix\nCalled a deformation field \\(\\phi(x)\\) such that \\(y = \\phi(x)\\).\nDifferent approaches:\n\nB‑splines, diffeomorphisms (e.g., LDDMM, SyN), demons, finite-element\n\nEnforces smoothness, invertibility, and topology preservation via regularization.\nTypically linear transformation is estimated first, then function composition is used when estimating and evaluating the nonlinear transformation\nComposition avoids repeated interpolation of the image\nANTs registration paper Avants et al (2009).\n\n\nfnirt --ref=images/MNI152_T1_1mm_brain.nii.gz --in=images/simonReg/simon_brain.nii.gz --aff=images/simonReg/affineReg.txt --fout=images/simonReg/field.nii.gz --jout=images/simonReg/jacobian.nii.gz --iout=images/simonReg/simon_nonlinearReg.nii.gz --cout=images/simonReg/simon2MNI.nii.gz \n\nVisualize results\n\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain_affineReg.nii.gz images/simonReg/simon_nonlinearReg.nii.gz"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#registration-to-a-template",
+    "href": "2preprocessing/preprocessing.html#registration-to-a-template",
+    "title": "Preprocessing",
+    "section": "Registration to a template",
+    "text": "Registration to a template\n\nCommon template images\n\nMNI template – $FSLDIR/data/linearMNI/MNI152lin_T1_1mm_brain.nii.gz MNI linear template is most common target for registration\nStudy-specific template – in unique populations, often better to create a study-specific template"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#registration-output",
+    "href": "2preprocessing/preprocessing.html#registration-output",
+    "title": "Preprocessing",
+    "section": "Registration output",
+    "text": "Registration output\n\nls ../images/simonReg\n\nMNI2simon.nii.gz\naffineReg.txt\nfield.nii.gz\njacobian.nii.gz\nrigidReg.txt\nsimon2MNI.nii.gz\nsimon_brain.nii.gz\nsimon_brain_affineReg.nii.gz\nsimon_brain_rigidReg.nii.gz\nsimon_brain_to_MNI152_T1_1mm_brain.log\nsimon_brain_warpcoef.nii.gz\nsimon_nonlinearReg.nii.gz\n\n\n\nWarp field\nJacobian of the transformation"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#advanced-registration-topics",
+    "href": "2preprocessing/preprocessing.html#advanced-registration-topics",
+    "title": "Preprocessing",
+    "section": "Advanced registration topics",
+    "text": "Advanced registration topics\n\nStudy specific templates\n\nPopulations vary and a standard template might not be appropriate\nExamples: Kids or older adults"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#references",
+    "href": "2preprocessing/preprocessing.html#references",
+    "title": "Preprocessing",
+    "section": "References",
+    "text": "References\n\nHuman brain function online book (from the authors of SPM software\nChapter 2 from HBF book"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#goal-1",
+    "href": "2preprocessing/preprocessing.html#goal-1",
+    "title": "Preprocessing",
+    "section": "Goal",
+    "text": "Goal\n\nRegistration is imperfect, applying spatial smoothing reduces between subject\nIf there is voxel-level independent Gaussian noise, spatial smoothing will reduce noise\nSmoothing is typically applied to images before statistical analysis\nValue at a smoothed voxel is a Guassian weighted average of surrounding voxels in unsmoothed image"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#terminology-1",
+    "href": "2preprocessing/preprocessing.html#terminology-1",
+    "title": "Preprocessing",
+    "section": "Terminology",
+    "text": "Terminology\n\nFWHM - full width at half maximum, typically in mm. Description of size of Gaussian kernel for smooth\nSigma - \\(\\sigma = \\frac{\\mathrm{FWHM}}{2\\sqrt{2\\log(2)}}\\)\n\n\n\n\nSmoothing kernels CPAC pipeline"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#c-pac-anatomical-pipeline",
+    "href": "2preprocessing/preprocessing.html#c-pac-anatomical-pipeline",
+    "title": "Preprocessing",
+    "section": "C-PAC anatomical pipeline",
+    "text": "C-PAC anatomical pipeline\n\n\n\nAnatomical pipeline\n\n\nOption/Alt + click to zoom in."
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#segmentation",
+    "href": "2preprocessing/preprocessing.html#segmentation",
+    "title": "Preprocessing",
+    "section": "Segmentation",
+    "text": "Segmentation\n\nSegmentation estimates gray/white matter, CSF/ventricles\nVariations on mixture models that incorporate priors and spatial dependence"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#volume-estimation",
+    "href": "2preprocessing/preprocessing.html#volume-estimation",
+    "title": "Preprocessing",
+    "section": "Volume estimation",
+    "text": "Volume estimation\nEstimation of volumes of regions defined from an anatomical atlas.\nApproaches:\n\nRegistration - invert warp to map atlas to subject space\nMulti-atlas label fusion - Registration-based. Information from multiple manually labeled atlases can improve estimation\nProbabilistic atlases/Bayesian models"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#volume-estimation-example",
+    "href": "2preprocessing/preprocessing.html#volume-estimation-example",
+    "title": "Preprocessing",
+    "section": "Volume estimation example",
+    "text": "Volume estimation example\n\n# invert the warp from subject space to template space\ninvwarp -w images/simonReg/simon2MNI.nii.gz -o images/simonReg/MNI2simon.nii.gz -r images/simonReg/simon_brain.nii.gz\n# convert atlas to subject space. Use nearest neighbor interpolation\napplywarp --i=/Users/vandeks/fsl/data/atlases/HarvardOxford/HarvardOxford-cort-maxprob-thr25-1mm.nii.gz --ref=images/simonReg/simon_brain.nii.gz --warp=images/simonReg/MNI2simon.nii.gz --out=images/simonReg/HO_simon.nii.gz --interp=nn\n# visualize results on simon's brain\nfsleyes images/simonReg/simon_brain.nii.gz images/simonReg/HO_simon.nii.gz\n\nCode from ChatGPT to compute volumes.\n\n# 2. Estimate voxel volume (assumes cubic mm)\nvoxel_volume=$(fslval ${ref_image} pixdim1)\nvoxel_volume=$(echo \"${voxel_volume} * $(fslval ${ref_image} pixdim2) * $(fslval ${ref_image} pixdim3)\" | bc -l)\n\n# 3. Loop over atlas labels to count voxels and estimate volume\necho \"Label,VoxelCount,Volume_mm3\"\nfor label in {1..48}; do\n  count=$(fslstats ${atlas_subj} -l $(($label - 1)) -u $label -V | awk '{print $1}')\n  volume=$(echo \"$count * $voxel_volume\" | bc -l)\n  echo \"$label,$count,$volume\"\ndone"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#derivatives-of-the-registration-process",
+    "href": "2preprocessing/preprocessing.html#derivatives-of-the-registration-process",
+    "title": "Preprocessing",
+    "section": "Derivatives of the registration process",
+    "text": "Derivatives of the registration process\n\nFeatures of the registration process are informative of brain structure\nProbabilistic tissue segmentation: images can be analyzed across participants after registration to template space\nDeterminant of the Jacobian: of the transformation - quantifies how much the image needed to be warped at that location to fit into the template space\nVoxel-based morphometry combines Jacobian and tissue segmentation images to compare gray matter volume in template space\n\nMechelli 2005 – Review of VBM\nAntonopoulos 2023 – Recent comparison of VBM methods"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#cortical-surface-reconstruction",
+    "href": "2preprocessing/preprocessing.html#cortical-surface-reconstruction",
+    "title": "Preprocessing",
+    "section": "Cortical surface reconstruction",
+    "text": "Cortical surface reconstruction\nFreesurfer is among the most popular software for cortical surface reconstruction\n\nAllows projection of other data (e.g. fMRI) to the surface\nAll analyses can be performed on the surface\nRegistration in Freesurfer occurs on the surface manifold instead of in 3D\n\nRespects biology of the brain\n\nSmoothing is done on the surface – avoids smoothing over sulci\nCon: Does not include subcortex\n\n\n\n\n\n\nIrimia et al. 2012\n\n\n\n\n\n\nInflated surface"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#freesurfer-software-output",
+    "href": "2preprocessing/preprocessing.html#freesurfer-software-output",
+    "title": "Preprocessing",
+    "section": "Freesurfer software output",
+    "text": "Freesurfer software output\n\nrecon-all -subjid subjid -i inputFile.nii.gz -all\n\n\nFully automated call, though it is not without errors/flaws\nA look at the Freesurfer output"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#what-are-fmri-data",
+    "href": "2preprocessing/preprocessing.html#what-are-fmri-data",
+    "title": "Preprocessing",
+    "section": "What are fMRI data?",
+    "text": "What are fMRI data?\n\nfMRI measures brain activity over time by detecting changes in blood oxygenation.\nfMRI data are a time series of 3D brain images, collected every 1–3 seconds (TR = repetition time).\nEach voxel (3D pixel) contains a time series reflecting fluctuations in signal intensity across the scan.\nThe signal includes BOLD (Blood Oxygenation Level-Dependent) response\n\nBased on the fact that oxygenated and deoxygenated hemoglobin have different magnetic properties.\nNeural activity, increased blood flow, local increase in oxygenated blood, measurable signal change.\n\nData are collected while participants\n\nPerform a task (task-based fMRI)\nRest with eyes open/closed (resting-state fMRI)\n\nfMRI is indirect: it measures a blood flow, not neural activity itself.\n\nXXX add image of fMRI data time series"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#functional-preprocessing-pipeline",
+    "href": "2preprocessing/preprocessing.html#functional-preprocessing-pipeline",
+    "title": "Preprocessing",
+    "section": "Functional preprocessing pipeline",
+    "text": "Functional preprocessing pipeline\n\nScientists have developed many software tools for preprocessing\nThe analysis pipeline is very sophisticated\nTeams have developed pipeline tools that make it easier to reproducibly preprocess the data\n\nExample CPAC functional pipeline\n\n\n\n\n\nFunctional pipeline"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#slice-timing-correction",
+    "href": "2preprocessing/preprocessing.html#slice-timing-correction",
+    "title": "Preprocessing",
+    "section": "Slice Timing Correction",
+    "text": "Slice Timing Correction\n\nfMRI data are collected sequentially in 2-d slices in the z-plane\n\nOver the course of one TR (repetition time; approximately 2 seconds [0.5-3 seconds] ), the time the first slice and the last slice are acquired is almost the length of the TR\n\nSlice timing adjusts voxel intensities in each slice to a common acquisition reference (e.g., the first slice)\n\nCorrects timing offsets across the TR to align the hemodynamic response\n\nUses interpolation (e.g., sinc, Fourier) based on slice order (alt‑z, seq, etc.)\nMultiband fMRI methods can acquire several slices simultaneously, reducing the TR.\n\nSlice timing GIF in Andy’s Brain Book"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#motion-correction",
+    "href": "2preprocessing/preprocessing.html#motion-correction",
+    "title": "Preprocessing",
+    "section": "Motion correction",
+    "text": "Motion correction\n\nThe participant will move across the scan time\nMotion correction in FSL\n\nAlign volumes to mean image\n\nMotion correction in AFNI (another software)\n\nAlign volumes to mean image\nRealign again to newly computed mean for improved accuracy\n\n\n\nfsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#motion-correction-output",
+    "href": "2preprocessing/preprocessing.html#motion-correction-output",
+    "title": "Preprocessing",
+    "section": "Motion correction output",
+    "text": "Motion correction output\n\nOutputs:\n\n6 motion parameters\nMean framewise displacement (FD) and motion plots\n\n\nMotion parameter time series are used as covariates in first-level analysis\n\n\n\n\nMotion parameters from Despicable Me"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#field-map-distortion-correction",
+    "href": "2preprocessing/preprocessing.html#field-map-distortion-correction",
+    "title": "Preprocessing",
+    "section": "Field Map / Distortion Correction",
+    "text": "Field Map / Distortion Correction\n\nCorrection of EPI geometric distortions due to inhomogeneity in the magnetic field\nSupported if you collected a fieldmap image\n\nApplies warp to fMRI, improving alignment to anatomy and standard space\nWe will skip this in our preprocessing"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#functional-to-anatomical-registration",
+    "href": "2preprocessing/preprocessing.html#functional-to-anatomical-registration",
+    "title": "Preprocessing",
+    "section": "Functional to Anatomical Registration",
+    "text": "Functional to Anatomical Registration\n\nUses “boundary-based registration” for EPI-to-T1 alignment\n\nOutputs the transform matrix for resampling EPI into subject/anatomical space\n\n\n\n\nFunctional registration"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#brain-extraction",
+    "href": "2preprocessing/preprocessing.html#brain-extraction",
+    "title": "Preprocessing",
+    "section": "Brain Extraction",
+    "text": "Brain Extraction\n\nRemoves skull/face from fMRI data\nFSL’s BET tool fails for this participant\nVisualization below\n\n\n# brain extraction fails here\nbet data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz\nfsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#fsl-gui",
+    "href": "2preprocessing/preprocessing.html#fsl-gui",
+    "title": "Preprocessing",
+    "section": "FSL GUI",
+    "text": "FSL GUI\n\nFSL has a GUI for preprocessing\nInput:\n\nBrain extracted anatomical T1 image. (Also with skull)\nfMRI 4D Nifti time series image\nOptional B0 field map\nParameter settings\n\nBrain extraction for this participant failed. As a solution, I created a brain extracted anatomical image with the following commands\n\n\n# Input images\nfunc=\"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz\"\nanat=\"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz\"\n\n# register to the template\nflirt -in $anat -ref /Users/vandeks/fsl/data/standard/MNI152_T1_1mm.nii.gz -dof 12 -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt\n# get inverse transform\nconvert_xfm -inverse -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt\n# Move MNI mask into subject space\nflirt -in /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -ref $anat -applyxfm -init data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt -interp nearestneighbour -out data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz\n# view the MNI mask in subject space\n# fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz\n# create brain only image by applying brain mask\nfslmaths data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz -mas data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain.nii.gz"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#fsl-preprocessing-summary",
+    "href": "2preprocessing/preprocessing.html#fsl-preprocessing-summary",
+    "title": "Preprocessing",
+    "section": "FSL preprocessing summary",
+    "text": "FSL preprocessing summary\n\nchrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_prestats.html\nchrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_reg.html"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#concluding-notes",
+    "href": "2preprocessing/preprocessing.html#concluding-notes",
+    "title": "Preprocessing",
+    "section": "Concluding Notes",
+    "text": "Concluding Notes\n\nPreprocessing pipelines like C-PAC are developed to choose the best/preferred software for each step\nC‑PAC is highly configurable/adaptable\nAlways check QA after each step for alignment and residual motion\n\nSubsequent steps include nuisance regression"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#footnotes",
+    "href": "2preprocessing/preprocessing.html#footnotes",
+    "title": "Preprocessing",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nSoftware lists are non-exhaustive and based on my personal exposure.↩︎\n“In theory, there is no difference between theory and practice. In practice, there is.”↩︎"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html",
+    "title": "Introduction & Data Modalities",
+    "section": "",
+    "text": "Syllabus"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#reproducible-brain-charts",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#reproducible-brain-charts",
+    "title": "Introduction & Data Modalities",
+    "section": "Reproducible Brain Charts",
+    "text": "Reproducible Brain Charts\nReproducible Brain Charts\n\nWe will use structural, resting state functional MRI (rs-fMRI), and “task” fMRI (t-fMRI)"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#abcd-study",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#abcd-study",
+    "title": "Introduction & Data Modalities",
+    "section": "ABCD Study",
+    "text": "ABCD Study\n\nAdolescent Brain Cognitive Development (ABCD)\nAmazing resource for large-scale imaging\nHuge study, requires complex data use agreement"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#analysis-software",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#analysis-software",
+    "title": "Introduction & Data Modalities",
+    "section": "Analysis software",
+    "text": "Analysis software\n\nStatistical Parametric Mapping (SPM; in MATLAB)\nFSL (linux/terminal based) – Primary software for this course\nAFNI\nNeuroconductor – modular analysis packages in R"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#getting-setup-with-fsl",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#getting-setup-with-fsl",
+    "title": "Introduction & Data Modalities",
+    "section": "Getting setup with FSL",
+    "text": "Getting setup with FSL\n\necho $FSLDIR\nVisualize the FSL template image\nVisualize my brain"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#visualization-software",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#visualization-software",
+    "title": "Introduction & Data Modalities",
+    "section": "Visualization software",
+    "text": "Visualization software\nVisualization is as important in image analysis as univariate data analysis (Always look at your data)\n\nFSLeyes\nITK-Snap\nPapaya\nR packages, ggseg, ciftitools, fsbrain, see following reference\nChopra et al., 2023 – overview of reproducible tools"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#anatomy-and-terminology",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#anatomy-and-terminology",
+    "title": "Introduction & Data Modalities",
+    "section": "Anatomy and terminology",
+    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid.\n\nDirectory paths will be relative to the course directory on Box."
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#more-brain-anatomy-and-terminology",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#more-brain-anatomy-and-terminology",
+    "title": "Introduction & Data Modalities",
+    "section": "More brain anatomy and terminology",
+    "text": "More brain anatomy and terminology\n\nCortex: The outer layer of the brain’s gray matter. It is highly folded and responsible for higher cognitive functions like perception, decision-making, and voluntary movement.\nSubcortex: Brain regions located beneath the cortex, including structures like the thalamus, basal ganglia, and hippocampus. These areas are important for functions such as emotion, memory, and movement regulation.\nCerebellum: A separate structure located at the back of the brain, underneath the cortex. It plays a key role in coordinating movement, balance, and fine motor skills."
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#even-more-brain-anatomy-and-terminology",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#even-more-brain-anatomy-and-terminology",
+    "title": "Introduction & Data Modalities",
+    "section": "Even more brain anatomy and terminology",
+    "text": "Even more brain anatomy and terminology\n\nLobes: The brain is divided into four main lobes — frontal, parietal, temporal, and occipital — each associated with specific functions.\nGyri (singular: gyrus): Ridges on the brain’s surface.\nSulci (singular: sulcus): Grooves between the gyri.\nAnterior / Posterior / Superior / Inferior: Anatomical directions — front/back/top/bottom."
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#what-is-an-image",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#what-is-an-image",
+    "title": "Introduction & Data Modalities",
+    "section": "What is an image?",
+    "text": "What is an image?\n\nA function from I(v): \\mathbb{R}^3 \\mapsto \\mathbb{R}.\nNumeric values in the image represent biological values.\nVisually brighter pixels are higher values.\nMRI are collected in the frequency domain, but few people analyze their data there"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#medical-imaging-data-formats",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#medical-imaging-data-formats",
+    "title": "Introduction & Data Modalities",
+    "section": "Medical imaging data formats",
+    "text": "Medical imaging data formats\n\nDICOM: Medical image format, which includes a lot of metadata in the image header. Raw output from MRI scanner. .dcm\nNIfTI: File format for 3D or 4D neuroimaging data with less (but still a lot of) metadata in the image header. .nii or .nii.gz.\n\nYou don’t need to gunzip.nii.gz files, all software can open them directly."
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#neuroimaging-terminology",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#neuroimaging-terminology",
+    "title": "Introduction & Data Modalities",
+    "section": "Neuroimaging terminology",
+    "text": "Neuroimaging terminology\n\nVoxel: A 3D pixel.\nTR: Repetition time - time required to obtain an entire volume (typically for fMRI data).\nTE: Echo time - time between application of a radiofrequency (RF) pulse and the peak of the signal (echo) generated.\nEPI: Echo planar imaging - the type of imaging used to collect fMRI data.\nT1-weighted / T2-weighted images: Types of MRI scans for different tissue properties. T1 show anatomy with good contrast for gray and white matter; T2 highlight fluid and often used to detect pathology."
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#orientation-terminology",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#orientation-terminology",
+    "title": "Introduction & Data Modalities",
+    "section": "Orientation terminology",
+    "text": "Orientation terminology\n\nAxial View: A horizontal slice of the brain, viewed from above (as if looking down from the top of the head).\nCoronal View: A vertical slice viewed from the front (as if looking straight at the face).\nSagittal View: A vertical slice viewed from the side (as if looking at the brain in profile)."
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#image-space",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#image-space",
+    "title": "Introduction & Data Modalities",
+    "section": "Image space",
+    "text": "Image space\nintroduction_data_modalities/figures/MNI152_T1_2mm_brain.nii.gz\n\nMNI Space / Talairach Space: Standardized brain coordinate systems used to align and compare brain scans across individuals.\nRadiological versus neurological convention\n\nRadiological - (left on the right)\nNeurological - (right on the right)\nNice overview on this stuff\nRadiological is more common"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#atlases",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#atlases",
+    "title": "Introduction & Data Modalities",
+    "section": "Atlases",
+    "text": "Atlases\nAtlases define regions of the brain based on anatomical, microstructural, functional, or other features\n\nCommon Atlases\n\nMNI"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#structural-imaging",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#structural-imaging",
+    "title": "Introduction & Data Modalities",
+    "section": "Structural imaging",
+    "text": "Structural imaging\nMeasures the anatomy of the brain\n\nDerived from T1/T2 MRI scans\nStructural measures\n\nVolume, Cortical thickness, Surface area\n\nData structures\n\nImages\nRegions\nGray matter surface\nStructural-based “similarity” networks"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#freesurfer-structural-analysis-software",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#freesurfer-structural-analysis-software",
+    "title": "Introduction & Data Modalities",
+    "section": "Freesurfer: structural analysis software",
+    "text": "Freesurfer: structural analysis software\n\n\n\nCortical surface estimation and analysis\nNow over 25 years old\nMany tools now built on analyzing data on the surface\n\n\n\n\n\nFischl and Dale 2000"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#freesurfer-visualization",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#freesurfer-visualization",
+    "title": "Introduction & Data Modalities",
+    "section": "Freesurfer visualization",
+    "text": "Freesurfer visualization\n\n\n\n\n\nDiamond et al. 2020\n\n\n\n\n\n\nIrimia et al. 2012"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#functional-imaging",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#functional-imaging",
+    "title": "Introduction & Data Modalities",
+    "section": "Functional imaging",
+    "text": "Functional imaging\nMeasures brain functioning (inferred by deoxygentated blood)\n\n\n\nBlood oxygen level dependent (BOLD) activity\nHistory of functional MRI (Bandettini 2012)\nfunctional Magnetic Resonance Imaging (fMRI) are time-series data\n\n\n\n\n\nEarly fMRI Bandettini 1991"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#types-of-fmri-data",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#types-of-fmri-data",
+    "title": "Introduction & Data Modalities",
+    "section": "Types of fMRI data",
+    "text": "Types of fMRI data\n\ntask fMRI – acquired doing a task\nresting state fMRI (rs-fMRI) – acquired doing nothing"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#task-fmri-overview",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#task-fmri-overview",
+    "title": "Introduction & Data Modalities",
+    "section": "Task fMRI overview",
+    "text": "Task fMRI overview\n\nMeasures brain activity during a task using BOLD signal.\n\nBlock design: repeated task periods alternating with baseline (e.g. 30s task, 30s rest).\nEvent-related design: timing randomized, short stimuli.\nNaturalistic: E.g., viewing a movie.\n\nAnalysis fits a time-series model and compares conditions.\nData structures\n\nImages, Regions, Gray matter surface"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#task-fmri-design-illustrations",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#task-fmri-design-illustrations",
+    "title": "Introduction & Data Modalities",
+    "section": "Task fMRI design illustrations",
+    "text": "Task fMRI design illustrations\n\nBlock versus task designs Petersen & Dubis 2011"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#notes-on-illustration",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#notes-on-illustration",
+    "title": "Introduction & Data Modalities",
+    "section": "Notes on illustration",
+    "text": "Notes on illustration\n\nKnown stimulus time series are convolved with an assumed hemodynamic response function (HRF)\nHRF is well studied, often assumed, and likely inaccurate for many brain regions REFs\nHemodynamic (blood) response to stimuli is slow.\nfMRI sampled every 1.5-3 seconds or so.\nRBC fMRI parameters"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#rbc-task-data",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#rbc-task-data",
+    "title": "Introduction & Data Modalities",
+    "section": "RBC task data",
+    "text": "RBC task data\n\n\n\nWe will analyze Naturalistic viewing data\nNaturalistic viewing of Desipicable Me (Furtado 2024)\n\n\n\n\n\nDespicable Me"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#rs-fmri",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#rs-fmri",
+    "title": "Introduction & Data Modalities",
+    "section": "rs-fMRI",
+    "text": "rs-fMRI\n\nWhat it is? Correlation between fMRI time-series in the brain at rest (doing nothing).\nHistory: Biswal 1995 first study to do this\nNow, things are quite a bit more sophisticated\nData structures\n\nImages\nRegions\nGray matter surface\nNetworks"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#first-resting-state-networks-de-luca",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#first-resting-state-networks-de-luca",
+    "title": "Introduction & Data Modalities",
+    "section": "First resting state networks (De Luca)",
+    "text": "First resting state networks (De Luca)\nPublished in 2006 using independent components analysis\n\nEarly resting state networks De Luca 2006"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
+    "title": "Introduction & Data Modalities",
+    "section": "Resting state networks (Damoiseaux)",
+    "text": "Resting state networks (Damoiseaux)\nPublished the same year, using a different ICA method.\n\nEarly resting state networks Damoiseaux 2006"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
+    "title": "Introduction & Data Modalities",
+    "section": "Diffusion imaging",
+    "text": "Diffusion imaging\nMeasures features of water “diffusion” in the brain. Typically, to estimate biological features of the white matter\n\nWill not focus on this data type in this course\n\n\nDiffusion imaging in Autism Wilkinson 2016"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#other-measures",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#other-measures",
+    "title": "Introduction & Data Modalities",
+    "section": "Other measures",
+    "text": "Other measures\n\nPerfusion – Quantitative measure of blood flow\nSpectroscopy\nMany others actively in development\nMany “derivatives” exist and in development\n\nDerivatives are quantitative values derived from existing modalities"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#footnotes",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#footnotes",
+    "title": "Introduction & Data Modalities",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nDirectory paths will be relative to the course directory on Box.↩︎"
+  }
+]

@@ -1,0 +1,545 @@
+---
+title: "Preprocessing"
+author: "Simon Vandekar"
+engine: knitr
+format:
+  revealjs:
+    menu:
+      side: right
+    link-external-newwindow: true
+    slide-number: true
+    code-overflow: wrap
+    html-math-method: katex
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+
+# Objectives
+
+* These slides are a three lecture series
+  + Part 1: Preprocessing related to all data types
+  + Part 2: Preprocessing specific to structural data
+  + Part 3: Preprocessing specific to functional data
+
+# Preprocessing
+
+* General
+* Structural
+* Functional (fMRI)
+  - Task fMRI
+  - resting state fMRI
+  
+## General
+
+* Inhomogeneity correction
+* Brain extraction
+* Registration (also called [spatial] normalization)
+* Spatial smoothing (applied downstream prior to analysis)
+
+## Structural {.smaller}
+
+```{bash, echo=TRUE}
+fsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz
+```
+
+
+* Inhomogeneity correction
+* Brain extraction
+* Registration
+* Tissue segmentation
+* Volume estimation
+* Surface reconstruction and cortical thickness estimation
+* Spatial smoothing
+
+## Functional {.smaller}
+
+* Inhomogeneity correction
+* Brain extraction (via structural image)
+* Registration
+* Motion correction
+* Slice timing correction
+* Distortion correction (if field map available)
+* Temporal filtering & confound regression
+* Spatial smoothing
+
+
+## Inhomogeneity correction and brain extraction
+
+* I won't go into detail here, but know that these are preprocessing steps
+* Inhomogeneity correction adjusts for systematic differences in the brightness of the image
+* Brain extraction removes the skull, eyes, and surrounding tissue
+
+# Registration
+
+* Rigid-body
+* Linear[^1]
+  - [flirt](https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/FLIRT(2f)UserGuide.html)
+* Diffeomorphic (nonlinear)
+  - [fnirt](https://open.win.ox.ac.uk/pages/fsl/fslpy/fsl.transform.fnirt.html)
+  - [ANTS](https://github.com/ANTsX/ANTs)
+
+
+
+[^1]: Software lists are non-exhaustive and based on my personal exposure.
+
+## Goal
+
+* Brains are structurally very different
+* Brains as functions/images can have different coordinate systems
+* To compare features such as function or anatomy it helps if the coordinates are comparable
+*  Making coordinates comparable is the goal of registration
+
+
+## Terminology
+
+`fsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz`
+
+* Input/moving image $I(v)$, $v \in \mathbb{R}^3$
+* Reference/target/template image $R(v)$, $v \in \mathbb{R}^3$
+* We want to find a transformation $T$ such that
+
+$$
+I(T(v)) \approx R(v)
+$$
+
+## General theory {.scrollable}
+
+* Estimation: minimizes cost (or maximizes similarity)
+* Similarity metrics/cost functions
+  + Least squares (images have the same scale)
+  $$
+  C\{ R(v), I(T(v))\} = \int_{v \subset \mathbb{R}^3} \{ I(T(v)) - R(v)\}^2 dv
+  $$
+  + Correlation (images on different scales)
+  + Mutual information (images with different contrasts/distributions)
+  $$
+\mathrm{MI}(R, I) = \sum_{r,i} \mathbb{P}_{RI}(r, i) \log \left( \frac{\mathbb{P}_{RI}(r, i)}{\mathbb{P}_R(r), \mathbb{P}_I(i)} \right)
+$$
+
+     where $\mathbb{P}_{RI}(r, i)$: is the joint probability, and $\mathbb{P}_R(r), \mathbb{P}_I(i)$ are the marginal probabilities
+
+* Transformation computed to minimize
+$$
+\min_T C\{R(v), I(T(v))\} 
+$$
+* Some of these cost functions are convex given some assumptions on the images
+* That would imply a global optimum, given some assumtions on $I$ and $R$
+* Those assumptions are not met, so many *adhoc* approaches are implemented[^2]
+* Penalty terms are often useful
+* Registration is a challenging problem
+
+[^2]: "In theory, there is no difference between theory and practice. In practice, there is."
+
+## Rigid-body {.scrollable}
+
+* Six parameter [rigid registration](https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf2/pdfs/Ch2.pdf)
+* Used to align functional images over time (motion correction)
+* Also used to align images from the same participant collect in the same scan session.
+* $y = (y_1, y_2, y_3, 1)$ - template coordinates, $x = (x_1, x_2, x_3, 1)$ input coordinates
+* Appended with an intercept for transformation
+* Can be described as the composition of four transformations
+
+$$
+\begin{bmatrix}
+y_1 \\
+y_2 \\
+y_3\\
+1
+\end{bmatrix}
+= T_4 T_3 T_2  T_1 \cdot 
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3\\
+1
+\end{bmatrix}
+$$
+
+Translation of image
+$$
+T_4 = \begin{bmatrix}
+1 & 0 & 0 & q_1 \\
+0 & 1 & 0 & q_2 \\
+0 & 0 & 1 & q_3\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+Rotation around the x-axis:
+
+$$
+T_1 = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & \cos(q_4) & \sin(q_4) & 0 \\
+0 & -\sin(q_4) & \cos(q_4) & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+Other rotations are defined similarly. See the reference above.
+
+## Affine (linear) registration
+
+* Linear (Affine, actually) registration is 12 parameters
+* The rigid body transformations are further augmented with "zoom" and "shear"
+* All registrations should be invertible so that the reference can be moved to the space of the input
+
+## Example of registration results {.smaller}
+
+Commands I ran:
+
+
+```{bash, eval=FALSE, echo=TRUE}
+bet images/simon.nii.gz images/simonReg/simon_brain.nii.gz
+# dof controls number of parameters 6 is rigid-body
+flirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -dof 6 -o images/simonReg/simon_brain_rigidReg.nii.gz -omat images/simonReg/rigidReg.txt
+# defaults to 12 for affine transformation
+flirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -o images/simonReg/simon_brain_affineReg.nii.gz -omat images/simonReg/affineReg.txt
+```
+
+
+To view the results with the MNI template
+
+```{bash, eval=FALSE, echo=TRUE}
+fsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain.nii.gz images/simonReg/simon_brain_rigidReg.nii.gz images/simonReg/simon_brain_affineReg.nii.gz
+```
+
+To view transformation matrices
+
+```{bash, eval=FALSE, echo=TRUE}
+cat images/simonReg/rigidReg.txt
+cat images/simonReg/affineReg.txt
+```
+
+* Brain extraction
+* Rigid-body
+* Affine
+
+## Interpolation {.scrollable}
+
+* Images are measured on a grid, so applying the transformation $T$ may require evaluation of the image, $I$, at locations not represented by a grid coordinate
+* Interpolation computes $I(T(v))$ at non-grid locations
+* Required for evaluating cost function and when applying the resulting transformation matrix.
+* [Interpolation methods](https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf2/pdfs/Ch2.pdf)
+* Nearest neighbor interpolation is important when registering atlas images
+  + Atlas images are integer valued and nearest neighbor ensures output is integer valued
+
+## Nonlinear (deformable) registration {.scrollable}
+
+* Deformable registration allows different parts of the image to have a unique transformation matrix
+* Called a **deformation field** $\phi(x)$ such that $y = \phi(x)$.
+* Different approaches:
+  + B‑splines, diffeomorphisms (e.g., LDDMM, SyN), demons, finite-element
+* Enforces smoothness, invertibility, and topology preservation via regularization.
+* Typically linear transformation is estimated first, then function composition is used when estimating and evaluating the nonlinear transformation
+* Composition avoids repeated interpolation of the image
+* ANTs registration paper [Avants et al (2009)](https://www.sciencedirect.com/science/article/abs/pii/S1361841507000606).
+
+```{bash, eval=FALSE}
+fnirt --ref=images/MNI152_T1_1mm_brain.nii.gz --in=images/simonReg/simon_brain.nii.gz --aff=images/simonReg/affineReg.txt --fout=images/simonReg/field.nii.gz --jout=images/simonReg/jacobian.nii.gz --iout=images/simonReg/simon_nonlinearReg.nii.gz --cout=images/simonReg/simon2MNI.nii.gz 
+```
+
+
+Visualize results
+```{bash, eval=FALSE}
+fsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain_affineReg.nii.gz images/simonReg/simon_nonlinearReg.nii.gz
+```
+
+## Registration to a template
+
+* Common template images
+  + MNI template -- `$FSLDIR/data/linearMNI/MNI152lin_T1_1mm_brain.nii.gz` MNI linear template is most common target for registration
+  + Study-specific template -- in unique populations, often better to create a study-specific template
+
+
+## Registration output
+
+```{bash, eval=TRUE}
+ls ../images/simonReg
+```
+
+
+* Warp field
+* Jacobian of the transformation
+
+## Advanced registration topics
+
+* Study specific templates
+  + Populations vary and a standard template might not be appropriate
+  + Examples: Kids or older adults
+
+## References
+
+
+* [Human brain function online book](https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf1/) (from the authors of SPM software
+* [Chapter 2 from HBF book](https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf2/pdfs/Ch2.pdf)
+
+# Spatial smoothing
+
+A relatively simple processing step
+
+## Goal
+
+* Registration is imperfect, applying spatial smoothing reduces between subject
+* If there is voxel-level independent Gaussian noise, spatial smoothing will reduce noise
+* Smoothing is typically applied to images before statistical analysis
+* Value at a smoothed voxel is a Guassian weighted average of surrounding voxels in unsmoothed image
+
+## Terminology
+
+* **FWHM** - full width at half maximum, typically in mm. Description of size of Gaussian kernel for smooth
+* **Sigma** - $\sigma = \frac{\mathrm{FWHM}}{2\sqrt{2\log(2)}}$
+
+![Smoothing kernels [CPAC pipeline](https://fcp-indi.github.io/docs/latest/user/after_warp)](figures/cpac_smoothing.png)
+
+# Structural preprocessing and output {.smaller}
+
+## [C-PAC](https://fcp-indi.github.io/docs/latest/user/index.html) anatomical pipeline
+
+![Anatomical pipeline](figures/cpac_anatomical.svg)
+
+Option/Alt + click to zoom in.
+
+## Segmentation
+
+* Segmentation estimates gray/white matter, CSF/ventricles
+* Variations on mixture models that incorporate priors and spatial dependence
+
+
+
+## Volume estimation
+
+Estimation of volumes of regions defined from an anatomical atlas.
+
+Approaches:
+
+* Registration - invert warp to map atlas to subject space
+* Multi-atlas label fusion - Registration-based. Information from multiple manually labeled atlases can improve estimation
+* Probabilistic atlases/Bayesian models
+
+## Volume estimation example {.scrollable .smaller}
+
+```{bash}
+# invert the warp from subject space to template space
+invwarp -w images/simonReg/simon2MNI.nii.gz -o images/simonReg/MNI2simon.nii.gz -r images/simonReg/simon_brain.nii.gz
+# convert atlas to subject space. Use nearest neighbor interpolation
+applywarp --i=/Users/vandeks/fsl/data/atlases/HarvardOxford/HarvardOxford-cort-maxprob-thr25-1mm.nii.gz --ref=images/simonReg/simon_brain.nii.gz --warp=images/simonReg/MNI2simon.nii.gz --out=images/simonReg/HO_simon.nii.gz --interp=nn
+# visualize results on simon's brain
+fsleyes images/simonReg/simon_brain.nii.gz images/simonReg/HO_simon.nii.gz
+```
+
+
+
+
+Code from ChatGPT to compute volumes.
+
+```{bash}
+# 2. Estimate voxel volume (assumes cubic mm)
+voxel_volume=$(fslval ${ref_image} pixdim1)
+voxel_volume=$(echo "${voxel_volume} * $(fslval ${ref_image} pixdim2) * $(fslval ${ref_image} pixdim3)" | bc -l)
+
+# 3. Loop over atlas labels to count voxels and estimate volume
+echo "Label,VoxelCount,Volume_mm3"
+for label in {1..48}; do
+  count=$(fslstats ${atlas_subj} -l $(($label - 1)) -u $label -V | awk '{print $1}')
+  volume=$(echo "$count * $voxel_volume" | bc -l)
+  echo "$label,$count,$volume"
+done
+```
+
+
+* 
+
+## Derivatives of the registration process {.scrollable}
+
+* Features of the registration process are informative of brain structure
+* **Probabilistic tissue segmentation**: images can be analyzed across participants after registration to template space
+* **Determinant of the Jacobian**: of the transformation - quantifies how much the image needed to be warped at that location to fit into the template space
+* Voxel-based morphometry combines Jacobian and tissue segmentation images to compare gray matter volume in template space
+  + [Mechelli 2005](https://www.eurekaselect.com/article/5104) -- Review of VBM
+  + [Antonopoulos 2023](https://www-sciencedirect-com.proxy.library.vanderbilt.edu/science/article/pii/S1053811923004433) -- Recent comparison of VBM methods
+
+## Cortical surface reconstruction {.scrollable .smaller}
+
+Freesurfer is among the most popular software for cortical surface reconstruction
+
+* Allows projection of other data (e.g. fMRI) to the surface
+* All analyses can be performed on the surface
+* Registration in Freesurfer occurs on the surface manifold instead of in 3D
+  + Respects biology of the brain
+* Smoothing is done on the surface -- avoids smoothing over sulci
+* Con: Does not include subcortex
+
+::::: columns
+::: {.column width="50%"}
+![ [Irimia et al. 2012](https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2012.00010/full)](figures/irimia_FSvis.jpg){width=75%}
+:::
+
+::: {.column width="50%"}
+![ Inflated surface](figures/surfaceBasedMapping.jpg){width=75%}
+:::
+:::::
+  
+## Freesurfer software output
+
+```{bash}
+recon-all -subjid subjid -i inputFile.nii.gz -all
+```
+
+* Fully automated call, though it is not without errors/flaws
+* A look at the Freesurfer output
+
+```{bash}
+
+```
+
+
+
+
+
+
+# Functional preprocessing
+
+* We will discuss common preprocessing steps and view some input/output in FSL
+
+## What are fMRI data? {.scrollable}
+
+* fMRI measures brain activity over time by detecting changes in blood oxygenation.
+* fMRI data are a time series of 3D brain images, collected every 1–3 seconds (TR = repetition time).
+* Each voxel (3D pixel) contains a time series reflecting fluctuations in signal intensity across the scan.
+* The signal includes BOLD (Blood Oxygenation Level-Dependent) response
+  + Based on the fact that oxygenated and deoxygenated hemoglobin have different magnetic properties.
+  + Neural activity, increased blood flow, local increase in oxygenated blood, measurable signal change.
+* Data are collected while participants
+  + Perform a task (task-based fMRI)
+  + Rest with eyes open/closed (resting-state fMRI)
+* fMRI is indirect: it measures a blood flow, not neural activity itself.
+
+
+XXX add image of fMRI data time series
+
+## Functional preprocessing pipeline {.scrollable}
+
+* Scientists have developed many software tools for preprocessing
+* The analysis pipeline is very sophisticated
+* Teams have developed pipeline tools that make it easier to **reproducibly** preprocess the data
+  + Example [CPAC](https://fcp-indi.github.io/docs/latest/user/func) functional pipeline
+
+
+![Functional pipeline](figures/cpac_functional.svg){width=100%}
+
+
+## Slice Timing Correction {.scrollable}
+
+- fMRI data are collected sequentially in 2-d slices in the z-plane
+  + Over the course of one TR (repetition time; approximately 2 seconds [0.5-3 seconds] ), the time the first slice and the last slice are acquired is almost the length of the TR
+- **Slice timing** adjusts voxel intensities in each slice to a common acquisition reference (e.g., the first slice)  
+- Corrects timing offsets across the TR to align the hemodynamic response  
+- Uses interpolation (e.g., sinc, Fourier) based on slice order (alt‑z, seq, etc.)
+- Multiband fMRI methods can acquire several slices simultaneously, reducing the TR.
+
+
+[Slice timing GIF in Andy's Brain Book](https://andysbrainbook.readthedocs.io/en/latest/fMRI_Short_Course/Preprocessing/Slice_Timing_Correction.html)
+
+## Motion correction {.scrollable}
+
+- The participant will move across the scan time
+- Motion correction in FSL
+  1. Align volumes to mean image
+- Motion correction in AFNI (another software)
+  1. Align volumes to mean image
+  2. Realign again to newly computed mean for improved accuracy  
+  
+
+```{bash}
+fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz
+```
+
+## Motion correction output
+  
+- Outputs:  
+  - 6 motion parameters
+  - Mean framewise displacement (FD) and motion plots  
+- Motion parameter time series are used as covariates in first-level analysis
+
+
+![Motion parameters from *Despicable Me*](figures/trans.png)
+
+
+## Field Map / Distortion Correction
+
+- Correction of **EPI geometric distortions** due to inhomogeneity in the magnetic field
+- Supported if you collected a fieldmap image  
+- Applies warp to fMRI, improving alignment to anatomy and standard space
+- We will skip this in our preprocessing
+
+
+## Functional to Anatomical Registration
+
+- Uses "boundary-based registration" for EPI-to-T1 alignment  
+- Outputs the transform matrix for resampling EPI into subject/anatomical space
+
+![Functional registration](figures/example_func2highres.png)
+
+## Brain Extraction
+
+- Removes skull/face from fMRI data
+- FSL's BET tool fails for this participant
+- Visualization below
+
+
+```{bash}
+# brain extraction fails here
+bet data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz
+fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz
+```
+
+
+## FSL GUI  {.scrollable .smaller}
+
+* FSL has a GUI for preprocessing
+* Input:
+  + Brain extracted anatomical T1 image. (Also with skull)
+  + fMRI 4D Nifti time series image
+  + Optional B0 field map
+  + Parameter settings
+* Brain extraction for this participant failed. As a solution, I created a brain extracted anatomical image with the following commands
+
+
+```{bash}
+# Input images
+func="data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz"
+anat="data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz"
+
+# register to the template
+flirt -in $anat -ref /Users/vandeks/fsl/data/standard/MNI152_T1_1mm.nii.gz -dof 12 -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt
+# get inverse transform
+convert_xfm -inverse -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt
+# Move MNI mask into subject space
+flirt -in /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -ref $anat -applyxfm -init data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt -interp nearestneighbour -out data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz
+# view the MNI mask in subject space
+# fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz
+# create brain only image by applying brain mask
+fslmaths data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz -mas data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain.nii.gz
+```
+
+
+
+## FSL preprocessing summary
+
+```{bash}
+chrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_prestats.html
+chrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_reg.html
+```
+
+
+## Concluding Notes
+
+- Preprocessing pipelines like [C-PAC](https://fcp-indi.github.io/docs/latest/user/index.html) are developed to choose the best/preferred software for each step
+- C‑PAC is highly configurable/adaptable
+- Always check QA after each step for alignment and residual motion  
+- Subsequent steps include nuisance regression
+

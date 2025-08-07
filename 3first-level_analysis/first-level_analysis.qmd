@@ -1,0 +1,52 @@
+---
+title: "First-level Analysis"
+author: "Simon Vandekar"
+engine: knitr
+format:
+  revealjs:
+    menu:
+      side: right
+    link-external-newwindow: true
+    slide-number: true
+    code-overflow: wrap
+    html-math-method: katex
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+
+# Objectives
+
+* These slides will introduce first-level fMRI analysis
+  + Part 1: time series analysis
+  + Part 1: task fMRI
+  + Part 2: resting state fMRI
+
+# Time series analysis
+
+
+## Temporal filtering
+
+
+# Task fMRI
+
+
+
+## Convolution
+
+## Temporal derivative
+
+## Temporal filtering
+
+# Despicable Me
+
+
+## Time series
+
+```{r}
+dm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')
+plot(as.numeric(dm$negativeBlock))
+```
+

@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: docs/
+
+website:
+  title: "Statistical Methods for Neuroimaging"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Sections
+        menu:
+        - text: "Data Modalities"
+          href: 1introduction_data_modalities/introduction_data_modalities.html
+        - text: "Preprocessing"
+          href: 2preprocessing/preprocessing.html
+        - text: "First-level Analysis"
+          href: 3first-level_analysis/first-level_analysis.html
+        - text: "Group-level Analysis"
+          href: 3group-level_analysis/group-level_analysis.html
+        - text: "Modern Topics"
+          href: 4modern_topics/modern_topics.html
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+

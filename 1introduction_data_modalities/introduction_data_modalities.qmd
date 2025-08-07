@@ -1,0 +1,298 @@
+---
+title: "Introduction & Data Modalities"
+author: "Simon Vandekar"
+engine: knitr
+format:
+  revealjs:
+    menu:
+      side: right
+    link-external-newwindow: true
+    slide-number: true
+    code-overflow: wrap
+    html-math-method: katex
+---
+
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Welcome
+
+-   [Syllabus]()
+
+# Homework
+
+* Map the Box folder for the course to your own Box account and setup Box to sync on your laptop
+
+# Data repositories
+
+-   [Reproducible Brain Charts](https://reprobrainchart.github.io/) -- Primary dataset for this course
+-   [Adolescent Brain Cognitive Development (ABCD)](https://abcdstudy.org/)
+
+## Reproducible Brain Charts
+
+[Reproducible Brain Charts](https://reprobrainchart.github.io/)
+
++ We will use structural, resting state functional MRI (rs-fMRI), and "task" fMRI (t-fMRI)
+
+## ABCD Study
+
+-   [Adolescent Brain Cognitive Development (ABCD)](https://abcdstudy.org/)
+-   Amazing resource for large-scale imaging
+-   Huge study, requires complex data use agreement
+
+
+# Software
+
+## Analysis software
+
+-   Statistical Parametric Mapping ([SPM](https://www.fil.ion.ucl.ac.uk/spm/); in MATLAB)
+-   [FSL](https://fsl.fmrib.ox.ac.uk/fsl/docs/#/) (linux/terminal based) -- Primary software for this course
+-   [AFNI](https://afni.nimh.nih.gov/)
+-   [Neuroconductor](https://neuroconductor.org/) -- modular analysis packages in `R`
+
+## Getting setup with FSL
+
+-   `echo $FSLDIR`
+-   Visualize the FSL template image
+-   Visualize my brain
+
+## Visualization software
+
+Visualization is as important in image analysis as univariate data analysis (**Always look at your data**)
+
+-   [FSLeyes](https://open.win.ox.ac.uk/pages/fsl/fsleyes/fsleyes/userdoc/)
+-   [ITK-Snap](https://www.itksnap.org/pmwiki/pmwiki.php)
+-   [Papaya](http://mangoviewer.com/papaya.html)
+-   `R` packages, `ggseg`, `ciftitools`, `fsbrain`, see following reference
+-   [Chopra et al., 2023](https://apertureneuro.org/article/85104-a-practical-guide-for-generating-reproducible-and-programmatic-neuroimaging-visualizations) -- overview of reproducible tools
+
+# Brain anatomy and terminology
+
+## Anatomy and terminology
+
+`introduction_data_modalities/figures/simon.nii.gz`[^1]
+
+[^1]: Directory paths will be relative to the course directory on Box.
+
+-   **Gray Matter**: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.
+-   **White Matter**: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.
+- **Ventricles**: Through the middle of the brain filled with cerebrospinal fluid.
+
+## More brain anatomy and terminology
+
+-   **Cortex**: The outer layer of the brain's gray matter. It is highly folded and responsible for higher cognitive functions like perception, decision-making, and voluntary movement.
+-   **Subcortex**: Brain regions located beneath the cortex, including structures like the thalamus, basal ganglia, and hippocampus. These areas are important for functions such as emotion, memory, and movement regulation.
+-   **Cerebellum**: A separate structure located at the back of the brain, underneath the cortex. It plays a key role in coordinating movement, balance, and fine motor skills.
+
+## Even more brain anatomy and terminology
+
+-   **Lobes**: The brain is divided into four main lobes — frontal, parietal, temporal, and occipital — each associated with specific functions.
+-   **Gyri (singular: gyrus)**: Ridges on the brain's surface.
+-   **Sulci (singular: sulcus)**: Grooves between the gyri.
+-   **Anterior / Posterior / Superior / Inferior**: Anatomical directions — front/back/top/bottom.
+
+# Neuroimaging data
+
+- Neuroimaging provide a way to study brain structure and function *in vivo* in humans
+- Magnetic resonance imaging (MRI) is noninvasive
+- "Possibly, the most promising technology to link human emotion, cognition, and behavior with the brain." -- me
+
+
+## What is an image?
+
+-   A function from $I(v): \mathbb{R}^3 \mapsto \mathbb{R}$.
+-   Numeric values in the image represent biological values.
+-   Visually brighter pixels are higher values.
+-   MRI are collected in the frequency domain, but few people analyze their data there
+
+## Medical imaging data formats
+
+-   **DICOM:** Medical image format, which includes a lot of metadata in the image header. Raw output from MRI scanner. `.dcm`
+-   **NIfTI:** File format for 3D or 4D neuroimaging data with less (but still a lot of) metadata in the image header. `.nii` or `.nii.gz`.
+
+**You don't need to `gunzip.nii.gz` files, all software can open them directly.**
+
+## Neuroimaging terminology {.scrollable}
+
+- **Voxel**: A 3D pixel.
+- **TR**: Repetition time - time required to obtain an entire volume (typically for fMRI data).
+- **TE**: Echo time - time between application of a radiofrequency (RF) pulse and the peak of the signal (echo) generated.
+- **EPI**: Echo planar imaging - the type of imaging used to collect fMRI data.
+-   **T1-weighted / T2-weighted images**: Types of MRI scans for different tissue properties. T1 show anatomy with good contrast for gray and white matter; T2 highlight fluid and often used to detect pathology.
+
+## Orientation terminology
+
+-   **Axial View**: A horizontal slice of the brain, viewed from above (as if looking down from the top of the head).
+-   **Coronal View**: A vertical slice viewed from the front (as if looking straight at the face).
+-   **Sagittal View**: A vertical slice viewed from the side (as if looking at the brain in profile).
+
+## Image space
+
+`introduction_data_modalities/figures/MNI152_T1_2mm_brain.nii.gz`
+
+-   **MNI Space / Talairach Space**: Standardized brain coordinate systems used to align and compare brain scans across individuals.
+-   **Radiological** versus neurological convention
+    -   Radiological - (left on the right)
+    -   Neurological - (right on the right)
+    -   Nice [overview on this stuff](http://www.grahamwideman.com/gw/brain/orientation/orientterms.htm)
+    -   **Radiological is more common**
+
+## Atlases
+
+Atlases define regions of the brain based on anatomical, microstructural, functional, or other features
+
+* Common Atlases
+  + MNI 
+
+# Data modalities
+
+## Structural imaging
+
+Measures the anatomy of the brain
+
+-   Derived from T1/T2 MRI scans
+-   Structural measures
+    -  Volume, Cortical thickness, Surface area
+- Data structures
+  + Images
+  + Regions
+  + Gray matter surface
+  + Structural-based "similarity" networks
+  
+  
+  
+## Freesurfer: structural analysis software
+
+
+
+::::: columns
+::: {.column width="60%"}
+-   Cortical surface estimation and analysis
+-   Now over 25 years old
+-   Many tools now built on analyzing data on the surface
+:::
+
+::: {.column width="40%"}
+![ [Fischl and Dale 2000](https://www.pnas.org/doi/abs/10.1073/pnas.200033797)](figures/fischl.png)
+:::
+:::::
+
+## Freesurfer visualization
+
+::::: columns
+::: {.column width="50%"}
+![ [Diamond et al. 2020](https://www.pnas.org/doi/abs/10.1073/pnas.200033797)](figures/diamond_2020_FSvis.png){width=75%}
+:::
+
+::: {.column width="50%"}
+![ [Irimia et al. 2012](https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2012.00010/full)](figures/irimia_FSvis.jpg){width=75%}
+:::
+:::::
+
+## Functional imaging
+
+Measures brain functioning (inferred by deoxygentated blood)
+
+::::: columns
+::: {.column width="60%"}
+- Blood oxygen level dependent (BOLD) activity
+-   History of functional MRI ([Bandettini 2012](https://www.sciencedirect.com/science/article/abs/pii/S1053811912004223))
+-   functional Magnetic Resonance Imaging (fMRI) are time-series data
+:::
+
+::: {.column width="40%"}
+![Early fMRI [Bandettini 1991](https://onlinelibrary-wiley-com.proxy.library.vanderbilt.edu/doi/10.1002/mrm.1910250220)](figures/bandettini_fmri.png)
+:::
+:::::
+
+## Types of fMRI data
+
+  -   task fMRI -- acquired doing a task
+  -   resting state fMRI (rs-fMRI) -- acquired doing nothing
+
+## Task fMRI overview
+
+
+* Measures brain activity during a task using BOLD signal.
+  * **Block design**: repeated task periods alternating with baseline (e.g. 30s task, 30s rest).
+  * **Event-related design**: timing randomized, short stimuli.
+  * **Naturalistic**: E.g., viewing a movie.
+* Analysis fits a time-series model and compares conditions.
+- Data structures
+  + Images, Regions, Gray matter surface
+
+
+## Task fMRI design illustrations
+
+
+![Block versus task designs [Petersen & Dubis 2011](doi.org/doi:10.1016/j.neuroimage.2011.09.084)](figures/petersen.jpg)
+
+
+
+## Notes on illustration
+
+* Known stimulus time series are [convolved](https://en.wikipedia.org/wiki/Convolution) with an *assumed* [hemodynamic response function](https://andysbrainbook.readthedocs.io/en/latest/fMRI_Short_Course/Statistics/03_Stats_HRF_Overview.html) (HRF)
+* HRF is well studied, often assumed, and likely inaccurate for many brain regions REFs
+* Hemodynamic (blood) response to stimuli is **slow**.
+* fMRI sampled every 1.5-3 seconds or so.
+* [RBC fMRI parameters](https://reprobrainchart.github.io/docs/imaging/image_acquisition/)
+
+
+## RBC task data
+
+
+::::: columns
+::: {.column width="60%"}
+* We will analyze Naturalistic viewing data
+* Naturalistic viewing of Desipicable Me ([Furtado 2024](https://www-sciencedirect-com.proxy.library.vanderbilt.edu/science/article/pii/S1878929324001300))
+
+:::
+
+::: {.column width="40%"}
+![Despicable Me](figures/despicableme.jpeg)
+:::
+:::::
+
+
+
+
+## rs-fMRI
+
+-   What it is? Correlation between fMRI time-series in the brain at rest (doing nothing).
+-   History: [Biswal 1995](https://onlinelibrary-wiley-com.proxy.library.vanderbilt.edu/doi/10.1002/mrm.1910340409) first study to do this
+- Now, things are quite a bit more sophisticated
+- Data structures
+  + Images
+  + Regions
+  + Gray matter surface
+  + Networks
+
+## First resting state networks (De Luca)
+
+Published in 2006 using independent components analysis
+
+![Early resting state networks [De Luca 2006](https://www-sciencedirect-com.proxy.library.vanderbilt.edu/science/article/pii/S1053811905006257)](figures/deLuca_rsfmri.png)
+
+## Resting state networks (Damoiseaux)
+
+Published the same year, using a different ICA method. 
+
+![Early resting state networks [Damoiseaux 2006](https://pubmed.ncbi.nlm.nih.gov/16945915/)](figures/damoiseaux.png)
+
+## Diffusion imaging
+
+Measures features of water "diffusion" in the brain. Typically, to estimate biological features of the white matter
+
+-   Will not focus on this data type in this course
+
+![Diffusion imaging in Autism [Wilkinson 2016](https://onlinelibrary-wiley-com.proxy.library.vanderbilt.edu/doi/10.1002/brb3.483)](figures/dwi.jpg)
+
+## Other measures
+
+- Perfusion -- Quantitative measure of blood flow
+- Spectroscopy
+- Many others actively in development
+- Many "derivatives" exist and in development
+  + Derivatives are quantitative values derived from existing modalities
