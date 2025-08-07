@@ -243,7 +243,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://vanderbilt.box.com/s/qgzxuzbxo2w5vyz9bn6fw501o2qom1eu">Course box directory</a></li>
+<li><a href="https://brightspace.vanderbilt.edu/d2l/le/content/596109/Home">Brightspace</a> - For grading and quizzes.</li>
+<li><a href="https://vanderbilt.box.com/s/qgzxuzbxo2w5vyz9bn6fw501o2qom1eu">Course box directory</a> - For all course materials, including these</li>
 <li><a href="https://vanderbilt.box.com/s/tngjdshxe8vlogij6qpjjqilddq1gw1t">Datasets</a></li>
 <li><a href="https://vanderbilt.box.com/s/udxhqorgydeng20ltgebnjjfgpa6co51">Images</a> used in examples in-class</li>
 </ul>
@@ -377,15 +378,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Neuroimaging Course Schedule</caption>
-<colgroup>
-<col style="width: 2%">
-<col style="width: 4%">
-<col style="width: 20%">
-<col style="width: 32%">
-<col style="width: 16%">
-<col style="width: 20%">
-<col style="width: 3%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Date</th>
@@ -404,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">Introduction</td>
 <td style="text-align: left;">Introduction and Setup</td>
 <td style="text-align: left;">Software debug</td>
-<td style="text-align: left;">Quiz &amp; install software</td>
+<td style="text-align: left;"><a href="https://brightspace.vanderbilt.edu/d2l/le/activities/edit/TmpZd05sODFNVEF3TUY4eE5EQTFNVGMuNTk2MTA5?cft=quiz&amp;launchedFromLessons=False&amp;returnUrl=%2fd2l%2flms%2fquizzing%2fadmin%2fquizzes_manage.d2l%3fou%3d596109&amp;optOutUrl=%2fd2l%2flms%2fquizzing%2fadmin%2fmodify%2fquiz_newedit_properties.d2l%3fou%3d596109%26qi%3d140517">Quiz</a> &amp; install software</td>
 <td style="text-align: left;">27-Aug</td>
 </tr>
 <tr class="even">
@@ -917,6 +909,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
