@@ -10,7 +10,7 @@ website:
         text: Home
       - text: Lecture Notes
         menu:
-        - text: "Data Modalities"
+        - text: "Introduction & Data Modalities"
           href: 1introduction_data_modalities/introduction_data_modalities.html
           target: "_blank"
         - text: "Preprocessing"
