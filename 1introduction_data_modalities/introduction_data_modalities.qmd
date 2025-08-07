@@ -25,6 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Homework
 
 * Map the Box folder for the course to your own Box account and setup Box to sync on your laptop
+* Install FSL
 
 # Data repositories
 
