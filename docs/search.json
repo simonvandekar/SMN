@@ -572,5 +572,40 @@
     "title": "Introduction & Data Modalities",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nDirectory paths will be relative to the course directory on Box.↩︎"
+  },
+  {
+    "objectID": "index.html#goals",
+    "href": "index.html#goals",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "",
+    "text": "Goal 1: Provide basic knowledge of neuroimaging so that you (Biostatisticians) can read and understand neuroimaging research.\nGoal 2: Cover modern contributions of biostatistics to neuroimaging methods so you can contribute to novel research in the field.\nGoal 3: Hopefully, we can get you pretty close to doing novel research in statistical neuroimaging."
+  },
+  {
+    "objectID": "index.html#description",
+    "href": "index.html#description",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Description",
+    "text": "Description\nThis course covers standard and advanced methods for neuroimage analysis from a biostatistical perspective. Students will learn to analyze and interpret common modalities such as fMRI, structural MRI, cortical thickness, diffusion-weighted imaging, and resting-state connectivity using popular neuroimaging analysis software and visualization tools. Advanced topics may include site/scanner correction, first-level and group-level models, network analysis, AI/machine learning, circularity analysis, multivariate/spatial inference, confidence set methods, and centile methods. Upon completion, students will be prepared to understand and contribute to statistical research in neuroimaging."
+  },
+  {
+    "objectID": "index.html#context",
+    "href": "index.html#context",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Context",
+    "text": "Context\n\nWho are you (the student): Graduate students with a background in biostatistics or related fields.\nPrerequisites: Prior coursework in statistics or biostatistics and experience with R or Python (I will use R)."
+  },
+  {
+    "objectID": "index.html#links",
+    "href": "index.html#links",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Links",
+    "text": "Links\n\nCourse box directory\nDatasets\nImages used in examples in-class"
+  },
+  {
+    "objectID": "index.html#potential-topics-tentative",
+    "href": "index.html#potential-topics-tentative",
+    "title": "Statistical Methods for Neuroimaging",
+    "section": "Potential Topics (Tentative)",
+    "text": "Potential Topics (Tentative)\n\nIntroduction\n\nIntroduction and setup\n\nCourse Introduction\nAccessing repository data, Data Use Agreements (DUA)\nInstalling FSL\n\n\n\n\nData Modalities\n\nIntroduction to Neuroimaging Modalities\n\nfMRI and rs-fMRI Overview\nDTI\nStructural Imaging\n\n\n\n\nPreprocessing and First-Level Analysis\n\nPreprocessing Pipeline\n\nStructural\nfMRI, rs-fMRI\n\nPreprocessing with FSL: Practical Session\nPreprocessing: Brainlife.io/Docker\nFirst-Level Statistical Analysis\n\nfMRI, rs-fMRI Analysis\n\nPractical implementation\n\n\n\nGroup-Level Analysis\n\nMultiplicity, Type 1 error, FWER, FDR\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\nFunctional Connectivity: basic group-level analysis\nIn-class activity: implementation in FSL and R\n“Voodoo” correlation\nAdvanced group-level analysis (distance-based)\n\nMDMR, PermANOVA, Semi-parametrics\n\n\n\n\nModern Topics: Reproducibility and Replicability\n\nReproducibility\n\n“The Garden of Forking Paths”\n\nReplicability\n\nSample sizes\nEffect sizes\n\n\n\n\nModern Topics: Machine Learning in Neuroimaging\n\nBrain-behavior associations (e.g. “Multivariate BWAS”)\n\nPrediction\nStatistical inference\n\nReplicability in ML Methods\n\nCircularity, Data Leakage, and Feature Selection\nCross-validation, Bootstrapping\n\nGuest lecture from Megan?\nBrain Age\n\nIn-class activity\n\nOther topics\n\nMVPA\nML methods\nDeep learning\n\n\n\n\nModern Topics: Batch Effects\n\nIllustration with data so far\nComBat\nCovBat\nDeep learning\n\n\n\nModern Topics: Misc\n\nCentile Analysis\nMultimodal Image Analysis"
   }
 ]

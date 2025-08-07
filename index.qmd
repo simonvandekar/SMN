@@ -3,12 +3,12 @@ title: "Statistical Methods for Neuroimaging"
 ---
 
 
-## Course Goals
+## Goals
 - **Goal 1:** Provide basic knowledge of neuroimaging so that you (Biostatisticians) can read and understand neuroimaging research.
 - **Goal 2:** Cover modern contributions of biostatistics to neuroimaging methods so you can contribute to novel research in the field.
 - **Goal 3:** Hopefully, we can get you pretty close to doing novel research in statistical neuroimaging.
 
-## Course Description
+## Description
 This course covers standard and advanced methods for neuroimage analysis from a biostatistical perspective. Students will learn to analyze and interpret common modalities such as fMRI, structural MRI, cortical thickness, diffusion-weighted imaging, and resting-state connectivity using popular neuroimaging analysis software and visualization tools. Advanced topics may include site/scanner correction, first-level and group-level models, network analysis, AI/machine learning, circularity analysis, multivariate/spatial inference, confidence set methods, and centile methods. Upon completion, students will be prepared to understand and contribute to statistical research in neuroimaging.
 
 ## Learning objectives
@@ -18,7 +18,8 @@ This course covers standard and advanced methods for neuroimage analysis from a 
 - Apply statistical analysis techniques to neuroimaging data, including first-level, group-level, and functional connectivity analyses.
 - Understand/apply modern topics in neuroimaging data analysis such as site/scanner effects, circularity, multiple testing, machine learning, and Bayesian approaches.
 
-## Course Context
+## Context
+
 - **Who are you (the student):** Graduate students with a background in biostatistics or related fields.
 - **Prerequisites:** Prior coursework in statistics or biostatistics and experience with R or Python (I will use R).
 
@@ -30,7 +31,14 @@ Your grade will be determined from
 * **Mini projects (50%):** These will be smaller hands on projects to get you basic exposure to the data and analysis pipelines. We will use a rubric with instructor (me)/peer (you)/ChatGPT (AI) review. TBD.
 * **Final project (25%):** These will be a bigger hands on project to get you basic exposure to the data and analysis pipelines. Probably in groups. We will use a rubric with instructor (me)/peer (you)/ChatGPT (AI) review. TBD.
 
-## Potential Course Topics (Tentative)
+## Links
+
+
+* [Course box directory](https://vanderbilt.box.com/s/qgzxuzbxo2w5vyz9bn6fw501o2qom1eu)
+* [Datasets](https://vanderbilt.box.com/s/tngjdshxe8vlogij6qpjjqilddq1gw1t)
+* [Images](https://vanderbilt.box.com/s/udxhqorgydeng20ltgebnjjfgpa6co51) used in examples in-class
+
+## Potential Topics (Tentative)
 
 ### Introduction
 - Introduction and setup
