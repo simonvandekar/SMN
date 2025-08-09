@@ -476,6 +476,41 @@ fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_s
 - Supported if you collected a fieldmap image  
 - Applies warp to fMRI, improving alignment to anatomy and standard space
 - We will skip this in our preprocessing
+- Also called B0 field unwarping
+- [More details from FSL](https://www.fmrib.ox.ac.uk/datasets/techrep/tr04ss2/tr04ss2/node17.html)
+
+
+## Distortion correction in FSL (skip this) {.scrollable}
+
+```{bash}
+cd data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap
+# merge the two phase encoding images
+fslmerge -t AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz
+# write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time
+echo "0 -1 0 0.04565\n0 1 0 0.04565" > acquisitionParams.txt
+# apply topup
+topup --imain=AP_PA_merged.nii.gz \
+--datain=acquisitionParams.txt \
+--config=b02b0.cnf \
+--out=topup_AP_PA_b0 \
+--iout=topup_AP_PA_b0_iout \
+--fout=topup_AP_PA_b0_fout
+# create mean of two unwarped images
+fslmaths topup_AP_PA_b0_fout.nii.gz -abs -Tmean b0_mean.nii.gz
+# brain extract the mean image
+bet b0_mean.nii.gz b0_mean_brain.nii.gz -m
+# convert Hz to radians
+fslmaths topup_AP_PA_b0_iout.nii.gz -mul 6.283185307179586 field_rads.nii.gz
+```
+
+
+FEAT B0 options:
+
+* Fieldmap image (rad/s) is `field_rads.nii.gz`
+* Magnitude image is `b0_mean_brain.nii.gz`
+* Effective EPI echo spacing (ms) - obtained from 4D fMRI data `.json` file `"TotalReadoutTime": 0.0481411`
+* Unwarp direction - obtained from 4D fMRI data `.json` file  `"PhaseEncodingDirection": "j-",`
+* EPI TE not needed
 
 
 ## Functional to Anatomical Registration

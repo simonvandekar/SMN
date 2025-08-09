@@ -53,14 +53,14 @@
     "href": "index.html#course-schedule",
     "title": "Statistical Methods for Neuroimaging",
     "section": "Course Schedule",
-    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\n\n\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nFunctional preprocessing\nDespicable Me preprocessing\nDespicable Me preprocessing\n\n\n\n10-Sep\nWednesday\nFirst-Level Analysis\nFirst-Level Statistical Analysis\n\n\n\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level Statistical Analysis with FSL\n\nFirst-level fMRI analysis of Despicable Me data\n\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nrs-fMRI First-Level Statistical Analysis with FSL\n\n\n\n\n\n22-Sep\nMonday\nFirst-level Analysis\nQuality control and misc\n\n\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nMultiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level analysis of Despicable Me\nGroup-level analysis of Despicable Me\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\nFunctional Connectivity group-level analysis, implementation in FSL and R\n\n\n\n\n\n8-Oct\nWednesday\n\nAdvanced group-level analysis (distance-based)\n\n\n\n\n\n13-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage\n\n\n\n\n\n15-Oct\nWednesday\nModern Topics: Batch Effects\n\n\n\n\n\n\n20-Oct\nMonday\nModern Topics: Batch Effects\nPractical implementation\n\n\n\n\n\n22-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nBrain-behavior associations\n\n\n\n\n\n27-Oct\nMonday\nModern Topics: Machine Learning in Neuroimaging\nReplicability in ML Methods\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Machine Learning in Neuroimaging\nBrain Age\n\n\n\n\n\n5-Nov\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nOther topics\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\nCommon Mistakes and Ongoing Challenges\nData leakage in ML\n\n\n\n\n\n12-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\nReproducibility\n\n\n\n\n\n17-Nov\nMonday\nModern Topics: Reproducibility and Replicability\nReplicability\n\n\n\n\n\n19-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\nModern Topics: Misc\nCentile Analysis\n\n\n\n\n\n3-Dec\nWednesday\nModern Topics: Misc\nMultimodal Imaging"
+    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\n\n\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nFunctional preprocessing\nResting-state data preprocessing\nDespicable Me preprocessing\n\n\n\n10-Sep\nWednesday\nFirst-Level Analysis\nFirst-Level Statistical Analysis\n\n\n21-Sep\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level Statistical Analysis with FSL\n\nFirst-level fMRI analysis of Despicable Me data\n\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nrs-fMRI First-Level Statistical Analysis with FSL\n\n\n\n\n\n22-Sep\nMonday\nFirst-level Analysis\nQuality control and misc\n\n\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nMultiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level analysis of Despicable Me\nGroup-level analysis of Despicable Me\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\nFunctional Connectivity group-level analysis, implementation in FSL and R\n\n\n\n\n\n8-Oct\nWednesday\n\nAdvanced group-level analysis (distance-based)\n\n\n\n\n\n13-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage\n\n\n\n\n\n15-Oct\nWednesday\nModern Topics: Batch Effects\n\n\n\n\n\n\n20-Oct\nMonday\nModern Topics: Batch Effects\nPractical implementation\n\n\n\n\n\n22-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nBrain-behavior associations\n\n\n\n\n\n27-Oct\nMonday\nModern Topics: Machine Learning in Neuroimaging\nReplicability in ML Methods\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Machine Learning in Neuroimaging\nBrain Age\n\n\n\n\n\n5-Nov\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nOther topics\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\nCommon Mistakes and Ongoing Challenges\nData leakage in ML\n\n\n\n\n\n12-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\nReproducibility\n\n\n\n\n\n17-Nov\nMonday\nModern Topics: Reproducibility and Replicability\nReplicability\n\n\n\n\n\n19-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\nModern Topics: Misc\nCentile Analysis\n\n\n\n\n\n3-Dec\nWednesday\nModern Topics: Misc\nMultimodal Imaging"
   },
   {
     "objectID": "3first-level_analysis/first-level_analysis.html",
     "href": "3first-level_analysis/first-level_analysis.html",
     "title": "First-level Analysis",
     "section": "",
-    "text": "knitr::opts_chunk$set(echo = TRUE, eval=FALSE)"
+    "text": "Code\nknitr::opts_chunk$set(echo = TRUE, eval=FALSE)"
   },
   {
     "objectID": "3first-level_analysis/first-level_analysis.html#temporal-filtering",
@@ -95,14 +95,14 @@
     "href": "3first-level_analysis/first-level_analysis.html#time-series",
     "title": "First-level Analysis",
     "section": "Time series",
-    "text": "Time series\n\ndm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')\nplot(as.numeric(dm$negativeBlock))"
+    "text": "Time series\n\n\nCode\ndm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')\nplot(as.numeric(dm$negativeBlock))"
   },
   {
     "objectID": "2preprocessing/preprocessing.html",
     "href": "2preprocessing/preprocessing.html",
     "title": "Preprocessing",
     "section": "",
-    "text": "knitr::opts_chunk$set(echo = TRUE, eval=FALSE)"
+    "text": "Code\nknitr::opts_chunk$set(echo = TRUE, eval=FALSE)"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#general",
@@ -319,7 +319,7 @@
     "href": "2preprocessing/preprocessing.html#field-map-distortion-correction",
     "title": "Preprocessing",
     "section": "Field Map / Distortion Correction",
-    "text": "Field Map / Distortion Correction\n\nCorrection of EPI geometric distortions due to inhomogeneity in the magnetic field\nSupported if you collected a fieldmap image\n\nApplies warp to fMRI, improving alignment to anatomy and standard space\nWe will skip this in our preprocessing"
+    "text": "Field Map / Distortion Correction\n\nCorrection of EPI geometric distortions due to inhomogeneity in the magnetic field\nSupported if you collected a fieldmap image\n\nApplies warp to fMRI, improving alignment to anatomy and standard space\nWe will skip this in our preprocessing\nAlso called B0 field unwarping\nMore details from FSL"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#functional-to-anatomical-registration",
@@ -368,7 +368,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html",
     "title": "Introduction & Data Modalities",
     "section": "",
-    "text": "Syllabus"
+    "text": "Code\nknitr::opts_chunk$set(echo = TRUE)"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#reproducible-brain-charts",
@@ -410,7 +410,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#anatomy-and-terminology",
     "title": "Introduction & Data Modalities",
     "section": "Anatomy and terminology",
-    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid.\n\nDirectory paths will be relative to the course directory on Box."
+    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid."
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#more-brain-anatomy-and-terminology",
@@ -431,7 +431,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#what-is-an-image",
     "title": "Introduction & Data Modalities",
     "section": "What is an image?",
-    "text": "What is an image?\n\nA function from I(v): \\mathbb{R}^3 \\mapsto \\mathbb{R}.\nNumeric values in the image represent biological values.\nVisually brighter pixels are higher values.\nMRI are collected in the frequency domain, but few people analyze their data there"
+    "text": "What is an image?\n\nA function from \\(I(v): \\mathbb{R}^3 \\mapsto \\mathbb{R}\\).\nNumeric values in the image represent biological values.\nVisually brighter pixels are higher values.\nMRI are collected in the frequency domain, but few people analyze their data there"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#medical-imaging-data-formats",
@@ -515,7 +515,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#task-fmri-design-illustrations",
     "title": "Introduction & Data Modalities",
     "section": "Task fMRI design illustrations",
-    "text": "Task fMRI design illustrations\n\nBlock versus task designs Petersen & Dubis 2011"
+    "text": "Task fMRI design illustrations\n\n\n\nBlock versus task designs Petersen & Dubis 2011"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#notes-on-illustration",
@@ -529,7 +529,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#rbc-task-data",
     "title": "Introduction & Data Modalities",
     "section": "RBC task data",
-    "text": "RBC task data\n\n\n\nWe will analyze Naturalistic viewing data\nNaturalistic viewing of Desipicable Me (Furtado 2024)\n\n\n\n\n\nDespicable Me"
+    "text": "RBC task data\n\n\n\nWe will analyze Naturalistic viewing data\nNaturalistic viewing of Desipicable Me (Furtado 2024)\nDespicable Me clip on Netflix 1:02:09 - 1:12:09\n\n\n\n\n\nDespicable Me"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#rs-fmri",
@@ -543,21 +543,21 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#first-resting-state-networks-de-luca",
     "title": "Introduction & Data Modalities",
     "section": "First resting state networks (De Luca)",
-    "text": "First resting state networks (De Luca)\nPublished in 2006 using independent components analysis\n\nEarly resting state networks De Luca 2006"
+    "text": "First resting state networks (De Luca)\nPublished in 2006 using independent components analysis\n\n\n\nEarly resting state networks De Luca 2006"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
     "href": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
     "title": "Introduction & Data Modalities",
     "section": "Resting state networks (Damoiseaux)",
-    "text": "Resting state networks (Damoiseaux)\nPublished the same year, using a different ICA method.\n\nEarly resting state networks Damoiseaux 2006"
+    "text": "Resting state networks (Damoiseaux)\nPublished the same year, using a different ICA method.\n\n\n\nEarly resting state networks Damoiseaux 2006"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
     "href": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
     "title": "Introduction & Data Modalities",
     "section": "Diffusion imaging",
-    "text": "Diffusion imaging\nMeasures features of water “diffusion” in the brain. Typically, to estimate biological features of the white matter\n\nWill not focus on this data type in this course\n\n\nDiffusion imaging in Autism Wilkinson 2016"
+    "text": "Diffusion imaging\nMeasures features of water “diffusion” in the brain. Typically, to estimate biological features of the white matter\n\nWill not focus on this data type in this course\n\n\n\n\nDiffusion imaging in Autism Wilkinson 2016"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#other-measures",
@@ -607,5 +607,110 @@
     "title": "Statistical Methods for Neuroimaging",
     "section": "Potential Topics (Tentative)",
     "text": "Potential Topics (Tentative)\n\nIntroduction\n\nIntroduction and setup\n\nCourse Introduction\nAccessing repository data, Data Use Agreements (DUA)\nInstalling FSL\n\n\n\n\nData Modalities\n\nIntroduction to Neuroimaging Modalities\n\nfMRI and rs-fMRI Overview\nDTI\nStructural Imaging\n\n\n\n\nPreprocessing and First-Level Analysis\n\nPreprocessing Pipeline\n\nStructural\nfMRI, rs-fMRI\n\nPreprocessing with FSL: Practical Session\nPreprocessing: Brainlife.io/Docker\nFirst-Level Statistical Analysis\n\nfMRI, rs-fMRI Analysis\n\nPractical implementation\n\n\n\nGroup-Level Analysis\n\nMultiplicity, Type 1 error, FWER, FDR\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\nFunctional Connectivity: basic group-level analysis\nIn-class activity: implementation in FSL and R\n“Voodoo” correlation\nAdvanced group-level analysis (distance-based)\n\nMDMR, PermANOVA, Semi-parametrics\n\n\n\n\nModern Topics: Reproducibility and Replicability\n\nReproducibility\n\n“The Garden of Forking Paths”\n\nReplicability\n\nSample sizes\nEffect sizes\n\n\n\n\nModern Topics: Machine Learning in Neuroimaging\n\nBrain-behavior associations (e.g. “Multivariate BWAS”)\n\nPrediction\nStatistical inference\n\nReplicability in ML Methods\n\nCircularity, Data Leakage, and Feature Selection\nCross-validation, Bootstrapping\n\nGuest lecture from Megan?\nBrain Age\n\nIn-class activity\n\nOther topics\n\nMVPA\nML methods\nDeep learning\n\n\n\n\nModern Topics: Batch Effects\n\nIllustration with data so far\nComBat\nCovBat\nDeep learning\n\n\n\nModern Topics: Misc\n\nCentile Analysis\nMultimodal Image Analysis"
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html",
+    "title": "Homework: Despicable Me Preprocessing",
+    "section": "",
+    "text": "Goal: Effectively implement fMRI preprocessing for the Despicable Me data for a single participant. “Effectively” means choosing reasonable parameters, checking the output from each step, and modifying the approach as needed to get good output.\nInstructions: There are 11 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.qmd."
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#overview",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#overview",
+    "title": "Homework: Despicable Me Preprocessing",
+    "section": "",
+    "text": "Goal: Effectively implement fMRI preprocessing for the Despicable Me data for a single participant. “Effectively” means choosing reasonable parameters, checking the output from each step, and modifying the approach as needed to get good output.\nInstructions: There are 11 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.qmd."
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#brain-extraction-xx-pts",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#brain-extraction-xx-pts",
+    "title": "Despicable Me Preprocessing",
+    "section": "Brain extraction (XX pts)",
+    "text": "Brain extraction (XX pts)\nFor fMRI preprocessing, FSL requires a brain extracted anatomical T1 image. It needs to be with the same name in the same folder as the T1, with the suffix &lt;T1 name&gt;_brain.nii.gz.\n\nUse FSL’s tool to bias correct and then brain extract the T1. If you do not apply bias correction, the brain extraction might look bad.\nFSL’s tool for brain extraction actually doesn’t work too well oftentimes. Create another brain extracted image using the following steps:\n\n\nLinearly register the participants T1 with skull to the MNI 1mm template with skull and save out the transformation matrix.\nInvert the transformation matrix.\nRegister the MNI brain mask to the participant’s T1 image using nearest neighbor interpolation.\nMask the participant’s T1 with the registered brain mask.\n\n\nView both results include a screenshot of the brain extracted image overlaid in semitransparent color or with a boundary on the unextracted (with skull) T1. Use 1-3 sentences to describe why you prefer one method or another.\nFor the method that works better, name that file &lt;T1 name&gt;_brain.nii.gz in the anat folder."
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#field-map",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#field-map",
+    "title": "Despicable Me Preprocessing",
+    "section": "Field map",
+    "text": "Field map"
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#slice-timing",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#slice-timing",
+    "title": "Despicable Me Preprocessing",
+    "section": "Slice timing",
+    "text": "Slice timing"
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#stimulus-time-series",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#stimulus-time-series",
+    "title": "Despicable Me Preprocessing",
+    "section": "Stimulus time series",
+    "text": "Stimulus time series"
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#temporal-filtering",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#temporal-filtering",
+    "title": "Despicable Me Preprocessing",
+    "section": "Temporal filtering",
+    "text": "Temporal filtering"
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#motion-correction",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#motion-correction",
+    "title": "Despicable Me Preprocessing",
+    "section": "Motion correction",
+    "text": "Motion correction\nPlace motion files in google document\nEach person gets a participant to process with FSL Place registration files in google document"
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#fmri-preprocessing",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#fmri-preprocessing",
+    "title": "Despicable Me Preprocessing",
+    "section": "fMRI preprocessing",
+    "text": "fMRI preprocessing\nStart the FSL GUI from the command line by typing fsl and then open the FEAT fMRI Analysis. Set it up to perform preprocessing. If you hover over the options, there is a description that will help you make decisions about the preprocessing parameters throughout.\nHint: On my laptop, when I change the tab in the FEAT GUI, all the buttons go away; if you adjust the window size, they reappear.\nUse these parameters (other parameter settings you will decide for yourself).\n\nSet the output directory to be the folder where the 4D Nifti image is located for that participant.\nSet it to delete 6 volumes.\nUse BBR for “Main structural image” registration.\nTurn on FNIRT for “Standard space” registration and leave the Warp resolution at the default setting.\n\n\nField map (12 pts)\nUse the field map to perform B0 unwarping.\n\n\nSlice timing (6 pts)\nThe slice timing information for the fMRI data are included in the .json file of the same name as the Nifti image in the func folder. Create a slice timing text file to use as input for FSL preprocessing.\n\n\nTemporal filtering (6 pts)\nThe stimulus time series we will use is in the first level model in the data/RBC/stimulusTimeSeries/despicableMe/stickFile.txt file. Choose an appropriate temporal filtering value in FSL based on the stimuli durations.\nExplain here in 1-2 sentences how you decided on your temporal filtering settings."
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#brain-extraction-12-pts",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#brain-extraction-12-pts",
+    "title": "Homework: Despicable Me Preprocessing",
+    "section": "Brain extraction (12 pts)",
+    "text": "Brain extraction (12 pts)\nFor fMRI preprocessing, FSL requires a brain extracted anatomical T1 image. It needs to be with the same name in the same folder as the T1, with the suffix &lt;T1 name&gt;_brain.nii.gz.\n\nUse FSL’s tool to bias correct and then brain extract the T1. If you do not apply bias correction, the brain extraction might look bad.\nFSL’s tool for brain extraction actually doesn’t work too well oftentimes. Create another brain extracted image using the following steps:\n\nLinearly register the participants T1 with skull to the MNI 1mm template with skull and save out the transformation matrix.\nInvert the transformation matrix.\nRegister the MNI brain mask to the participant’s T1 image using nearest neighbor interpolation.\nMask the participant’s T1 with the registered brain mask.\n\nInclude a screenshot in this document of both methods of the brain extracted image overlaid in semitransparent color or with a boundary on the unextracted (with skull) T1. Use 1-3 sentences to describe why you prefer one method or another.\nFor the method that works better, name that file &lt;T1 name&gt;_brain.nii.gz in the anat folder to be used for fMRI preprocessing.\nSave all other output in the folder with the T1 image."
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#deliverables-9-pts",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#deliverables-9-pts",
+    "title": "Homework: Despicable Me Preprocessing",
+    "section": "Deliverables (9 pts)",
+    "text": "Deliverables (9 pts)\n\nPlace the fMRI to template registration in the Google doc under the “Registration QA” section annotated with the subject ID.\nPlace the motion time series image in the Google doc under the “Motion correction QA” section annotated with the subject ID.\nAll your output, including intermediate steps like the brain extraction intermediate files, should be in the subject’s directories in Box."
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#fmri-preprocessing-24-pts",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#fmri-preprocessing-24-pts",
+    "title": "Despicable Me Preprocessing",
+    "section": "fMRI preprocessing (24 pts)",
+    "text": "fMRI preprocessing (24 pts)\nStart the FSL GUI from the command line by typing fsl and then open the FEAT fMRI Analysis. Set it up to perform preprocessing. If you hover over the options, there is a description that will help you make decisions about the preprocessing parameters throughout.\nHint: On my laptop, when I change the tab in the FEAT GUI, all the buttons disappear; if you adjust the window size, they reappear.\nUse these parameters (other parameter settings you will decide for yourself).\n\nSet the output directory to be the folder where the 4D Nifti image is located for that participant.\nSet it to delete 6 volumes.\nUse BBR for “Main structural image” registration.\nTurn on FNIRT for “Standard space” registration and leave the Warp resolution at the default setting.\n\n\nField map (12 pts)\nUse the field map to perform B0 unwarping. You need to do the following:\n\nUse fslmerge to merge the AP and PA Nifti images in the fmap folder.\nDetermine the acquisition parameters from the .json files of the images and write the to a text file.\nRun topup and the remaining commands from the preprocessing page.\n\nThen you will have to select the right FEAT B0 options:\n\nFieldmap image (rad/s)\nEffective EPI echo spacing (ms) - obtained from 4D fMRI data .json file \"TotalReadoutTime\":\nUnwarp direction - obtained from 4D fMRI data .json file \"PhaseEncodingDirection\":\nEPI TE not needed\n\n\n\nSlice timing (6 pts)\nThe slice timing information for the fMRI data are included in the .json file of the same name as the Nifti image in the func folder. Create a slice timing text file to use as input for FSL preprocessing.\n\n\nTemporal filtering (6 pts)\nThe stimulus time series we will use is in the first level model in the data/RBC/stimulusTimeSeries/despicableMe/stickFile.txt file. Choose an appropriate temporal filtering value in FSL based on the stimuli durations.\nExplain here in 1-2 sentences how you decided on your temporal filtering settings."
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#distortion-correction-in-fsl",
+    "href": "2preprocessing/preprocessing.html#distortion-correction-in-fsl",
+    "title": "Preprocessing",
+    "section": "Distortion correction in FSL",
+    "text": "Distortion correction in FSL\n\n\nCode\ncd data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap\n# merge the two phase encoding images\nfslmerge -t AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz\n# write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time\necho \"0 -1 0 0.04565\\n0 1 0 0.04565\" &gt; acquisitionParams.txt\n# apply topup\ntopup --imain=AP_PA_merged.nii.gz \\\n--datain=acquisitionParams.txt \\\n--config=b02b0.cnf \\\n--out=topup_AP_PA_b0 \\\n--iout=topup_AP_PA_b0_iout \\\n--fout=topup_AP_PA_b0_fout\n# create mean of two unwarped images\nfslmaths topup_AP_PA_b0_fout.nii.gz -abs -Tmean b0_mean.nii.gz\n# brain extract the mean image\nbet b0_mean.nii.gz b0_mean_brain.nii.gz -m\n# convert Hz to radians\nfslmaths topup_AP_PA_b0_iout.nii.gz -mul 6.283185307179586 field_rads.nii.gz\n\n\nFEAT B0 options:\n\nFieldmap image (rad/s) is field_rads.nii.gz\nMagnitude image is b0_mean_brain.nii.gz\nEffective EPI echo spacing (ms) - obtained from 4D fMRI data .json file \"TotalReadoutTime\": 0.0481411\nUnwarp direction - obtained from 4D fMRI data .json file \"PhaseEncodingDirection\": \"j-\",\nEPI TE not needed"
+  },
+  {
+    "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#fmri-preprocessing-12-pts",
+    "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#fmri-preprocessing-12-pts",
+    "title": "Homework: Despicable Me Preprocessing",
+    "section": "fMRI preprocessing (12 pts)",
+    "text": "fMRI preprocessing (12 pts)\nStart the FSL GUI from the command line by typing fsl and then open the FEAT fMRI Analysis. Set it up to perform preprocessing. If you hover over the options, there is a description that will help you make decisions about the preprocessing parameters throughout.\nHint: On my laptop, when I change the tab in the FEAT GUI, all the buttons disappear; if you adjust the window size, they reappear.\nUse these parameters (other parameter settings you will decide for yourself).\n\nSet the output directory to be the folder where the 4D Nifti image is located for that participant.\nSet it to delete 6 volumes.\nUse BBR for “Main structural image” registration.\nTurn on FNIRT for “Standard space” registration and leave the Warp resolution at the default setting.\nLeave B0 unwarping off.\n\n\nSlice timing (6 pts)\nThe slice timing information for the fMRI data are included in the .json file of the same name as the Nifti image in the func folder. Create a slice timing text file to use as input for FSL preprocessing.\n\n\nTemporal filtering (6 pts)\nThe stimulus time series we will use is in the first level model in the data/RBC/stimulusTimeSeries/despicableMe/stickFile.txt file. Choose an appropriate temporal filtering value in FSL based on the stimuli durations.\nExplain here in 1-2 sentences how you decided on your temporal filtering settings."
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#distortion-correction-in-fsl-skip-this",
+    "href": "2preprocessing/preprocessing.html#distortion-correction-in-fsl-skip-this",
+    "title": "Preprocessing",
+    "section": "Distortion correction in FSL (skip this)",
+    "text": "Distortion correction in FSL (skip this)\n\ncd data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap\n# merge the two phase encoding images\nfslmerge -t AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz\n# write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time\necho \"0 -1 0 0.04565\\n0 1 0 0.04565\" &gt; acquisitionParams.txt\n# apply topup\ntopup --imain=AP_PA_merged.nii.gz \\\n--datain=acquisitionParams.txt \\\n--config=b02b0.cnf \\\n--out=topup_AP_PA_b0 \\\n--iout=topup_AP_PA_b0_iout \\\n--fout=topup_AP_PA_b0_fout\n# create mean of two unwarped images\nfslmaths topup_AP_PA_b0_fout.nii.gz -abs -Tmean b0_mean.nii.gz\n# brain extract the mean image\nbet b0_mean.nii.gz b0_mean_brain.nii.gz -m\n# convert Hz to radians\nfslmaths topup_AP_PA_b0_iout.nii.gz -mul 6.283185307179586 field_rads.nii.gz\n\nFEAT B0 options:\n\nFieldmap image (rad/s) is field_rads.nii.gz\nMagnitude image is b0_mean_brain.nii.gz\nEffective EPI echo spacing (ms) - obtained from 4D fMRI data .json file \"TotalReadoutTime\": 0.0481411\nUnwarp direction - obtained from 4D fMRI data .json file \"PhaseEncodingDirection\": \"j-\",\nEPI TE not needed"
   }
 ]

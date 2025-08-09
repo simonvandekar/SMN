@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Statistical Methods for Neuroimaging - Homework: Despicable Me Preprocessing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Statistical Methods for Neuroimaging</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lecture-notes" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Lecture Notes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lecture-notes">    
+        <li>
+    <a class="dropdown-item" href="../../../1introduction_data_modalities/introduction_data_modalities.html" rel="" target="_blank">
+ <span class="dropdown-text">Introduction &amp; Data Modalities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../2preprocessing/preprocessing.html" rel="" target="_blank">
+ <span class="dropdown-text">Preprocessing</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../3first-level_analysis/first-level_analysis.html" rel="" target="_blank">
+ <span class="dropdown-text">First-level Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../3group-level_analysis/group-level_analysis.html" rel="" target="_blank">
+ <span class="dropdown-text">Group-level Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../4modern_topics/modern_topics.html" rel="" target="_blank">
+ <span class="dropdown-text">Modern Topics</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#brain-extraction-12-pts" id="toc-brain-extraction-12-pts" class="nav-link" data-scroll-target="#brain-extraction-12-pts">Brain extraction (12 pts)</a></li>
+  <li><a href="#fmri-preprocessing-12-pts" id="toc-fmri-preprocessing-12-pts" class="nav-link" data-scroll-target="#fmri-preprocessing-12-pts">fMRI preprocessing (12 pts)</a>
+  <ul class="collapse">
+  <li><a href="#slice-timing-6-pts" id="toc-slice-timing-6-pts" class="nav-link" data-scroll-target="#slice-timing-6-pts">Slice timing (6 pts)</a></li>
+  <li><a href="#temporal-filtering-6-pts" id="toc-temporal-filtering-6-pts" class="nav-link" data-scroll-target="#temporal-filtering-6-pts">Temporal filtering (6 pts)</a></li>
+  </ul></li>
+  <li><a href="#deliverables-9-pts" id="toc-deliverables-9-pts" class="nav-link" data-scroll-target="#deliverables-9-pts">Deliverables (9 pts)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Homework: <em>Despicable Me</em> Preprocessing</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p><strong>Goal:</strong> <em>Effectively</em> implement fMRI preprocessing for the <em>Despicable Me</em> data for a single participant. “Effectively” means choosing reasonable parameters, checking the output from each step, and modifying the approach as needed to get good output.</p>
+<p><strong>Instructions:</strong> There are 11 participant folders in the <code>data/RBC/HBN_BIDS/</code> <a href="https://vanderbilt.box.com/s/7tb7738agklrsp3sw7d1w7c36g0bn091">folder</a>. One is assigned to you in this <a href="https://docs.google.com/document/d/1hYff8xvkZmRjfio6mS5hIENpfoW19KzafYFAcMh5DV4/edit?usp=sharing">Google doc</a> where we will put the quality assurance (QA) summaries.</p>
+<p><strong>Deliverables:</strong> This document edited to include</p>
+<ul>
+<li>Commented code describing each step.</li>
+<li>Visualizations and commentary, as requested specifically, below.</li>
+<li>All the output from your preprocessing steps included in the participant’s folder on the Box drive.</li>
+<li>QA summaries generated by FSL in the <a href="https://docs.google.com/document/d/1hYff8xvkZmRjfio6mS5hIENpfoW19KzafYFAcMh5DV4/edit?usp=sharing">Google doc</a>.</li>
+</ul>
+<p><strong>Hint:</strong> This file is located at <code>2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.qmd</code>.</p>
+</section>
+<section id="brain-extraction-12-pts" class="level2">
+<h2 class="anchored" data-anchor-id="brain-extraction-12-pts">Brain extraction (12 pts)</h2>
+<p>For fMRI preprocessing, FSL requires a brain extracted anatomical T1 image. It needs to be with the same name in the same folder as the T1, with the suffix <code>&lt;T1 name&gt;_brain.nii.gz</code>.</p>
+<ol type="1">
+<li>Use FSL’s tool to bias correct and then brain extract the T1. If you do not apply bias correction, the brain extraction might look bad.</li>
+<li>FSL’s tool for brain extraction actually doesn’t work too well oftentimes. Create another brain extracted image using the following steps:
+<ul>
+<li>Linearly register the participants T1 with skull to the MNI 1mm template with skull and save out the transformation matrix.</li>
+<li>Invert the transformation matrix.</li>
+<li>Register the MNI brain mask to the participant’s T1 image using nearest neighbor interpolation.</li>
+<li>Mask the participant’s T1 with the registered brain mask.</li>
+</ul></li>
+<li>Include a screenshot in this document of both methods of the brain extracted image overlaid in semitransparent color or with a boundary on the unextracted (with skull) T1. Use 1-3 sentences to describe why you prefer one method or another.</li>
+<li>For the method that works better, name that file <code>&lt;T1 name&gt;_brain.nii.gz</code> in the <code>anat</code> folder to be used for fMRI preprocessing.</li>
+<li>Save all other output in the folder with the T1 image.</li>
+</ol>
+</section>
+<section id="fmri-preprocessing-12-pts" class="level2">
+<h2 class="anchored" data-anchor-id="fmri-preprocessing-12-pts">fMRI preprocessing (12 pts)</h2>
+<p>Start the FSL GUI from the command line by typing <code>fsl</code> and then open the FEAT fMRI Analysis. Set it up to perform preprocessing. If you hover over the options, there is a description that will help you make decisions about the preprocessing parameters throughout.</p>
+<p><strong>Hint:</strong> On my laptop, when I change the tab in the FEAT GUI, all the buttons disappear; if you adjust the window size, they reappear.</p>
+<p><strong>Use these parameters</strong> (other parameter settings you will decide for yourself).</p>
+<ul>
+<li>Set the output directory to be the folder where the 4D Nifti image is located for that participant.</li>
+<li>Set it to delete 6 volumes.</li>
+<li>Use BBR for “Main structural image” registration.</li>
+<li>Turn on FNIRT for “Standard space” registration and leave the Warp resolution at the default setting.</li>
+<li>Leave B0 unwarping off.</li>
+</ul>
+<section id="slice-timing-6-pts" class="level3">
+<h3 class="anchored" data-anchor-id="slice-timing-6-pts">Slice timing (6 pts)</h3>
+<p>The slice timing information for the fMRI data are included in the <code>.json</code> file of the same name as the Nifti image in the <code>func</code> folder. Create a slice timing text file to use as input for FSL preprocessing.</p>
+</section>
+<section id="temporal-filtering-6-pts" class="level3">
+<h3 class="anchored" data-anchor-id="temporal-filtering-6-pts">Temporal filtering (6 pts)</h3>
+<p>The stimulus time series we will use is in the first level model in the <code>data/RBC/stimulusTimeSeries/despicableMe/stickFile.txt</code> file. Choose an appropriate temporal filtering value in FSL based on the stimuli durations.</p>
+<p>Explain here in 1-2 sentences how you decided on your temporal filtering settings.</p>
+</section>
+</section>
+<section id="deliverables-9-pts" class="level2">
+<h2 class="anchored" data-anchor-id="deliverables-9-pts">Deliverables (9 pts)</h2>
+<ul>
+<li>Place the fMRI to template registration in the <a href="https://docs.google.com/document/d/1hYff8xvkZmRjfio6mS5hIENpfoW19KzafYFAcMh5DV4/edit?usp=sharing">Google doc</a> under the “Registration QA” section annotated with the subject ID.</li>
+<li>Place the motion time series image in the <a href="https://docs.google.com/document/d/1hYff8xvkZmRjfio6mS5hIENpfoW19KzafYFAcMh5DV4/edit?usp=sharing">Google doc</a> under the “Motion correction QA” section annotated with the subject ID.</li>
+<li>All your output, including intermediate steps like the brain extraction intermediate files, should be in the subject’s directories in Box.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

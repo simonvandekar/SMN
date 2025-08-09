@@ -4,8 +4,8 @@ Date,Day,Section,Topic,In class interactive,Assignment,Due date
 27-Aug,Wednesday,Preprocessing,Preprocessing Pipeline,Registration with FSL,,
 1-Sep,Monday,,**No class:** Labor day,,,
 3-Sep,Wednesday,Preprocessing,Structural preprocessing,,,
-8-Sep,Monday,Preprocessing,Functional preprocessing,*Despicable Me* preprocessing,*Despicable Me* preprocessing,
-10-Sep,Wednesday,First-Level Analysis,First-Level Statistical Analysis,,,
+8-Sep,Monday,Preprocessing,Functional preprocessing,Resting-state data  preprocessing,[*Despicable Me* preprocessing](2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html),
+10-Sep,Wednesday,First-Level Analysis,First-Level Statistical Analysis,,,21-Sep
 15-Sep,Monday,First-Level Analysis,First-Level Statistical Analysis with FSL,,First-level fMRI analysis of *Despicable Me* data,
 17-Sep,Wednesday,First-Level Analysis,rs-fMRI First-Level Statistical Analysis with FSL,,,
 22-Sep,Monday,First-level Analysis,Quality control and misc,,,
