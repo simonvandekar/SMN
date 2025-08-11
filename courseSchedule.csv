@@ -8,7 +8,7 @@ Date,Day,Section,Topic,In class interactive,Assignment,Due date
 10-Sep,Wednesday,First-Level Analysis,First-Level Statistical Analysis,,,21-Sep
 15-Sep,Monday,First-Level Analysis,First-Level Statistical Analysis with FSL,,First-level fMRI analysis of *Despicable Me* data,
 17-Sep,Wednesday,First-Level Analysis,rs-fMRI First-Level Statistical Analysis with FSL,,,
-22-Sep,Monday,First-level Analysis,Quality control and misc,,,
+22-Sep,Monday,First-level Analysis,Large dataset processing and quality control and misc,,*Despicable Me* large dataset preprocessing and first-level analysis,
 24-Sep,Wednesday,Group-Level Analysis,"Multiplicity, Type 1 error, FWER, FDR",,,
 29-Sep,Monday,Group-Level Analysis,"Cluster extent inference, Gaussian field theory, TFCE, Excursion set inference",,,
 1-Oct,Wednesday,Group-Level Analysis,,Group-level analysis of *Despicable Me*,Group-level analysis of *Despicable Me*,

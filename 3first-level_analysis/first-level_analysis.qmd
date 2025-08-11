@@ -17,6 +17,16 @@ format:
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 ```
 
+```{r, eval=FALSE, echo=FALSE}
+library(officer)
+slides = read_pptx('~/Downloads/2022-2023/lectures/2022-10-18/lecture_2022-10-18.pptx')
+images = content[content$content_type %in% "image", ]
+lapply(1:nrow(images), function(ind){
+media_extract(x=slides,
+              path=images$media_file[ind],
+              target=file.path('~/Downloads/2022-2023/lectures/2022-10-18/imgs', basename(images$media_file[ind]) ) ) })
+```
+
 
 # Objectives
 
@@ -25,17 +35,40 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
   + Part 2: task fMRI
   + Part 3: resting state fMRI
 
+
+# What is fMRI?
+
+```{r, eval=TRUE, echo=FALSE, results='asis'}
+imgnums = sort(as.numeric(gsub("\\D", "", list.files('figures/FSLimgs'))))
+
+invisible(for(img in imgnums[1:5]){
+  cat("##\n\n")
+  cat( paste0("![](", "figures/FSLimgs/image", img, ".png)\n\n"))
+})
+```
+
+
 # Time series analysis
 
 
 ## Temporal filtering
 
 
-# Task fMRI
+# Task fMRI Analysis
+
+
+```{r, eval=TRUE, echo=FALSE, results='asis'}
+invisible(for(img in imgnums[-c(1:5)]){
+  cat("##\n\n")
+  cat( paste0("![](", "figures/FSLimgs/image", img, ".png)\n\n"))
+})
+```
 
 
 
 ## Convolution
+
+
 
 ## Temporal derivative
 
@@ -44,10 +77,28 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 # Despicable Me
 
 
-## Time series
+## Time series {.scrollable .smaller}
 
-```{r}
+```{r, eval=TRUE}
 dm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')
-plot(as.numeric(dm$negativeBlock))
+plot(dm$emo_valence, type='p', ylab='Emotional Valence', xlab='Time', main='"Despicable Me" emotional ratings',
+     col=as.numeric(dm$positiveBlock) + as.numeric(dm$negativeBlock) -1)
+```
+
+
+* To input the stimulus time series into FSL, we provide a 3 column text file with the following info
+    - Onset, Duration, Value
+* Include temporal derivative.
+```{r}
+# path to fsf file for preprocessing for first participant
+# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/design.fsf
+pos = rle(dm$positive)
+pos$lengths[1] = pos$lengths[1] - 6
+# first one starts at zero
+pos$starts = c(0, cumsum(pos$lengths)[-length(pos$lengths)]+1)
+# output needed by FSL
+threeCol = data.frame(onset=pos$starts, duration=pos$lengths, value=pos$values)
+write.table(threeCol[threeCol$value==1,], row.name=FALSE, sep=' ', col.names = FALSE, file='../data/RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt')
+# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data//RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt
 ```
 

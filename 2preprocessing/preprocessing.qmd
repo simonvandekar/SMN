@@ -380,7 +380,7 @@ Freesurfer is among the most popular software for cortical surface reconstructio
 :::
 
 ::: {.column width="50%"}
-![ Inflated surface](figures/surfaceBasedMapping.jpg){width=75%}
+![Inflated surface](figures/surfaceBasedMapping.jpg){width=75%}
 :::
 :::::
   
@@ -393,9 +393,6 @@ recon-all -subjid subjid -i inputFile.nii.gz -all
 * Fully automated call, though it is not without errors/flaws
 * A look at the Freesurfer output
 
-```{bash}
-
-```
 
 
 
@@ -417,10 +414,7 @@ recon-all -subjid subjid -i inputFile.nii.gz -all
 * Data are collected while participants
   + Perform a task (task-based fMRI)
   + Rest with eyes open/closed (resting-state fMRI)
-* fMRI is indirect: it measures a blood flow, not neural activity itself.
-
-
-XXX add image of fMRI data time series
+* fMRI is indirect: it measures blood flow, not neural activity itself.
 
 ## Functional preprocessing pipeline {.scrollable}
 
@@ -444,6 +438,14 @@ XXX add image of fMRI data time series
 
 
 [Slice timing GIF in Andy's Brain Book](https://andysbrainbook.readthedocs.io/en/latest/fMRI_Short_Course/Preprocessing/Slice_Timing_Correction.html)
+
+
+```{r, eval=TRUE, echo=FALSE, results='asis'}
+invisible(for(img in 13:22){
+  cat("##\n\n")
+  cat( paste0("![](", "figures/FSLimgs/image", img, ".png)\n\n"))
+})
+```
 
 ## Motion correction {.scrollable}
 
@@ -469,6 +471,15 @@ fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_s
 
 ![Motion parameters from *Despicable Me*](figures/trans.png)
 
+
+
+
+```{r, eval=TRUE, echo=FALSE, results='asis'}
+invisible(for(img in c(9:12,23:24)){
+  cat("##\n\n")
+  cat( paste0("![](", "figures/FSLimgs/image", img, ".png)\n\n"))
+})
+```
 
 ## Field Map / Distortion Correction
 

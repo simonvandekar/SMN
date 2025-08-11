@@ -209,10 +209,25 @@ Measures brain functioning (inferred by deoxygentated blood)
 :::
 :::::
 
+
+```{r, eval=TRUE, echo=FALSE, results='asis'}
+imgnums = sort(as.numeric(gsub("\\D", "", list.files('figures/FSLimgs'))))
+
+invisible(for(img in imgnums[3:4]){
+  cat("##\n\n")
+  cat( paste0("![](", "figures/FSLimgs/image", img, ".png)\n\n"))
+})
+```
+
 ## Types of fMRI data
 
   -   task fMRI -- acquired doing a task
   -   resting state fMRI (rs-fMRI) -- acquired doing nothing
+
+
+##
+
+![](figures/FSLimgs/image7.png)
 
 ## Task fMRI overview
 

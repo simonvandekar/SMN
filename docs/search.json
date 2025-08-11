@@ -53,7 +53,7 @@
     "href": "index.html#course-schedule",
     "title": "Statistical Methods for Neuroimaging",
     "section": "Course Schedule",
-    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\n\n\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nFunctional preprocessing\nResting-state data preprocessing\nDespicable Me preprocessing\n\n\n\n10-Sep\nWednesday\nFirst-Level Analysis\nFirst-Level Statistical Analysis\n\n\n21-Sep\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level Statistical Analysis with FSL\n\nFirst-level fMRI analysis of Despicable Me data\n\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nrs-fMRI First-Level Statistical Analysis with FSL\n\n\n\n\n\n22-Sep\nMonday\nFirst-level Analysis\nQuality control and misc\n\n\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nMultiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level analysis of Despicable Me\nGroup-level analysis of Despicable Me\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\nFunctional Connectivity group-level analysis, implementation in FSL and R\n\n\n\n\n\n8-Oct\nWednesday\n\nAdvanced group-level analysis (distance-based)\n\n\n\n\n\n13-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage\n\n\n\n\n\n15-Oct\nWednesday\nModern Topics: Batch Effects\n\n\n\n\n\n\n20-Oct\nMonday\nModern Topics: Batch Effects\nPractical implementation\n\n\n\n\n\n22-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nBrain-behavior associations\n\n\n\n\n\n27-Oct\nMonday\nModern Topics: Machine Learning in Neuroimaging\nReplicability in ML Methods\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Machine Learning in Neuroimaging\nBrain Age\n\n\n\n\n\n5-Nov\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nOther topics\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\nCommon Mistakes and Ongoing Challenges\nData leakage in ML\n\n\n\n\n\n12-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\nReproducibility\n\n\n\n\n\n17-Nov\nMonday\nModern Topics: Reproducibility and Replicability\nReplicability\n\n\n\n\n\n19-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\nModern Topics: Misc\nCentile Analysis\n\n\n\n\n\n3-Dec\nWednesday\nModern Topics: Misc\nMultimodal Imaging"
+    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\n\n\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nFunctional preprocessing\nResting-state data preprocessing\nDespicable Me preprocessing\n\n\n\n10-Sep\nWednesday\nFirst-Level Analysis\nFirst-Level Statistical Analysis\n\n\n21-Sep\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level Statistical Analysis with FSL\n\nFirst-level fMRI analysis of Despicable Me data\n\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nrs-fMRI First-Level Statistical Analysis with FSL\n\n\n\n\n\n22-Sep\nMonday\nFirst-level Analysis\nLarge dataset processing and quality control and misc\n\nDespicable Me large dataset preprocessing and first-level analysis\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nMultiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level analysis of Despicable Me\nGroup-level analysis of Despicable Me\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\nFunctional Connectivity group-level analysis, implementation in FSL and R\n\n\n\n\n\n8-Oct\nWednesday\n\nAdvanced group-level analysis (distance-based)\n\n\n\n\n\n13-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage\n\n\n\n\n\n15-Oct\nWednesday\nModern Topics: Batch Effects\n\n\n\n\n\n\n20-Oct\nMonday\nModern Topics: Batch Effects\nPractical implementation\n\n\n\n\n\n22-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nBrain-behavior associations\n\n\n\n\n\n27-Oct\nMonday\nModern Topics: Machine Learning in Neuroimaging\nReplicability in ML Methods\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Machine Learning in Neuroimaging\nBrain Age\n\n\n\n\n\n5-Nov\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nOther topics\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\nCommon Mistakes and Ongoing Challenges\nData leakage in ML\n\n\n\n\n\n12-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\nReproducibility\n\n\n\n\n\n17-Nov\nMonday\nModern Topics: Reproducibility and Replicability\nReplicability\n\n\n\n\n\n19-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\nModern Topics: Misc\nCentile Analysis\n\n\n\n\n\n3-Dec\nWednesday\nModern Topics: Misc\nMultimodal Imaging"
   },
   {
     "objectID": "3first-level_analysis/first-level_analysis.html",
@@ -95,7 +95,7 @@
     "href": "3first-level_analysis/first-level_analysis.html#time-series",
     "title": "First-level Analysis",
     "section": "Time series",
-    "text": "Time series\n\n\nCode\ndm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')\nplot(as.numeric(dm$negativeBlock))"
+    "text": "Time series\n\ndm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')\nplot(dm$emo_valence, type='p', ylab='Emotional Valence', xlab='Time', main='\"Despicable Me\" emotional ratings',\n     col=as.numeric(dm$positiveBlock) + as.numeric(dm$negativeBlock) -1)\n\n\n\nTo input the stimulus time series into FSL, we provide a 3 column text file with the following info\n\nOnset, Duration, Value\n\nInclude temporal derivative.\n\n\n# path to fsf file for preprocessing for first participant\n# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/design.fsf\npos = rle(dm$positive)\npos$lengths[1] = pos$lengths[1] - 6\n# first one starts at zero\npos$starts = c(0, cumsum(pos$lengths)[-length(pos$lengths)]+1)\n# output needed by FSL\nthreeCol = data.frame(onset=pos$starts, duration=pos$lengths, value=pos$values)\nwrite.table(threeCol[threeCol$value==1,], row.name=FALSE, sep=' ', col.names = FALSE, file='../data/RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt')\n# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data//RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt"
   },
   {
     "objectID": "2preprocessing/preprocessing.html",
@@ -284,7 +284,7 @@
     "href": "2preprocessing/preprocessing.html#what-are-fmri-data",
     "title": "Preprocessing",
     "section": "What are fMRI data?",
-    "text": "What are fMRI data?\n\nfMRI measures brain activity over time by detecting changes in blood oxygenation.\nfMRI data are a time series of 3D brain images, collected every 1–3 seconds (TR = repetition time).\nEach voxel (3D pixel) contains a time series reflecting fluctuations in signal intensity across the scan.\nThe signal includes BOLD (Blood Oxygenation Level-Dependent) response\n\nBased on the fact that oxygenated and deoxygenated hemoglobin have different magnetic properties.\nNeural activity, increased blood flow, local increase in oxygenated blood, measurable signal change.\n\nData are collected while participants\n\nPerform a task (task-based fMRI)\nRest with eyes open/closed (resting-state fMRI)\n\nfMRI is indirect: it measures a blood flow, not neural activity itself.\n\nXXX add image of fMRI data time series"
+    "text": "What are fMRI data?\n\nfMRI measures brain activity over time by detecting changes in blood oxygenation.\nfMRI data are a time series of 3D brain images, collected every 1–3 seconds (TR = repetition time).\nEach voxel (3D pixel) contains a time series reflecting fluctuations in signal intensity across the scan.\nThe signal includes BOLD (Blood Oxygenation Level-Dependent) response\n\nBased on the fact that oxygenated and deoxygenated hemoglobin have different magnetic properties.\nNeural activity, increased blood flow, local increase in oxygenated blood, measurable signal change.\n\nData are collected while participants\n\nPerform a task (task-based fMRI)\nRest with eyes open/closed (resting-state fMRI)\n\nfMRI is indirect: it measures blood flow, not neural activity itself."
   },
   {
     "objectID": "2preprocessing/preprocessing.html#functional-preprocessing-pipeline",
@@ -410,7 +410,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#anatomy-and-terminology",
     "title": "Introduction & Data Modalities",
     "section": "Anatomy and terminology",
-    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid."
+    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid.\n\nDirectory paths will be relative to the course directory on Box."
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#more-brain-anatomy-and-terminology",
@@ -431,7 +431,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#what-is-an-image",
     "title": "Introduction & Data Modalities",
     "section": "What is an image?",
-    "text": "What is an image?\n\nA function from \\(I(v): \\mathbb{R}^3 \\mapsto \\mathbb{R}\\).\nNumeric values in the image represent biological values.\nVisually brighter pixels are higher values.\nMRI are collected in the frequency domain, but few people analyze their data there"
+    "text": "What is an image?\n\nA function from I(v): \\mathbb{R}^3 \\mapsto \\mathbb{R}.\nNumeric values in the image represent biological values.\nVisually brighter pixels are higher values.\nMRI are collected in the frequency domain, but few people analyze their data there"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#medical-imaging-data-formats",
@@ -515,7 +515,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#task-fmri-design-illustrations",
     "title": "Introduction & Data Modalities",
     "section": "Task fMRI design illustrations",
-    "text": "Task fMRI design illustrations\n\n\n\nBlock versus task designs Petersen & Dubis 2011"
+    "text": "Task fMRI design illustrations\n\nBlock versus task designs Petersen & Dubis 2011"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#notes-on-illustration",
@@ -543,21 +543,21 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#first-resting-state-networks-de-luca",
     "title": "Introduction & Data Modalities",
     "section": "First resting state networks (De Luca)",
-    "text": "First resting state networks (De Luca)\nPublished in 2006 using independent components analysis\n\n\n\nEarly resting state networks De Luca 2006"
+    "text": "First resting state networks (De Luca)\nPublished in 2006 using independent components analysis\n\nEarly resting state networks De Luca 2006"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
     "href": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
     "title": "Introduction & Data Modalities",
     "section": "Resting state networks (Damoiseaux)",
-    "text": "Resting state networks (Damoiseaux)\nPublished the same year, using a different ICA method.\n\n\n\nEarly resting state networks Damoiseaux 2006"
+    "text": "Resting state networks (Damoiseaux)\nPublished the same year, using a different ICA method.\n\nEarly resting state networks Damoiseaux 2006"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
     "href": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
     "title": "Introduction & Data Modalities",
     "section": "Diffusion imaging",
-    "text": "Diffusion imaging\nMeasures features of water “diffusion” in the brain. Typically, to estimate biological features of the white matter\n\nWill not focus on this data type in this course\n\n\n\n\nDiffusion imaging in Autism Wilkinson 2016"
+    "text": "Diffusion imaging\nMeasures features of water “diffusion” in the brain. Typically, to estimate biological features of the white matter\n\nWill not focus on this data type in this course\n\n\nDiffusion imaging in Autism Wilkinson 2016"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#other-measures",
@@ -712,5 +712,19 @@
     "title": "Preprocessing",
     "section": "Distortion correction in FSL (skip this)",
     "text": "Distortion correction in FSL (skip this)\n\ncd data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap\n# merge the two phase encoding images\nfslmerge -t AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz\n# write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time\necho \"0 -1 0 0.04565\\n0 1 0 0.04565\" &gt; acquisitionParams.txt\n# apply topup\ntopup --imain=AP_PA_merged.nii.gz \\\n--datain=acquisitionParams.txt \\\n--config=b02b0.cnf \\\n--out=topup_AP_PA_b0 \\\n--iout=topup_AP_PA_b0_iout \\\n--fout=topup_AP_PA_b0_fout\n# create mean of two unwarped images\nfslmaths topup_AP_PA_b0_fout.nii.gz -abs -Tmean b0_mean.nii.gz\n# brain extract the mean image\nbet b0_mean.nii.gz b0_mean_brain.nii.gz -m\n# convert Hz to radians\nfslmaths topup_AP_PA_b0_iout.nii.gz -mul 6.283185307179586 field_rads.nii.gz\n\nFEAT B0 options:\n\nFieldmap image (rad/s) is field_rads.nii.gz\nMagnitude image is b0_mean_brain.nii.gz\nEffective EPI echo spacing (ms) - obtained from 4D fMRI data .json file \"TotalReadoutTime\": 0.0481411\nUnwarp direction - obtained from 4D fMRI data .json file \"PhaseEncodingDirection\": \"j-\",\nEPI TE not needed"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#asdf",
+    "href": "3first-level_analysis/first-level_analysis.html#asdf",
+    "title": "First-level Analysis",
+    "section": "asdf",
+    "text": "asdf\nasdf"
+  },
+  {
+    "objectID": "1introduction_data_modalities/introduction_data_modalities.html#what-is-fmri",
+    "href": "1introduction_data_modalities/introduction_data_modalities.html#what-is-fmri",
+    "title": "Introduction & Data Modalities",
+    "section": "What is fMRI?",
+    "text": "What is fMRI?"
   }
 ]
