@@ -11,6 +11,7 @@ format:
     code-overflow: wrap
     html-math-method: katex
     self-contained: true
+    standalone: true
 ---
 
 ```{r}
@@ -48,13 +49,9 @@ invisible(for(img in imgnums[1:5]){
 ```
 
 
-# Time series analysis
 
 
-## Temporal filtering
-
-
-# Task fMRI Analysis
+# Basic task fMRI Analysis
 
 
 ```{r, eval=TRUE, echo=FALSE, results='asis'}
@@ -64,41 +61,259 @@ invisible(for(img in imgnums[-c(1:5)]){
 })
 ```
 
+## Important points
+
+* task fMRI data independent variables (covariates) are determined by task stimulus series
+* And assume hemodynamic response function (double Gamma HRF)
+* Models are fit independently at each voxel (spatial location)
+* We are only talking about fitting models for one participant, right now.
+
+# Time series analysis
 
 
-## Convolution
+## Complications with time series
+
+* fMRI time series analysis is more complex than described above
+* What critical assumption is violated?
+    + What will it affect in the model output?
+    + Think bias and variance of $\hat\beta$ and $\hat\sigma_{\hat\beta}^2$
+* Univariate time series models (such as ARMA) require careful model fit evaluation that is impossible when fitting 150,000 models across the brain 
 
 
+## General linear models with prewhitening {.scrollable}
 
-## Temporal derivative
+* Notes here, based on [FILM prewhitening](https://www.fmrib.ox.ac.uk/datasets/techrep/tr04ss2/tr04ss2/node3.html)
+* For a single voxel $v$:
 
-## Temporal filtering
+$$
+y(v) = X\beta(v) + \varepsilon(v)
+$$
+
+* Can ignore $v$, since we are applying across all voxels separately
+* $X \in \mathbb{R}^{T \times p}$: **Design matrix** (task regressors, confounds)
+* $\beta \in \mathbb{R}^p$: Parameter vector
+* $\varepsilon \in \mathbb{R}^T$: Error
+* Assumptions: $\mathbb{E}[\varepsilon] = 0$, $\mathrm{Cov}(\varepsilon ) = \sigma^2V$ (**nonindependent errors**)
+* If $V$ treated as proportional to the identity matrix, it will lead to inflated false positive rates ([Woolrich et al., 2001](https://doi.org/10.1016/S1053-8119(01)91575-8))
+
+
+Naive analysis:
+
+What is the expected value of the least squares estimator?
+$$
+\mathbb{E}(\hat \beta) = 
+$$
+What is the variance of the least squares estimator?
+$$
+\mathrm{Var}(\hat \beta) = 
+$$
+
+* A naive variance estimator $\hat\sigma^2 (X^TX)^{-1}$ will be biased.
+    * Standard errors and test statistics will be biased.
+* What is a solution?
+
+
+## Prewhitening Concept
+
+- Solution: transform model so residuals are uncorrelated
+
+Given:
+
+$$
+y = X\beta + \varepsilon, \quad \mathrm{Var}(\varepsilon) = \sigma^2V
+$$
+
+Let $K$ be a square root matrix of $V$ such that:
+
+$$
+K V K^T = I
+$$
+
+- Apply $K$ to both sides:
+
+$$
+K y = K X \beta + K \varepsilon
+$$
+
+- What is the marginal distribution of $Ky$?
+- This is **prewhitening**: transforms correlated errors into "white noise"
+- As you've seen, fMRI data are also high-pass filtered to remove low-frequency components.
+    * The notation in the paper assumes this was already done, resulting in the covariance $V$
+- **New Problem:** $V$ and $K$ are unknown and need to be estimated.
+
+
+## FILM Approach ([Woolrich et al., 2001](https://pubmed.ncbi.nlm.nih.gov/11707093/))
+
+- **FMRIB’s Improved Linear Model**:
+- One-step prewhitening to estimate $V$
+- Many potential time series models to choose from
+- FILM models autocorrelation with voxel-wise **tapered** estimates
+
+## Features of time series data
+
+1. Auto-correlation
+2. Frequency domain interpretation
+
+## Ways to estimate $V$ {.scrollable .nostretch}
+
+* For an arbitrary time series $x(t)$ we can compute some estimators of the autocorrelation
+* Raw estimator for correlation with lag $\tau$
+  
+$$
+r_{xx}(\tau) = \frac{1}{\hat\sigma} \sum_{t=1}^{N-\tau} x(t) x(t+\tau)/(N-\tau)
+$$
+    
+* Tapered estimators, such as the Tukey single-tapering
+    
+$$
+\hat\rho_{xx}(\tau) = \frac{1}{2}\left( 1 + \cos\left(\frac{\pi \tau}{M}\right) \right) r_{xx}(\tau)
+$$
+    
+for $\tau<M$ and zero otherwise.
+
+    
+```{r, eval=TRUE, echo=FALSE, fig.height=5, fig.width=5}
+plot(ppoints(100), (1+cos(ppoints(100)*pi))/2, xlab='tau/M', ylab='(1+cos(tau/M * pi))/2', main='Tukey taper weights', type='l' )
+```
+    
+* Others not discussed here (see [Woolrich et al., 2001](https://pubmed.ncbi.nlm.nih.gov/11707093/))
+
+* Matrix $V$ can be filled in with these empirical estimators as a [Toeplitz matrix](https://en.wikipedia.org/wiki/Toeplitz_matrix)
+* If $\beta$ is known, the formulas are computed with $\epsilon = y - X\beta$
+* Alternatively, we could use $\hat\beta$, giving the residuals $r = (I- X(X^T X)^{-1} X^T) y$
+* What is the autocorrelation of the residuals?
+
+$$
+\mathrm{Cov}(r) = 
+$$
+
+* It is not quite $V$ and $V$ cannot be directly estimated from $r$. [Woolridge et al](https://pubmed.ncbi.nlm.nih.gov/11707093/) suggested it is close enough.
+
+## Iterative procedure for prewhitening {.scrollable  .nostretch}
+
+* $\hat\beta$ is not the BLUE when the covariance of $\epsilon$ is $V$
+* The BLUE is $X^T V^{-1} X)^{-1} X^T V^{-1} y$ (not possible to compute this)
+* After obtaining estimate for $V$ (and or $K$), fit OLS:
+
+$$
+\hat{\beta}_1 = (X^T \hat V^{-1} X)^{-1} X^T \hat V^{-1} y
+$$
+
+* Then the we could compute a new $\hat V$ and iterate until convergence.
+* This would take ages across 150,000 voxels, so instead, they just recompute $\hat \beta_1$ once
+
+## Evaluation  {.scrollable  .nostretch}
+
+* Contrasts (T- and F-statistics) can be computed:
+
+$$
+t = \frac{c^T \hat{\beta}}{\hat{\sigma} \sqrt{c^T (X^T \hat V^{-1} X)^{-1} c}}
+$$
+
+and should be approximately normally distributed under the null, in large samples.
+
+![Tukey QQ plot with smoothing (MS)](figures/film_fig17.png)
+
+
+## References
+
+- Woolrich MW, Ripley BD, Brady M, Smith SM. (2001) Temporal autocorrelation in univariate linear modeling of fMRI data. *NeuroImage*, 14(6):1370–1386.
+- Friston KJ, et al. (1995) Statistical parametric maps in functional imaging: a general linear approach. *Human Brain Mapping*, 2(4):189–210.
+
+## Frequency domain transformations 
+
+* e.g. Fourier and Wavelet transformations
+* Used a lot in imaging for spatial and temporal frequency domain transformations
+* Processing and analysis in the frequency domain has a lot of advantages
+* I won't cover it here, as I'm not an expert, but we could come back to it
+
+
 
 # Despicable Me
 
+* **Interactive:** we are going to finish first-level analyses of the *Despicable Me* dataset
+* You will run batch processing on a subset of participants and do QA for the next assignment
 
-## Time series {.scrollable .smaller}
+## Naturalistic viewing task *Despicable Me*
 
-```{r, eval=TRUE}
+::::: columns
+::: {.column width="60%"}
+* We will analyze Naturalistic viewing data
+* Naturalistic viewing of Despicable Me ([Furtado 2024](https://www-sciencedirect-com.proxy.library.vanderbilt.edu/science/article/pii/S1878929324001300))
+* [*Despicable Me* clip on Netflix](https://www.netflix.com/us/title/70115629?s=a&trkid=13747225&trg=cp&vlang=en&clip=81910446) 1:02:09 - 1:12:09
+
+:::
+
+::: {.column width="40%"}
+![Despicable Me](figures/despicableme.jpeg)
+:::
+:::::
+
+
+## Stimulus time series {.smaller}
+
+
+* Naturalistic viewing task does not have strict "events" that occur during the task
+* Some recent research created continuous emotional ratings for the *Despicable Me* clip
+* We can use these to define particular "blocks" of particular emotional states during the clip
+
+```{r eval=TRUE}
 dm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')
 plot(dm$emo_valence, type='p', ylab='Emotional Valence', xlab='Time', main='"Despicable Me" emotional ratings',
      col=as.numeric(dm$positiveBlock) + as.numeric(dm$negativeBlock) -1)
 ```
 
+## Input into FSL FEAT GUI
 
-* To input the stimulus time series into FSL, we provide a 3 column text file with the following info
-    - Onset, Duration, Value
-* Include temporal derivative.
+* The code below creates a file with the stimulus time series needed for FSL's FEAT GUI
+
 ```{r}
 # path to fsf file for preprocessing for first participant
 # /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/design.fsf
+TR = 0.8
 pos = rle(dm$positive)
-pos$lengths[1] = pos$lengths[1] - 6
+pos$lengths[1] = (pos$lengths[1] - 6)
 # first one starts at zero
 pos$starts = c(0, cumsum(pos$lengths)[-length(pos$lengths)]+1)
 # output needed by FSL
-threeCol = data.frame(onset=pos$starts, duration=pos$lengths, value=pos$values)
+threeCol = data.frame(onset=pos$starts*TR, duration=pos$lengths*TR, value=pos$values)
 write.table(threeCol[threeCol$value==1,], row.name=FALSE, sep=' ', col.names = FALSE, file='../data/RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt')
 # /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data//RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt
+```
+
+* To input the stimulus time series into FSL, we provide a 3 column text file with the following info
+    - Onset, Duration, Value
+* Include temporal derivative and apply temporal filtering.
+
+**Create a similar stimulus time series for the negative emotional blocks**
+
+```{r, eval=FALSE, echo=FALSE}
+# path to fsf file for preprocessing for first participant
+# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/design.fsf
+TR = 0.8
+neg = rle(dm$negative)
+neg$lengths[1] = (neg$lengths[1] - 6)
+# first one starts at zero
+neg$starts = c(0, cumsum(neg$lengths)[-length(neg$lengths)]+1)
+# output needed by FSL
+threeCol = data.frame(onset=neg$starts*TR, duration=neg$lengths*TR, value=neg$values)
+write.table(threeCol[threeCol$value==1,], row.name=FALSE, sep=' ', col.names = FALSE, file='../data/RBC/stimulusTimeSeries/despicableMe/negativeStimulus.txt')
+# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data//RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt
+```
+
+## Design setup
+
+![Design matrix](figures/despicablemeDesign.png)
+
+
+## Assigning participants to students
+
+* Sites have different scan parameters, which means we need to process the data differently for each site
+* Here, we'll assign each of you a chunk of participants to process from the same site
+* (More on site harmonization later)
+
+```{r}
+sites = read.table(file = '../data/RBC/sites.txt', sep = '/', header = FALSE, col.names=c('subject', 'site'))
+table(sites$site)
 ```
 

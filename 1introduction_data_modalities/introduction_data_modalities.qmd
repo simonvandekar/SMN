@@ -263,7 +263,7 @@ invisible(for(img in imgnums[3:4]){
 ::::: columns
 ::: {.column width="60%"}
 * We will analyze Naturalistic viewing data
-* Naturalistic viewing of Desipicable Me ([Furtado 2024](https://www-sciencedirect-com.proxy.library.vanderbilt.edu/science/article/pii/S1878929324001300))
+* Naturalistic viewing of Despicable Me ([Furtado 2024](https://www-sciencedirect-com.proxy.library.vanderbilt.edu/science/article/pii/S1878929324001300))
 * [Despicable Me clip on Netflix](https://www.netflix.com/us/title/70115629?s=a&trkid=13747225&trg=cp&vlang=en&clip=81910446) 1:02:09 - 1:12:09
 
 :::

@@ -53,7 +53,7 @@
     "href": "index.html#course-schedule",
     "title": "Statistical Methods for Neuroimaging",
     "section": "Course Schedule",
-    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\n\n\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nFunctional preprocessing\nResting-state data preprocessing\nDespicable Me preprocessing\n\n\n\n10-Sep\nWednesday\nFirst-Level Analysis\nFirst-Level Statistical Analysis\n\n\n21-Sep\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level Statistical Analysis with FSL\n\nFirst-level fMRI analysis of Despicable Me data\n\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nrs-fMRI First-Level Statistical Analysis with FSL\n\n\n\n\n\n22-Sep\nMonday\nFirst-level Analysis\nLarge dataset processing and quality control and misc\n\nDespicable Me large dataset preprocessing and first-level analysis\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nMultiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level analysis of Despicable Me\nGroup-level analysis of Despicable Me\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\nFunctional Connectivity group-level analysis, implementation in FSL and R\n\n\n\n\n\n8-Oct\nWednesday\n\nAdvanced group-level analysis (distance-based)\n\n\n\n\n\n13-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage\n\n\n\n\n\n15-Oct\nWednesday\nModern Topics: Batch Effects\n\n\n\n\n\n\n20-Oct\nMonday\nModern Topics: Batch Effects\nPractical implementation\n\n\n\n\n\n22-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nBrain-behavior associations\n\n\n\n\n\n27-Oct\nMonday\nModern Topics: Machine Learning in Neuroimaging\nReplicability in ML Methods\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Machine Learning in Neuroimaging\nBrain Age\n\n\n\n\n\n5-Nov\nWednesday\nModern Topics: Machine Learning in Neuroimaging\nOther topics\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\nCommon Mistakes and Ongoing Challenges\nData leakage in ML\n\n\n\n\n\n12-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\nReproducibility\n\n\n\n\n\n17-Nov\nMonday\nModern Topics: Reproducibility and Replicability\nReplicability\n\n\n\n\n\n19-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\nModern Topics: Misc\nCentile Analysis\n\n\n\n\n\n3-Dec\nWednesday\nModern Topics: Misc\nMultimodal Imaging"
+    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\n\n\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nFunctional preprocessing\n\nDespicable Me preprocessing\n21-Sep\n\n\n10-Sep\nWednesday\nFirst-Level Analysis\nFirst-Level Statistical Analysis\n\n\n\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level Statistical Analysis with FSL\nDespicable Me first-level analysis\nFirst-level fMRI analysis of Despicable Me data\n\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nrs-fMRI First-Level Statistical Analysis with FSL\nResting-state data preprocessing\n\n\n\n\n22-Sep\nMonday\nFirst-level Analysis\nLarge dataset processing and quality control and misc\n\n\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nMultiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level analysis of Despicable Me\nGroup-level analysis of Despicable Me\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\nFunctional Connectivity group-level analysis, implementation in FSL and R\n\n\n\n\n\n8-Oct\nWednesday\n\nAdvanced group-level analysis (distance-based)\n\n\n\n\n\n13-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage\n\n\n\n\n\n15-Oct\nWednesday\nModern Topics\nOverview of modern topics and potential final projects\n\n\n\n\n\n20-Oct\nMonday\nModern Topics: Batch Effects\n\n\n\n\n\n\n22-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n27-Oct\nMonday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Machine Learning in Neuroimaging\n\n\n\n\n\n\n5-Nov\nWednesday\nModern Topics: Machine Learning in Neuroimaging\n\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\nCommon Mistakes and Ongoing Challenges\n\n\n\n\n\n\n12-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n17-Nov\nMonday\nModern Topics: Reproducibility and Replicability\n\n\n\n\n\n\n19-Nov\nWednesday\nModern Topics: Reproducibility and Replicability\n\n\nFinal project reviews\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\nModern Topics: Misc\nFinal project presentations\n\n\n\n\n\n3-Dec\nWednesday\nModern Topics: Misc\nFinal project presentations"
   },
   {
     "objectID": "3first-level_analysis/first-level_analysis.html",
@@ -116,7 +116,7 @@
     "href": "2preprocessing/preprocessing.html#structural",
     "title": "Preprocessing",
     "section": "Structural",
-    "text": "Structural\n\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz\n\n\nInhomogeneity correction\nBrain extraction\nRegistration\nTissue segmentation\nVolume estimation\nSurface reconstruction and cortical thickness estimation\nSpatial smoothing"
+    "text": "Structural\n\n\nCode\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz\n\n\n\nInhomogeneity correction\nBrain extraction\nRegistration\nTissue segmentation\nVolume estimation\nSurface reconstruction and cortical thickness estimation\nSpatial smoothing"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#functional",
@@ -144,21 +144,21 @@
     "href": "2preprocessing/preprocessing.html#terminology",
     "title": "Preprocessing",
     "section": "Terminology",
-    "text": "Terminology\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz\n\nInput/moving image I(v), v \\in \\mathbb{R}^3\nReference/target/template image R(v), v \\in \\mathbb{R}^3\nWe want to find a transformation T such that\n\n\nI(T(v)) \\approx R(v)"
+    "text": "Terminology\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz\n\nInput/moving image \\(I(v)\\), \\(v \\in \\mathbb{R}^3\\)\nReference/target/template image \\(R(v)\\), \\(v \\in \\mathbb{R}^3\\)\nWe want to find a transformation \\(T\\) such that\n\n\\[\nI(T(v)) \\approx R(v)\n\\]"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#general-theory",
     "href": "2preprocessing/preprocessing.html#general-theory",
     "title": "Preprocessing",
     "section": "General theory",
-    "text": "General theory\n\nEstimation: minimizes cost (or maximizes similarity)\nSimilarity metrics/cost functions\n\nLeast squares (images have the same scale) \nC\\{ R(v), I(T(v))\\} = \\int_{v \\subset \\mathbb{R}^3} \\{ I(T(v)) - R(v)\\}^2 dv\n\nCorrelation (images on different scales)\nMutual information (images with different contrasts/distributions) \n\\mathrm{MI}(R, I) = \\sum_{r,i} \\mathbb{P}_{RI}(r, i) \\log \\left( \\frac{\\mathbb{P}_{RI}(r, i)}{\\mathbb{P}_R(r), \\mathbb{P}_I(i)} \\right)\n\nwhere \\mathbb{P}_{RI}(r, i): is the joint probability, and \\mathbb{P}_R(r), \\mathbb{P}_I(i) are the marginal probabilities\n\nTransformation computed to minimize \n\\min_T C\\{R(v), I(T(v))\\}\n\nSome of these cost functions are convex given some assumptions on the images\nThat would imply a global optimum, given some assumtions on I and R\nThose assumptions are not met, so many adhoc approaches are implemented1\nPenalty terms are often useful\nRegistration is a challenging problem\n\n“In theory, there is no difference between theory and practice. In practice, there is.”"
+    "text": "General theory\n\nEstimation: minimizes cost (or maximizes similarity)\nSimilarity metrics/cost functions\n\nLeast squares (images have the same scale) \\[\nC\\{ R(v), I(T(v))\\} = \\int_{v \\subset \\mathbb{R}^3} \\{ I(T(v)) - R(v)\\}^2 dv\n\\]\nCorrelation (images on different scales)\nMutual information (images with different contrasts/distributions) \\[\n\\mathrm{MI}(R, I) = \\sum_{r,i} \\mathbb{P}_{RI}(r, i) \\log \\left( \\frac{\\mathbb{P}_{RI}(r, i)}{\\mathbb{P}_R(r), \\mathbb{P}_I(i)} \\right)\n\\]\nwhere \\(\\mathbb{P}_{RI}(r, i)\\): is the joint probability, and \\(\\mathbb{P}_R(r), \\mathbb{P}_I(i)\\) are the marginal probabilities\n\nTransformation computed to minimize \\[\n\\min_T C\\{R(v), I(T(v))\\}\n\\]\nSome of these cost functions are convex given some assumptions on the images\nThat would imply a global optimum, given some assumtions on \\(I\\) and \\(R\\)\nThose assumptions are not met, so many adhoc approaches are implemented2\nPenalty terms are often useful\nRegistration is a challenging problem"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#rigid-body",
     "href": "2preprocessing/preprocessing.html#rigid-body",
     "title": "Preprocessing",
     "section": "Rigid-body",
-    "text": "Rigid-body\n\nSix parameter rigid registration\nUsed to align functional images over time (motion correction)\nAlso used to align images from the same participant collect in the same scan session.\ny = (y_1, y_2, y_3, 1) - template coordinates, x = (x_1, x_2, x_3, 1) input coordinates\nAppended with an intercept for transformation\nCan be described as the composition of four transformations\n\n\n\\begin{bmatrix}\ny_1 \\\\\ny_2 \\\\\ny_3\\\\\n1\n\\end{bmatrix}\n= T_4 T_3 T_2  T_1 \\cdot\n\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\nx_3\\\\\n1\n\\end{bmatrix}\n\nTranslation of image \nT_4 = \\begin{bmatrix}\n1 & 0 & 0 & q_1 \\\\\n0 & 1 & 0 & q_2 \\\\\n0 & 0 & 1 & q_3\\\\\n0 & 0 & 0 & 1\n\\end{bmatrix}\n\nRotation around the x-axis:\n\nT_1 = \\begin{bmatrix}\n1 & 0 & 0 & 0 \\\\\n0 & \\cos(q_4) & \\sin(q_4) & 0 \\\\\n0 & -\\sin(q_4) & \\cos(q_4) & 0\\\\\n0 & 0 & 0 & 1\n\\end{bmatrix}\n\nOther rotations are defined similarly. See the reference above."
+    "text": "Rigid-body\n\nSix parameter rigid registration\nUsed to align functional images over time (motion correction)\nAlso used to align images from the same participant collect in the same scan session.\n\\(y = (y_1, y_2, y_3, 1)\\) - template coordinates, \\(x = (x_1, x_2, x_3, 1)\\) input coordinates\nAppended with an intercept for transformation\nCan be described as the composition of four transformations\n\n\\[\n\\begin{bmatrix}\ny_1 \\\\\ny_2 \\\\\ny_3\\\\\n1\n\\end{bmatrix}\n= T_4 T_3 T_2  T_1 \\cdot\n\\begin{bmatrix}\nx_1 \\\\\nx_2 \\\\\nx_3\\\\\n1\n\\end{bmatrix}\n\\]\nTranslation of image \\[\nT_4 = \\begin{bmatrix}\n1 & 0 & 0 & q_1 \\\\\n0 & 1 & 0 & q_2 \\\\\n0 & 0 & 1 & q_3\\\\\n0 & 0 & 0 & 1\n\\end{bmatrix}\n\\]\nRotation around the x-axis:\n\\[\nT_1 = \\begin{bmatrix}\n1 & 0 & 0 & 0 \\\\\n0 & \\cos(q_4) & \\sin(q_4) & 0 \\\\\n0 & -\\sin(q_4) & \\cos(q_4) & 0\\\\\n0 & 0 & 0 & 1\n\\end{bmatrix}\n\\]\nOther rotations are defined similarly. See the reference above."
   },
   {
     "objectID": "2preprocessing/preprocessing.html#affine-linear-registration",
@@ -172,21 +172,21 @@
     "href": "2preprocessing/preprocessing.html#example-of-registration-results",
     "title": "Preprocessing",
     "section": "Example of registration results",
-    "text": "Example of registration results\nCommands I ran:\n\nbet images/simon.nii.gz images/simonReg/simon_brain.nii.gz\n# dof controls number of parameters 6 is rigid-body\nflirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -dof 6 -o images/simonReg/simon_brain_rigidReg.nii.gz -omat images/simonReg/rigidReg.txt\n# defaults to 12 for affine transformation\nflirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -o images/simonReg/simon_brain_affineReg.nii.gz -omat images/simonReg/affineReg.txt\n\nTo view the results with the MNI template\n\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain.nii.gz images/simonReg/simon_brain_rigidReg.nii.gz images/simonReg/simon_brain_affineReg.nii.gz\n\nTo view transformation matrices\n\ncat images/simonReg/rigidReg.txt\ncat images/simonReg/affineReg.txt\n\n\nBrain extraction\nRigid-body\nAffine"
+    "text": "Example of registration results\nCommands I ran:\n\n\nCode\nbet images/simon.nii.gz images/simonReg/simon_brain.nii.gz\n# dof controls number of parameters 6 is rigid-body\nflirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -dof 6 -o images/simonReg/simon_brain_rigidReg.nii.gz -omat images/simonReg/rigidReg.txt\n# defaults to 12 for affine transformation\nflirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -o images/simonReg/simon_brain_affineReg.nii.gz -omat images/simonReg/affineReg.txt\n\n\nTo view the results with the MNI template\n\n\nCode\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain.nii.gz images/simonReg/simon_brain_rigidReg.nii.gz images/simonReg/simon_brain_affineReg.nii.gz\n\n\nTo view transformation matrices\n\n\nCode\ncat images/simonReg/rigidReg.txt\ncat images/simonReg/affineReg.txt\n\n\n\nBrain extraction\nRigid-body\nAffine"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#interpolation",
     "href": "2preprocessing/preprocessing.html#interpolation",
     "title": "Preprocessing",
     "section": "Interpolation",
-    "text": "Interpolation\n\nImages are measured on a grid, so applying the transformation T may require evaluation of the image, I, at locations not represented by a grid coordinate\nInterpolation computes I(T(v)) at non-grid locations\nRequired for evaluating cost function and when applying the resulting transformation matrix.\nInterpolation methods\nNearest neighbor interpolation is important when registering atlas images\n\nAtlas images are integer valued and nearest neighbor ensures output is integer valued"
+    "text": "Interpolation\n\nImages are measured on a grid, so applying the transformation \\(T\\) may require evaluation of the image, \\(I\\), at locations not represented by a grid coordinate\nInterpolation computes \\(I(T(v))\\) at non-grid locations\nRequired for evaluating cost function and when applying the resulting transformation matrix.\nInterpolation methods\nNearest neighbor interpolation is important when registering atlas images\n\nAtlas images are integer valued and nearest neighbor ensures output is integer valued"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#nonlinear-deformable-registration",
     "href": "2preprocessing/preprocessing.html#nonlinear-deformable-registration",
     "title": "Preprocessing",
     "section": "Nonlinear (deformable) registration",
-    "text": "Nonlinear (deformable) registration\n\nDeformable registration allows different parts of the image to have a unique transformation matrix\nCalled a deformation field \\phi(x) such that y = \\phi(x).\nDifferent approaches:\n\nB‑splines, diffeomorphisms (e.g., LDDMM, SyN), demons, finite-element\n\nEnforces smoothness, invertibility, and topology preservation via regularization.\nTypically linear transformation is estimated first, then function composition is used when estimating and evaluating the nonlinear transformation\nComposition avoids repeated interpolation of the image\nANTs registration paper Avants et al (2009).\n\n\nfnirt --ref=images/MNI152_T1_1mm_brain.nii.gz --in=images/simonReg/simon_brain.nii.gz --aff=images/simonReg/affineReg.txt --fout=images/simonReg/field.nii.gz --jout=images/simonReg/jacobian.nii.gz --iout=images/simonReg/simon_nonlinearReg.nii.gz --cout=images/simonReg/simon2MNI.nii.gz \n\nVisualize results\n\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain_affineReg.nii.gz images/simonReg/simon_nonlinearReg.nii.gz"
+    "text": "Nonlinear (deformable) registration\n\nDeformable registration allows different parts of the image to have a unique transformation matrix\nCalled a deformation field \\(\\phi(x)\\) such that \\(y = \\phi(x)\\).\nDifferent approaches:\n\nB‑splines, diffeomorphisms (e.g., LDDMM, SyN), demons, finite-element\n\nEnforces smoothness, invertibility, and topology preservation via regularization.\nTypically linear transformation is estimated first, then function composition is used when estimating and evaluating the nonlinear transformation\nComposition avoids repeated interpolation of the image\nANTs registration paper Avants et al (2009).\n\n\n\nCode\nfnirt --ref=images/MNI152_T1_1mm_brain.nii.gz --in=images/simonReg/simon_brain.nii.gz --aff=images/simonReg/affineReg.txt --fout=images/simonReg/field.nii.gz --jout=images/simonReg/jacobian.nii.gz --iout=images/simonReg/simon_nonlinearReg.nii.gz --cout=images/simonReg/simon2MNI.nii.gz \n\n\nVisualize results\n\n\nCode\nfsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain_affineReg.nii.gz images/simonReg/simon_nonlinearReg.nii.gz"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#registration-to-a-template",
@@ -200,7 +200,7 @@
     "href": "2preprocessing/preprocessing.html#registration-output",
     "title": "Preprocessing",
     "section": "Registration output",
-    "text": "Registration output\n\nls ../images/simonReg\n\nMNI2simon.nii.gz\naffineReg.txt\nfield.nii.gz\njacobian.nii.gz\nrigidReg.txt\nsimon2MNI.nii.gz\nsimon_brain.nii.gz\nsimon_brain_affineReg.nii.gz\nsimon_brain_rigidReg.nii.gz\nsimon_brain_to_MNI152_T1_1mm_brain.log\nsimon_brain_warpcoef.nii.gz\nsimon_nonlinearReg.nii.gz\n\n\n\nWarp field\nJacobian of the transformation"
+    "text": "Registration output\n\n\nCode\nls ../images/simonReg\n\n\nMNI2simon.nii.gz\naffineReg.txt\nfield.nii.gz\njacobian.nii.gz\nrigidReg.txt\nsimon2MNI.nii.gz\nsimon_brain.nii.gz\nsimon_brain_affineReg.nii.gz\nsimon_brain_rigidReg.nii.gz\nsimon_brain_to_MNI152_T1_1mm_brain.log\nsimon_brain_warpcoef.nii.gz\nsimon_nonlinearReg.nii.gz\n\n\n\nWarp field\nJacobian of the transformation"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#advanced-registration-topics",
@@ -228,14 +228,14 @@
     "href": "2preprocessing/preprocessing.html#terminology-1",
     "title": "Preprocessing",
     "section": "Terminology",
-    "text": "Terminology\n\nFWHM - full width at half maximum, typically in mm. Description of size of Gaussian kernel for smooth\nSigma - \\sigma = \\frac{\\mathrm{FWHM}}{2\\sqrt{2\\log(2)}}\n\n\nSmoothing kernels CPAC pipeline"
+    "text": "Terminology\n\nFWHM - full width at half maximum, typically in mm. Description of size of Gaussian kernel for smooth\nSigma - \\(\\sigma = \\frac{\\mathrm{FWHM}}{2\\sqrt{2\\log(2)}}\\)\n\n\n\n\nSmoothing kernels CPAC pipeline"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#c-pac-anatomical-pipeline",
     "href": "2preprocessing/preprocessing.html#c-pac-anatomical-pipeline",
     "title": "Preprocessing",
     "section": "C-PAC anatomical pipeline",
-    "text": "C-PAC anatomical pipeline\n\nAnatomical pipelineOption/Alt + click to zoom in."
+    "text": "C-PAC anatomical pipeline\n\n\n\nAnatomical pipeline\n\n\nOption/Alt + click to zoom in."
   },
   {
     "objectID": "2preprocessing/preprocessing.html#segmentation",
@@ -256,7 +256,7 @@
     "href": "2preprocessing/preprocessing.html#volume-estimation-example",
     "title": "Preprocessing",
     "section": "Volume estimation example",
-    "text": "Volume estimation example\n\n# invert the warp from subject space to template space\ninvwarp -w images/simonReg/simon2MNI.nii.gz -o images/simonReg/MNI2simon.nii.gz -r images/simonReg/simon_brain.nii.gz\n# convert atlas to subject space. Use nearest neighbor interpolation\napplywarp --i=/Users/vandeks/fsl/data/atlases/HarvardOxford/HarvardOxford-cort-maxprob-thr25-1mm.nii.gz --ref=images/simonReg/simon_brain.nii.gz --warp=images/simonReg/MNI2simon.nii.gz --out=images/simonReg/HO_simon.nii.gz --interp=nn\n# visualize results on simon's brain\nfsleyes images/simonReg/simon_brain.nii.gz images/simonReg/HO_simon.nii.gz\n\nCode from ChatGPT to compute volumes.\n\n# 2. Estimate voxel volume (assumes cubic mm)\nvoxel_volume=$(fslval ${ref_image} pixdim1)\nvoxel_volume=$(echo \"${voxel_volume} * $(fslval ${ref_image} pixdim2) * $(fslval ${ref_image} pixdim3)\" | bc -l)\n\n# 3. Loop over atlas labels to count voxels and estimate volume\necho \"Label,VoxelCount,Volume_mm3\"\nfor label in {1..48}; do\n  count=$(fslstats ${atlas_subj} -l $(($label - 1)) -u $label -V | awk '{print $1}')\n  volume=$(echo \"$count * $voxel_volume\" | bc -l)\n  echo \"$label,$count,$volume\"\ndone"
+    "text": "Volume estimation example\n\n\nCode\n# invert the warp from subject space to template space\ninvwarp -w images/simonReg/simon2MNI.nii.gz -o images/simonReg/MNI2simon.nii.gz -r images/simonReg/simon_brain.nii.gz\n# convert atlas to subject space. Use nearest neighbor interpolation\napplywarp --i=/Users/vandeks/fsl/data/atlases/HarvardOxford/HarvardOxford-cort-maxprob-thr25-1mm.nii.gz --ref=images/simonReg/simon_brain.nii.gz --warp=images/simonReg/MNI2simon.nii.gz --out=images/simonReg/HO_simon.nii.gz --interp=nn\n# visualize results on simon's brain\nfsleyes images/simonReg/simon_brain.nii.gz images/simonReg/HO_simon.nii.gz\n\n\nCode from ChatGPT to compute volumes.\n\n\nCode\n# 2. Estimate voxel volume (assumes cubic mm)\nvoxel_volume=$(fslval ${ref_image} pixdim1)\nvoxel_volume=$(echo \"${voxel_volume} * $(fslval ${ref_image} pixdim2) * $(fslval ${ref_image} pixdim3)\" | bc -l)\n\n# 3. Loop over atlas labels to count voxels and estimate volume\necho \"Label,VoxelCount,Volume_mm3\"\nfor label in {1..48}; do\n  count=$(fslstats ${atlas_subj} -l $(($label - 1)) -u $label -V | awk '{print $1}')\n  volume=$(echo \"$count * $voxel_volume\" | bc -l)\n  echo \"$label,$count,$volume\"\ndone"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#derivatives-of-the-registration-process",
@@ -277,7 +277,7 @@
     "href": "2preprocessing/preprocessing.html#freesurfer-software-output",
     "title": "Preprocessing",
     "section": "Freesurfer software output",
-    "text": "Freesurfer software output\n\nrecon-all -subjid subjid -i inputFile.nii.gz -all\n\n\nFully automated call, though it is not without errors/flaws\nA look at the Freesurfer output"
+    "text": "Freesurfer software output\n\n\nCode\nrecon-all -subjid subjid -i inputFile.nii.gz -all\n\n\n\nFully automated call, though it is not without errors/flaws\nA look at the Freesurfer output"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#what-are-fmri-data",
@@ -291,7 +291,7 @@
     "href": "2preprocessing/preprocessing.html#functional-preprocessing-pipeline",
     "title": "Preprocessing",
     "section": "Functional preprocessing pipeline",
-    "text": "Functional preprocessing pipeline\n\nScientists have developed many software tools for preprocessing\nThe analysis pipeline is very sophisticated\nTeams have developed pipeline tools that make it easier to reproducibly preprocess the data\n\nExample CPAC functional pipeline\n\n\n\nFunctional pipeline"
+    "text": "Functional preprocessing pipeline\n\nScientists have developed many software tools for preprocessing\nThe analysis pipeline is very sophisticated\nTeams have developed pipeline tools that make it easier to reproducibly preprocess the data\n\nExample CPAC functional pipeline\n\n\n\n\n\nFunctional pipeline"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#slice-timing-correction",
@@ -305,14 +305,14 @@
     "href": "2preprocessing/preprocessing.html#motion-correction",
     "title": "Preprocessing",
     "section": "Motion correction",
-    "text": "Motion correction\n\nThe participant will move across the scan time\nMotion correction in FSL\n\nAlign volumes to mean image\n\nMotion correction in AFNI (another software)\n\nAlign volumes to mean image\nRealign again to newly computed mean for improved accuracy\n\n\n\nfsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz"
+    "text": "Motion correction\n\nThe participant will move across the scan time\nMotion correction in FSL\n\nAlign volumes to mean image\n\nMotion correction in AFNI (another software)\n\nAlign volumes to mean image\nRealign again to newly computed mean for improved accuracy\n\n\n\n\nCode\nfsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#motion-correction-output",
     "href": "2preprocessing/preprocessing.html#motion-correction-output",
     "title": "Preprocessing",
     "section": "Motion correction output",
-    "text": "Motion correction output\n\nOutputs:\n\n6 motion parameters\nMean framewise displacement (FD) and motion plots\n\n\nMotion parameter time series are used as covariates in first-level analysis\n\n\nMotion parameters from Despicable Me"
+    "text": "Motion correction output\n\nOutputs:\n\n6 motion parameters\nMean framewise displacement (FD) and motion plots\n\n\nMotion parameter time series are used as covariates in first-level analysis\n\n\n\n\nMotion parameters from Despicable Me"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#field-map-distortion-correction",
@@ -326,28 +326,28 @@
     "href": "2preprocessing/preprocessing.html#functional-to-anatomical-registration",
     "title": "Preprocessing",
     "section": "Functional to Anatomical Registration",
-    "text": "Functional to Anatomical Registration\n\nUses “boundary-based registration” for EPI-to-T1 alignment\n\nOutputs the transform matrix for resampling EPI into subject/anatomical space\n\n\nFunctional registration"
+    "text": "Functional to Anatomical Registration\n\nUses “boundary-based registration” for EPI-to-T1 alignment\n\nOutputs the transform matrix for resampling EPI into subject/anatomical space\n\n\n\n\nFunctional registration"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#brain-extraction",
     "href": "2preprocessing/preprocessing.html#brain-extraction",
     "title": "Preprocessing",
     "section": "Brain Extraction",
-    "text": "Brain Extraction\n\nRemoves skull/face from fMRI data\nFSL’s BET tool fails for this participant\nVisualization below\n\n\n# brain extraction fails here\nbet data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz\nfsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz"
+    "text": "Brain Extraction\n\nRemoves skull/face from fMRI data\nFSL’s BET tool fails for this participant\nVisualization below\n\n\n\nCode\n# brain extraction fails here\nbet data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz\nfsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#fsl-gui",
     "href": "2preprocessing/preprocessing.html#fsl-gui",
     "title": "Preprocessing",
     "section": "FSL GUI",
-    "text": "FSL GUI\n\nFSL has a GUI for preprocessing\nInput:\n\nBrain extracted anatomical T1 image. (Also with skull)\nfMRI 4D Nifti time series image\nOptional B0 field map\nParameter settings\n\nBrain extraction for this participant failed. As a solution, I created a brain extracted anatomical image with the following commands\n\n\n# Input images\nfunc=\"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz\"\nanat=\"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz\"\n\n# register to the template\nflirt -in $anat -ref /Users/vandeks/fsl/data/standard/MNI152_T1_1mm.nii.gz -dof 12 -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt\n# get inverse transform\nconvert_xfm -inverse -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt\n# Move MNI mask into subject space\nflirt -in /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -ref $anat -applyxfm -init data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt -interp nearestneighbour -out data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz\n# view the MNI mask in subject space\n# fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz\n# create brain only image by applying brain mask\nfslmaths data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz -mas data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain.nii.gz"
+    "text": "FSL GUI\n\nFSL has a GUI for preprocessing\nInput:\n\nBrain extracted anatomical T1 image. (Also with skull)\nfMRI 4D Nifti time series image\nOptional B0 field map\nParameter settings\n\nBrain extraction for this participant failed. As a solution, I created a brain extracted anatomical image with the following commands\n\n\n\nCode\n# create mask with no holes\nfslmaths /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -fillh /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz\n\n# Input images\nfunc=\"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz\"\nanat=\"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz\"\n\n\n# register to the template\nflirt -in $anat -ref /Users/vandeks/fsl/data/standard/MNI152_T1_1mm.nii.gz -dof 12 -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt\n# get inverse transform\nconvert_xfm -inverse -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt\n# Move MNI mask into subject space\nflirt -in /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz -ref $anat -applyxfm -init data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt -interp nearestneighbour -out data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz\n# view the MNI mask in subject space\n# fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz\n# create brain only image by applying brain mask\nfslmaths data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz -mas data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain.nii.gz"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#fsl-preprocessing-summary",
     "href": "2preprocessing/preprocessing.html#fsl-preprocessing-summary",
     "title": "Preprocessing",
     "section": "FSL preprocessing summary",
-    "text": "FSL preprocessing summary\n\nchrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_prestats.html\nchrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_reg.html"
+    "text": "FSL preprocessing summary\n\n\nCode\nchrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_prestats.html\nchrome data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_reg.html"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#concluding-notes",
@@ -410,7 +410,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#anatomy-and-terminology",
     "title": "Introduction & Data Modalities",
     "section": "Anatomy and terminology",
-    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid.\n\nDirectory paths will be relative to the course directory on Box."
+    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid."
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#more-brain-anatomy-and-terminology",
@@ -431,7 +431,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#what-is-an-image",
     "title": "Introduction & Data Modalities",
     "section": "What is an image?",
-    "text": "What is an image?\n\nA function from I(v): \\mathbb{R}^3 \\mapsto \\mathbb{R}.\nNumeric values in the image represent biological values.\nVisually brighter pixels are higher values.\nMRI are collected in the frequency domain, but few people analyze their data there"
+    "text": "What is an image?\n\nA function from \\(I(v): \\mathbb{R}^3 \\mapsto \\mathbb{R}\\).\nNumeric values in the image represent biological values.\nVisually brighter pixels are higher values.\nMRI are collected in the frequency domain, but few people analyze their data there"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#medical-imaging-data-formats",
@@ -515,7 +515,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#task-fmri-design-illustrations",
     "title": "Introduction & Data Modalities",
     "section": "Task fMRI design illustrations",
-    "text": "Task fMRI design illustrations\n\nBlock versus task designs Petersen & Dubis 2011"
+    "text": "Task fMRI design illustrations\n\n\n\nBlock versus task designs Petersen & Dubis 2011"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#notes-on-illustration",
@@ -529,7 +529,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#rbc-task-data",
     "title": "Introduction & Data Modalities",
     "section": "RBC task data",
-    "text": "RBC task data\n\n\n\nWe will analyze Naturalistic viewing data\nNaturalistic viewing of Desipicable Me (Furtado 2024)\nDespicable Me clip on Netflix 1:02:09 - 1:12:09\n\n\n\n\n\nDespicable Me"
+    "text": "RBC task data\n\n\n\nWe will analyze Naturalistic viewing data\nNaturalistic viewing of Despicable Me (Furtado 2024)\nDespicable Me clip on Netflix 1:02:09 - 1:12:09\n\n\n\n\n\nDespicable Me"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#rs-fmri",
@@ -543,21 +543,21 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#first-resting-state-networks-de-luca",
     "title": "Introduction & Data Modalities",
     "section": "First resting state networks (De Luca)",
-    "text": "First resting state networks (De Luca)\nPublished in 2006 using independent components analysis\n\nEarly resting state networks De Luca 2006"
+    "text": "First resting state networks (De Luca)\nPublished in 2006 using independent components analysis\n\n\n\nEarly resting state networks De Luca 2006"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
     "href": "1introduction_data_modalities/introduction_data_modalities.html#resting-state-networks-damoiseaux",
     "title": "Introduction & Data Modalities",
     "section": "Resting state networks (Damoiseaux)",
-    "text": "Resting state networks (Damoiseaux)\nPublished the same year, using a different ICA method.\n\nEarly resting state networks Damoiseaux 2006"
+    "text": "Resting state networks (Damoiseaux)\nPublished the same year, using a different ICA method.\n\n\n\nEarly resting state networks Damoiseaux 2006"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
     "href": "1introduction_data_modalities/introduction_data_modalities.html#diffusion-imaging",
     "title": "Introduction & Data Modalities",
     "section": "Diffusion imaging",
-    "text": "Diffusion imaging\nMeasures features of water “diffusion” in the brain. Typically, to estimate biological features of the white matter\n\nWill not focus on this data type in this course\n\n\nDiffusion imaging in Autism Wilkinson 2016"
+    "text": "Diffusion imaging\nMeasures features of water “diffusion” in the brain. Typically, to estimate biological features of the white matter\n\nWill not focus on this data type in this course\n\n\n\n\nDiffusion imaging in Autism Wilkinson 2016"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#other-measures",
@@ -613,14 +613,14 @@
     "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html",
     "title": "Homework: Despicable Me Preprocessing",
     "section": "",
-    "text": "Goal: Effectively implement fMRI preprocessing for the Despicable Me data for a single participant. “Effectively” means choosing reasonable parameters, checking the output from each step, and modifying the approach as needed to get good output.\nInstructions: There are 11 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.qmd."
+    "text": "Goal: Effectively implement fMRI preprocessing for the Despicable Me data for a single participant. “Effectively” means choosing reasonable parameters, checking the output from each step, and modifying the approach as needed to get good output.\nInstructions: There are 100 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.qmd."
   },
   {
     "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#overview",
     "href": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#overview",
     "title": "Homework: Despicable Me Preprocessing",
     "section": "",
-    "text": "Goal: Effectively implement fMRI preprocessing for the Despicable Me data for a single participant. “Effectively” means choosing reasonable parameters, checking the output from each step, and modifying the approach as needed to get good output.\nInstructions: There are 11 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.qmd."
+    "text": "Goal: Effectively implement fMRI preprocessing for the Despicable Me data for a single participant. “Effectively” means choosing reasonable parameters, checking the output from each step, and modifying the approach as needed to get good output.\nInstructions: There are 100 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.qmd."
   },
   {
     "objectID": "2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html#brain-extraction-xx-pts",
@@ -711,7 +711,7 @@
     "href": "2preprocessing/preprocessing.html#distortion-correction-in-fsl-skip-this",
     "title": "Preprocessing",
     "section": "Distortion correction in FSL (skip this)",
-    "text": "Distortion correction in FSL (skip this)\n\ncd data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap\n# merge the two phase encoding images\nfslmerge -t AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz\n# write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time\necho \"0 -1 0 0.04565\\n0 1 0 0.04565\" &gt; acquisitionParams.txt\n# apply topup\ntopup --imain=AP_PA_merged.nii.gz \\\n--datain=acquisitionParams.txt \\\n--config=b02b0.cnf \\\n--out=topup_AP_PA_b0 \\\n--iout=topup_AP_PA_b0_iout \\\n--fout=topup_AP_PA_b0_fout\n# create mean of two unwarped images\nfslmaths topup_AP_PA_b0_fout.nii.gz -abs -Tmean b0_mean.nii.gz\n# brain extract the mean image\nbet b0_mean.nii.gz b0_mean_brain.nii.gz -m\n# convert Hz to radians\nfslmaths topup_AP_PA_b0_iout.nii.gz -mul 6.283185307179586 field_rads.nii.gz\n\nFEAT B0 options:\n\nFieldmap image (rad/s) is field_rads.nii.gz\nMagnitude image is b0_mean_brain.nii.gz\nEffective EPI echo spacing (ms) - obtained from 4D fMRI data .json file \"TotalReadoutTime\": 0.0481411\nUnwarp direction - obtained from 4D fMRI data .json file \"PhaseEncodingDirection\": \"j-\",\nEPI TE not needed"
+    "text": "Distortion correction in FSL (skip this)\n\n\nCode\ncd data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap\n# merge the two phase encoding images\nfslmerge -t AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz\n# write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time\necho \"0 -1 0 0.04565\\n0 1 0 0.04565\" &gt; acquisitionParams.txt\n# apply topup\ntopup --imain=AP_PA_merged.nii.gz \\\n--datain=acquisitionParams.txt \\\n--config=b02b0.cnf \\\n--out=topup_AP_PA_b0 \\\n--iout=topup_AP_PA_b0_iout \\\n--fout=topup_AP_PA_b0_fout\n# create mean of two unwarped images\nfslmaths topup_AP_PA_b0_fout.nii.gz -abs -Tmean b0_mean.nii.gz\n# brain extract the mean image\nbet b0_mean.nii.gz b0_mean_brain.nii.gz -m\n# convert Hz to radians\nfslmaths topup_AP_PA_b0_iout.nii.gz -mul 6.283185307179586 field_rads.nii.gz\n\n\nFEAT B0 options:\n\nFieldmap image (rad/s) is field_rads.nii.gz\nMagnitude image is b0_mean_brain.nii.gz\nEffective EPI echo spacing (ms) - obtained from 4D fMRI data .json file \"TotalReadoutTime\": 0.0481411\nUnwarp direction - obtained from 4D fMRI data .json file \"PhaseEncodingDirection\": \"j-\",\nEPI TE not needed"
   },
   {
     "objectID": "3first-level_analysis/first-level_analysis.html#asdf",
@@ -726,5 +726,215 @@
     "title": "Introduction & Data Modalities",
     "section": "What is fMRI?",
     "text": "What is fMRI?"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#autoregressive-models-and-prewhitening",
+    "href": "3first-level_analysis/first-level_analysis.html#autoregressive-models-and-prewhitening",
+    "title": "First-level Analysis",
+    "section": "Autoregressive models and prewhitening",
+    "text": "Autoregressive models and prewhitening\nFILM prewhitening"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#naturalistic-viewing-task-despicable-me",
+    "href": "3first-level_analysis/first-level_analysis.html#naturalistic-viewing-task-despicable-me",
+    "title": "First-level Analysis",
+    "section": "Naturalistic viewing task Despicable Me",
+    "text": "Naturalistic viewing task Despicable Me\n\n\n\nWe will analyze Naturalistic viewing data\nNaturalistic viewing of Despicable Me (Furtado 2024)\nDespicable Me clip on Netflix 1:02:09 - 1:12:09\n\n\n\n\n\nDespicable Me"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#important-points",
+    "href": "3first-level_analysis/first-level_analysis.html#important-points",
+    "title": "First-level Analysis",
+    "section": "Important points",
+    "text": "Important points\n\ntask fMRI data independent variables (covariates) are determined by task stimulus series\nAnd assume hemodynamic response function (double Gamma HRF)\nModels are fit independently at each voxel (spatial location)\nWe are only talking about fitting models for one participant, right now."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#time-series-general-linear-models-with-prewhitening",
+    "href": "3first-level_analysis/first-level_analysis.html#time-series-general-linear-models-with-prewhitening",
+    "title": "First-level Analysis",
+    "section": "Time series general linear models with prewhitening",
+    "text": "Time series general linear models with prewhitening\n\nNotes here, based on FILM prewhitening\nFor a single voxel v:\n\n\ny(v) = X\\beta(v) + \\varepsilon(v)\n\n\nCan ignore v, since we are applying across all voxels separately\nX \\in \\mathbb{R}^{T \\times p}: Design matrix (task regressors, confounds)\n\\beta \\in \\mathbb{R}^p: Parameter vector\n\\varepsilon \\in \\mathbb{R}^T: Error\nAssumptions: \\mathbb{E}[\\varepsilon] = 0, \\mathrm{Cov}(\\varepsilon ) = V (nonindependent errors)\nIf V treated as proportional to the identity matrix, it will lead to inflated false positive rates (Woolrich et al., 2001)\n\nNaive analysis:\nWhat is the expected value of the least squares estimator? \n\\mathbb{E}(\\hat \\beta) =\n What is the variance of the least squares estimator? \n\\mathrm{Var}(\\hat \\beta) =\n\n\nA naive variance estimator \\hat\\sigma^2 (X^TX)^{-1} will be biased.\n\nStandard errors and test statistics will be biased.\n\nWhat is a solution?"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#general-linear-model-glm-for-fmri",
+    "href": "3first-level_analysis/first-level_analysis.html#general-linear-model-glm-for-fmri",
+    "title": "First-level Analysis",
+    "section": "General Linear Model (GLM) for fMRI",
+    "text": "General Linear Model (GLM) for fMRI\n\nFor a single voxel v:\n\n\ny(v) = X\\beta(v) + \\varepsilon(v)\n\n\nX \\in \\mathbb{R}^{T \\times p}: Design matrix (task regressors, confounds)\n\\beta_v \\in \\mathbb{R}^p: Parameter vector\n\\varepsilon_v \\in \\mathbb{R}^T: Error\nAssumptions: \\mathbb{E}[\\varepsilon_v] = 0, \\mathrm{Cov}(\\varepsilon(v) ) = V(v) (nonindependent errors)\nCan ignore v for now, since we are applying across all voxels separately\nIf V treated as proportional to the identity matrix, it wll lead to inflated false positive rates (Woolrich et al., 2001)"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#prewhitening-theory",
+    "href": "3first-level_analysis/first-level_analysis.html#prewhitening-theory",
+    "title": "First-level Analysis",
+    "section": "Prewhitening Theory",
+    "text": "Prewhitening Theory\n\nGoal: transform model so residuals are uncorrelated\n\nGiven:\n\ny = X\\beta + \\varepsilon, \\quad \\varepsilon \\sim N(0, V)\n\nLet K be a square root matrix of V such that:\n\nK V K^T = I\n\n\nApply K to both sides:\n\n\nK y = K X \\beta + K \\varepsilon\n\n\nWhat is the marginal distribution of\nThis is prewhitening: transforms correlated errors into white noise\nProblem: V and K are unknown and need to be estimated."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#film-approach-woolrich-et-al.-2001",
+    "href": "3first-level_analysis/first-level_analysis.html#film-approach-woolrich-et-al.-2001",
+    "title": "First-level Analysis",
+    "section": "FILM Approach (Woolrich et al., 2001)",
+    "text": "FILM Approach (Woolrich et al., 2001)\n\nFMRIB’s Improved Linear Model:\nOne-step prewhitening to estimate \\(V\\)\nMany potential time series models to choose from\nFILM models autocorrelation with voxel-wise tapered estimates"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#inference-after-prewhitening",
+    "href": "3first-level_analysis/first-level_analysis.html#inference-after-prewhitening",
+    "title": "First-level Analysis",
+    "section": "Inference After Prewhitening",
+    "text": "Inference After Prewhitening\n\nAfter prewhitening, fit OLS:\n\n\n\\hat{\\beta}_v = (X^T K^T K X)^{-1} X^T K^T K y\n\n\nContrast testing:\n\n\nt_v = \\frac{c^\\top \\hat{\\beta}_v}{\\hat{\\sigma}_v \\sqrt{c^\\top (X^\\top K_v^\\top K_v X)^{-1} c}}\n\n\nCorrect inference requires:\n\nCorrect V estimation"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#extensions-and-considerations",
+    "href": "3first-level_analysis/first-level_analysis.html#extensions-and-considerations",
+    "title": "First-level Analysis",
+    "section": "Extensions and Considerations",
+    "text": "Extensions and Considerations\n\nAlternative approaches:\n\nNonparametric time series modeling (Eklund et al., 2016)\nPrecoloring (opposite approach to prewhitening)\n\nFILM advantages:\n\nVoxel-wise autocorrelation modeling\nHandles spatial heterogeneity in noise\n\nLimitations:\n\nRequires accurate V_v estimation\nComputationally heavier than simple AR(1) models"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#references",
+    "href": "3first-level_analysis/first-level_analysis.html#references",
+    "title": "First-level Analysis",
+    "section": "References",
+    "text": "References\n\nWoolrich MW, Ripley BD, Brady M, Smith SM. (2001) Temporal autocorrelation in univariate linear modeling of fMRI data. NeuroImage, 14(6):1370–1386.\nFriston KJ, et al. (1995) Statistical parametric maps in functional imaging: a general linear approach. Human Brain Mapping, 2(4):189–210."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#frequency-domain-transformation",
+    "href": "3first-level_analysis/first-level_analysis.html#frequency-domain-transformation",
+    "title": "First-level Analysis",
+    "section": "Frequency domain transformation",
+    "text": "Frequency domain transformation"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#stimulus-time-series",
+    "href": "3first-level_analysis/first-level_analysis.html#stimulus-time-series",
+    "title": "First-level Analysis",
+    "section": "Stimulus time series",
+    "text": "Stimulus time series\n\nNaturalistic viewing task does not have strict “events” that occur during the task\nSome recent research created continuous emotional ratings for the Despicable Me clip\nWe can use these to define particular “blocks” of particular emotional states during the clip\n\n\n\nCode\ndm = readRDS('../data/RBC/stimulusTimeSeries/despicableMe/emotionBlocks.rds')\nplot(dm$emo_valence, type='p', ylab='Emotional Valence', xlab='Time', main='\"Despicable Me\" emotional ratings',\n     col=as.numeric(dm$positiveBlock) + as.numeric(dm$negativeBlock) -1)"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#complications-with-time-series",
+    "href": "3first-level_analysis/first-level_analysis.html#complications-with-time-series",
+    "title": "First-level Analysis",
+    "section": "Complications with time series",
+    "text": "Complications with time series\n\nfMRI time series analysis is more complex than described above\nWhat critical assumption is violated?\n\nWhat will it affect in the model output?\nThink bias and variance of \\(\\hat\\beta\\) and \\(\\hat\\sigma_{\\hat\\beta}^2\\)\n\nUnivariate time series models (such as ARMA) require careful model fit evaluation that is impossible when fitting 150,000 models across the brain"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#input-into-fsl-feat-gui",
+    "href": "3first-level_analysis/first-level_analysis.html#input-into-fsl-feat-gui",
+    "title": "First-level Analysis",
+    "section": "Input into FSL FEAT GUI",
+    "text": "Input into FSL FEAT GUI\n\nThe code below creates a file with the stimulus time series needed for FSL’s FEAT GUI\n\n\n\nCode\n# path to fsf file for preprocessing for first participant\n# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/design.fsf\nTR = 0.8\npos = rle(dm$positive)\npos$lengths[1] = (pos$lengths[1] - 6)\n# first one starts at zero\npos$starts = c(0, cumsum(pos$lengths)[-length(pos$lengths)]+1)\n# output needed by FSL\nthreeCol = data.frame(onset=pos$starts*TR, duration=pos$lengths*TR, value=pos$values)\nwrite.table(threeCol[threeCol$value==1,], row.name=FALSE, sep=' ', col.names = FALSE, file='../data/RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt')\n# /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data//RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt\n\n\n\nTo input the stimulus time series into FSL, we provide a 3 column text file with the following info\n\nOnset, Duration, Value\n\nInclude temporal derivative and apply temporal filtering.\n\nCreate a similar stimulus time series for the negative emotional blocks"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#general-linear-models-with-prewhitening",
+    "href": "3first-level_analysis/first-level_analysis.html#general-linear-models-with-prewhitening",
+    "title": "First-level Analysis",
+    "section": "General linear models with prewhitening",
+    "text": "General linear models with prewhitening\n\nNotes here, based on FILM prewhitening\nFor a single voxel \\(v\\):\n\n\\[\ny(v) = X\\beta(v) + \\varepsilon(v)\n\\]\n\nCan ignore \\(v\\), since we are applying across all voxels separately\n\\(X \\in \\mathbb{R}^{T \\times p}\\): Design matrix (task regressors, confounds)\n\\(\\beta \\in \\mathbb{R}^p\\): Parameter vector\n\\(\\varepsilon \\in \\mathbb{R}^T\\): Error\nAssumptions: \\(\\mathbb{E}[\\varepsilon] = 0\\), \\(\\mathrm{Cov}(\\varepsilon ) = \\sigma^2V\\) (nonindependent errors)\nIf \\(V\\) treated as proportional to the identity matrix, it will lead to inflated false positive rates (Woolrich et al., 2001)\n\nNaive analysis:\nWhat is the expected value of the least squares estimator? \\[\n\\mathbb{E}(\\hat \\beta) =\n\\] What is the variance of the least squares estimator? \\[\n\\mathrm{Var}(\\hat \\beta) =\n\\]\n\nA naive variance estimator \\(\\hat\\sigma^2 (X^TX)^{-1}\\) will be biased.\n\nStandard errors and test statistics will be biased.\n\nWhat is a solution?"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#prewhitening-concept",
+    "href": "3first-level_analysis/first-level_analysis.html#prewhitening-concept",
+    "title": "First-level Analysis",
+    "section": "Prewhitening Concept",
+    "text": "Prewhitening Concept\n\nSolution: transform model so residuals are uncorrelated\n\nGiven:\n\\[\ny = X\\beta + \\varepsilon, \\quad \\mathrm{Var}(\\varepsilon) = \\sigma^2V\n\\]\nLet \\(K\\) be a square root matrix of \\(V\\) such that:\n\\[\nK V K^T = I\n\\]\n\nApply \\(K\\) to both sides:\n\n\\[\nK y = K X \\beta + K \\varepsilon\n\\]\n\nWhat is the marginal distribution of \\(Ky\\)?\nThis is prewhitening: transforms correlated errors into “white noise”\nAs you’ve seen, fMRI data are also high-pass filtered to remove low-frequency components.\n\nThe notation in the paper assumes this was already done, resulting in the covariance \\(V\\)\n\nNew Problem: \\(V\\) and \\(K\\) are unknown and need to be estimated."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#ways-to-estimate-v",
+    "href": "3first-level_analysis/first-level_analysis.html#ways-to-estimate-v",
+    "title": "First-level Analysis",
+    "section": "Ways to estimate \\(V\\)",
+    "text": "Ways to estimate \\(V\\)\n\nFor an arbitrary time series \\(x(t)\\) we can compute some estimators of the autocorrelation\nRaw estimator for correlation with lag \\(\\tau\\)\n\n\\[\nr_{xx}(\\tau) = \\frac{1}{\\hat\\sigma} \\sum_{t=1}^{N-\\tau} x(t) x(t+\\tau)/(N-\\tau)\n\\]\n\nTapered estimators, such as the Tukey single-tapering\n\n\\[\n\\hat\\rho_{xx}(\\tau) = \\frac{1}{2}\\left( 1 + \\cos\\left(\\frac{\\pi \\tau}{M}\\right) \\right) r_{xx}(\\tau)\n\\]\nfor \\(\\tau&lt;M\\) and zero otherwise.\n\n\n\n\n\n\nOthers not discussed here (see Woolrich et al., 2001)\nMatrix \\(V\\) can be filled in with these empirical estimators as a Toeplitz matrix\nIf \\(\\beta\\) is known, the formulas are computed with \\(\\epsilon = y - X\\beta\\)\nAlternatively, we could use \\(\\hat\\beta\\), giving the residuals \\(r = (I- X(X^T X)^{-1} X^T) y\\)\nWhat is the autocorrelation of the residuals?\n\n\\[\n\\mathrm{Cov}(r) =\n\\]\n\nIt is not quite \\(V\\) and \\(V\\) cannot be directly estimated from \\(r\\). Woolridge et al suggested it is close enough."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#iterative-procedure-for-prewhitening",
+    "href": "3first-level_analysis/first-level_analysis.html#iterative-procedure-for-prewhitening",
+    "title": "First-level Analysis",
+    "section": "Iterative procedure for prewhitening",
+    "text": "Iterative procedure for prewhitening\n\n\\(\\hat\\beta\\) is not the BLUE when the covariance of \\(\\epsilon\\) is \\(V\\)\nThe BLUE is \\(X^T V^{-1} X)^{-1} X^T V^{-1} y\\) (not possible to compute this)\nAfter obtaining estimate for \\(V\\) (and or \\(K\\)), fit OLS:\n\n\\[\n\\hat{\\beta}_1 = (X^T \\hat V^{-1} X)^{-1} X^T \\hat V^{-1} y\n\\]\n\nThen the we could compute a new \\(\\hat V\\) and iterate until convergence.\nThis would take ages across 150,000 voxels, so instead, they just recompute \\(\\hat \\beta_1\\) once"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#features-of-time-series-data",
+    "href": "3first-level_analysis/first-level_analysis.html#features-of-time-series-data",
+    "title": "First-level Analysis",
+    "section": "Features of time series data",
+    "text": "Features of time series data\n\nAuto-correlation\nFrequency domain interpretation"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#new-slide",
+    "href": "3first-level_analysis/first-level_analysis.html#new-slide",
+    "title": "First-level Analysis",
+    "section": "New slide",
+    "text": "New slide"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#evaluation",
+    "href": "3first-level_analysis/first-level_analysis.html#evaluation",
+    "title": "First-level Analysis",
+    "section": "Evaluation",
+    "text": "Evaluation\n\nContrasts (T- and F-statistics) can be computed:\n\n\\[\nt = \\frac{c^T \\hat{\\beta}}{\\hat{\\sigma} \\sqrt{c^T (X^T \\hat V^{-1} X)^{-1} c}}\n\\]\nand should be approximately normally distributed under the null, in large samples.\n\n\n\nTukey QQ plot with smoothing (MS)"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#frequency-domain-transformations",
+    "href": "3first-level_analysis/first-level_analysis.html#frequency-domain-transformations",
+    "title": "First-level Analysis",
+    "section": "Frequency domain transformations",
+    "text": "Frequency domain transformations\n\ne.g. Fourier and Wavelet transformations\nUsed a lot in imaging for spatial and temporal frequency domain transformations\nProcessing and analysis in the frequency domain has a lot of advantages\nI won’t cover it here, as I’m not an expert, but we could come back to it"
+  },
+  {
+    "objectID": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html",
+    "href": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html",
+    "title": "Homework: Despicable Me First-level Analysis",
+    "section": "",
+    "text": "Goal: Effectively implement fMRI batch first-level analysis for the Despicable Me data for the subset of participants assigned to you. “Effectively” means quality checking intermediate steps.\nInstructions: There are 100 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 3first-level_analysis/homework/``first-level_analysis``/``first-level_analysis.``qmd."
+  },
+  {
+    "objectID": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#overview",
+    "href": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#overview",
+    "title": "Homework: Despicable Me First-level Analysis",
+    "section": "",
+    "text": "Goal: Effectively implement fMRI batch first-level analysis for the Despicable Me data for the subset of participants assigned to you. “Effectively” means quality checking intermediate steps.\nInstructions: There are 100 participant folders in the data/RBC/HBN_BIDS/ folder. One is assigned to you in this Google doc where we will put the quality assurance (QA) summaries.\nDeliverables: This document edited to include\n\nCommented code describing each step.\nVisualizations and commentary, as requested specifically, below.\nAll the output from your preprocessing steps included in the participant’s folder on the Box drive.\nQA summaries generated by FSL in the Google doc.\n\nHint: This file is located at 3first-level_analysis/homework/``first-level_analysis``/``first-level_analysis.``qmd."
+  },
+  {
+    "objectID": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#batch-brain-extraction-20-pts",
+    "href": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#batch-brain-extraction-20-pts",
+    "title": "Homework: Despicable Me First-level Analysis",
+    "section": "Batch brain extraction (20 pts)",
+    "text": "Batch brain extraction (20 pts)\nAfter our last class, we should have found one of two brain extraction methods that worked well for these data and decided as a class (if not, yet, remind Simon about that we need to do this). Run brain extraction on your full subset of images to get the output you need as input for FEAT. You can work in your group or as a class to write a batch script, or you can share code to do this.\nWrite a loop in R in this document to create a visualization of one or a couple slices for each participant to quality check the brain extraction and add it to this document to be submitted as an html."
+  },
+  {
+    "objectID": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#fmri-first-level-analysis-30-pts",
+    "href": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#fmri-first-level-analysis-30-pts",
+    "title": "Homework: Despicable Me First-level Analysis",
+    "section": "fMRI first-level analysis (30 pts)",
+    "text": "fMRI first-level analysis (30 pts)\nStart the FSL GUI from the command line by typing fsl and then open the FEAT fMRI Analysis (can also do this directly typing Feat_gui at the command line. Open the .fsf file you produced from your last homework and set it up to perform the statistical analysis for the Despicable Me data. All the prior settings you used before loaded in.\nHint: On my laptop, when I change the tab in the FEAT GUI, all the buttons disappear; if you adjust the window size, they reappear.\nDo these things:\n\nSet the temporal filtering high-pass filtering to 130 seconds.\nMake sure you have the right slice timing file. This should be the same for all participants you are analyzing.\nSelect all 4D Nifti images for the subset of participants you are analyzing.\nSelect all brain-extracted structural images for the subset of participants you are analyzing. Hint: They have to be in the same order as the 4D fMRI images.\nConstruct two events, include the temporal derivative and apply temporal filtering to the event file. Use the double gamma HRF.\n\nPositive valence emotions\nNegative valence emotions\n\nConstruct three contrasts\n\nPositive valence emotions (versus baseline/unmodeled)\nNegative valence emotions (versus baseline/unmodeled)\nPositive minus negative emotions\n\n\nInclude a screenshot of your design in here, in your html submission.\nRun the analysis. Hint: You might want to run it for one person and check the output. Then run it for everyone in your subset and run it overnight."
+  },
+  {
+    "objectID": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#deliverables-xx-pts",
+    "href": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#deliverables-xx-pts",
+    "title": "Homework: Despicable Me First-level Analysis",
+    "section": "Deliverables (XX pts)",
+    "text": "Deliverables (XX pts)\n\nPlace the fMRI to template registration in the Google doc under the “Registration QA” section annotated with the subject ID.\nPlace the motion time series image in the Google doc under the “Motion correction QA” section annotated with the subject ID.\nAll your output, including intermediate steps like the brain extraction intermediate files, should be in the subject’s directories in Box."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#assigning-participants-to-students",
+    "href": "3first-level_analysis/first-level_analysis.html#assigning-participants-to-students",
+    "title": "First-level Analysis",
+    "section": "Assigning participants to students",
+    "text": "Assigning participants to students\n\nSites have different scan parameters, which means we need to process the data differently for each site\nHere, we’ll assign each of you a chunk of participants to process from the same site\n(More on site harmonization later)\n\n\n\nCode\nsites = read.table(file = '../data/RBC/sites.txt', sep = '/', header = FALSE, col.names=c('subject', 'site'))\ntable(sites$site)"
+  },
+  {
+    "objectID": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#deliverables-10-pts",
+    "href": "3first-level_analysis/homework/first-level_analysis/first-level_analysis.html#deliverables-10-pts",
+    "title": "Homework: Despicable Me First-level Analysis",
+    "section": "Deliverables (10 pts)",
+    "text": "Deliverables (10 pts)\n\nRegistration QA\n\nWrite a loop or lapply command to print all the functional-to-standard registration images (“Registration of example_func to standard”) into this document. Include the subject ID in the output so you can identify who they belong to. Hint: They are stored in the participants .feat folder output in the mc folder and you can print from loops using results-'asis' and cat to print the markdown syntax you need.\nCreate a list of participants whose registration is bad that we might exclude from analysis.\n\n\n\nMotion QA\n\nWrite a loop or lapply command to print all the motion plots (“MCFLIRT estimated mean displacement (mm)”) into this document. Include the subject ID in the output so you can identify who they belong to. Hint: They are stored in the participants .feat folder output in the mc folder and you can print from loops using results-'asis' and cat to print the markdown syntax you need.\nCreate a list of participants whose mean relative displacement is larger than 0.5mm. We will exclude those participants from the analyses."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#design-setup",
+    "href": "3first-level_analysis/first-level_analysis.html#design-setup",
+    "title": "First-level Analysis",
+    "section": "Design setup",
+    "text": "Design setup\n\n\n\nDesign matrix"
   }
 ]

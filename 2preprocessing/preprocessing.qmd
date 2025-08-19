@@ -194,7 +194,8 @@ Commands I ran:
 
 
 ```{bash, eval=FALSE, echo=TRUE}
-bet images/simon.nii.gz images/simonReg/simon_brain.nii.gz
+fast -B images/simon_bc.nii.gz images/simon.nii.gz
+bet images/simon_bc.nii.gz images/simonReg/simon_brain.nii.gz
 # dof controls number of parameters 6 is rigid-body
 flirt -in images/simonReg/simon_brain.nii.gz -ref images/MNI152_T1_1mm_brain.nii.gz -dof 6 -o images/simonReg/simon_brain_rigidReg.nii.gz -omat images/simonReg/rigidReg.txt
 # defaults to 12 for affine transformation
@@ -540,7 +541,8 @@ FEAT B0 options:
 
 ```{bash}
 # brain extraction fails here
-bet data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz
+fast data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bc.nii.gz
+bet data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bc.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz
 fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz
 ```
 
@@ -557,16 +559,20 @@ fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_s
 
 
 ```{bash}
+# create mask with no holes
+fslmaths /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -fillh /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz
+
 # Input images
 func="data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz"
 anat="data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz"
+
 
 # register to the template
 flirt -in $anat -ref /Users/vandeks/fsl/data/standard/MNI152_T1_1mm.nii.gz -dof 12 -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt
 # get inverse transform
 convert_xfm -inverse -omat data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt
 # Move MNI mask into subject space
-flirt -in /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz -ref $anat -applyxfm -init data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt -interp nearestneighbour -out data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz
+flirt -in /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz -ref $anat -applyxfm -init data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt -interp nearestneighbour -out data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz
 # view the MNI mask in subject space
 # fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz
 # create brain only image by applying brain mask

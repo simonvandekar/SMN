@@ -1,0 +1,47 @@
+1. Which software is listed as a tool for neuroimaging visualization?
+A) ITK-Snap
+B) Papaya
+C) FSLeyes
+D) Neuroconductor
+
+2. What is the primary analysis software for this course?
+A) SPM
+B) AFNI
+C) FSL
+D) Neuroconductor
+
+3.  Which format is typically used for raw output from MRI scanners?
+Correct: DICOM
+A) NIfTI
+B) DICOM
+C) JPEG
+D) PNG
+
+4. What term is used for a 3D pixel in neuroimaging?
+A) Pixel
+B) Cube
+C) Voxel
+D) Matrix
+
+5. What is the primary dataset for this course?
+A) ABCD Study
+B) Adolescent Development Dataset
+C) Reproducible Brain Charts
+D) FreeSurfer Dataset
+
+6. Which type of fMRI data will be analyzed in the RBC task?
+A) Diffusion fMRI
+B) Structural fMRI
+C) Naturalistic viewing
+D) Task fMRI
+
+7. What is more common: radiological or neurological convention?
+A) Neurological
+B) Radiological
+
+8. What imaging technique is used to collect fMRI data?
+A) Echo planar imaging (EPI)
+B) T1-weighted imaging
+C) Frequency domain imaging
+D) T2-weighted imaging
+
