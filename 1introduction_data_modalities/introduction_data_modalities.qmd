@@ -14,7 +14,7 @@ format:
 
 
 ```{r}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 ```
 
 # Welcome
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Homework
 
 * Map the Box folder for the course to your own Box account and setup Box to sync on your laptop
-* Install FSL
+* [Install FSL](https://fsl.fmrib.ox.ac.uk/fsl/docs/#/install/index)
 
 # Data repositories
 
@@ -55,9 +55,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Getting setup with FSL
 
--   `echo $FSLDIR`
+```{bash}
+echo $FSLDIR
+```
+
 -   Visualize the FSL template image
 -   Visualize my brain
+
 
 ## Visualization software
 
@@ -73,9 +77,11 @@ Visualization is as important in image analysis as univariate data analysis (**A
 
 ## Anatomy and terminology
 
-`introduction_data_modalities/figures/simon.nii.gz`[^1]
+```{bash}
+1introduction_data_modalities/figures/simon.nii.gz
+```
 
-[^1]: Directory paths will be relative to the course directory on Box.
+Directory paths will be relative to the course directory on Box.
 
 -   **Gray Matter**: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.
 -   **White Matter**: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.
@@ -129,9 +135,11 @@ Visualization is as important in image analysis as univariate data analysis (**A
 -   **Coronal View**: A vertical slice viewed from the front (as if looking straight at the face).
 -   **Sagittal View**: A vertical slice viewed from the side (as if looking at the brain in profile).
 
-## Image space
+## Image space {.scrollable}
 
-`introduction_data_modalities/figures/MNI152_T1_2mm_brain.nii.gz`
+```{bash}
+introduction_data_modalities/figures/MNI152_T1_2mm_brain.nii.gz
+```
 
 -   **MNI Space / Talairach Space**: Standardized brain coordinate systems used to align and compare brain scans across individuals.
 -   **Radiological** versus neurological convention

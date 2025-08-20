@@ -396,7 +396,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#getting-setup-with-fsl",
     "title": "Introduction & Data Modalities",
     "section": "Getting setup with FSL",
-    "text": "Getting setup with FSL\n\necho $FSLDIR\nVisualize the FSL template image\nVisualize my brain"
+    "text": "Getting setup with FSL\n\necho $FSLDIR\n\n\nVisualize the FSL template image\nVisualize my brain"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#visualization-software",
@@ -410,7 +410,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#anatomy-and-terminology",
     "title": "Introduction & Data Modalities",
     "section": "Anatomy and terminology",
-    "text": "Anatomy and terminology\nintroduction_data_modalities/figures/simon.nii.gz1\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid.\n\nDirectory paths will be relative to the course directory on Box."
+    "text": "Anatomy and terminology\n\n1introduction_data_modalities/figures/simon.nii.gz\n\nDirectory paths will be relative to the course directory on Box.\n\nGray Matter: Brain tissue composed mainly of neuronal cell bodies. It is involved in processing and interpreting information and is found in regions like the cortex and deep brain nuclei.\nWhite Matter: Tissue made up of axons coated with myelin, which appears white. White matter connects regions of gray matter, allowing communication across the brain.\nVentricles: Through the middle of the brain filled with cerebrospinal fluid."
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#more-brain-anatomy-and-terminology",
@@ -459,7 +459,7 @@
     "href": "1introduction_data_modalities/introduction_data_modalities.html#image-space",
     "title": "Introduction & Data Modalities",
     "section": "Image space",
-    "text": "Image space\nintroduction_data_modalities/figures/MNI152_T1_2mm_brain.nii.gz\n\nMNI Space / Talairach Space: Standardized brain coordinate systems used to align and compare brain scans across individuals.\nRadiological versus neurological convention\n\nRadiological - (left on the right)\nNeurological - (right on the right)\nNice overview on this stuff\nRadiological is more common"
+    "text": "Image space\n\nintroduction_data_modalities/figures/MNI152_T1_2mm_brain.nii.gz\n\n\nMNI Space / Talairach Space: Standardized brain coordinate systems used to align and compare brain scans across individuals.\nRadiological versus neurological convention\n\nRadiological - (left on the right)\nNeurological - (right on the right)\nNice overview on this stuff\nRadiological is more common"
   },
   {
     "objectID": "1introduction_data_modalities/introduction_data_modalities.html#atlases",
