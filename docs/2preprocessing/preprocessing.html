@@ -1,275 +1,423 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="author" content="Simon Vandekar">
-
-<title>Statistical Methods for Neuroimaging - Preprocessing</title>
-<style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-  vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-</style>
-
-
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<html lang="en"><head>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 20,
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.3.450">
+
+  <meta name="author" content="Simon Vandekar">
+  <title>Statistical Methods for Neuroimaging - Preprocessing</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
   }
-}</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
 
-<link rel="stylesheet" href="../styles.css">
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
 </head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
 
-<body class="nav-fixed">
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Preprocessing</h1>
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Statistical Methods for Neuroimaging</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lecture-notes" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Lecture Notes</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-lecture-notes">    
-        <li>
-    <a class="dropdown-item" href="../1introduction_data_modalities/introduction_data_modalities.html" rel="" target="_blank">
- <span class="dropdown-text">Introduction &amp; Data Modalities</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../2preprocessing/preprocessing.html" rel="" target="_blank">
- <span class="dropdown-text">Preprocessing</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../3first-level_analysis/first-level_analysis.html" rel="" target="_blank">
- <span class="dropdown-text">First-level Analysis</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../3group-level_analysis/group-level_analysis.html" rel="" target="_blank">
- <span class="dropdown-text">Group-level Analysis</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../4modern_topics/modern_topics.html" rel="" target="_blank">
- <span class="dropdown-text">Modern Topics</span></a>
-  </li>  
-    </ul>
-  </li>
-</ul>
-            <div class="quarto-navbar-tools ms-auto">
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Simon Vandekar 
 </div>
-          </div> <!-- /navcollapse -->
-      </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives">Objectives</a></li>
-  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">Preprocessing</a>
-  <ul class="collapse">
-  <li><a href="#general" id="toc-general" class="nav-link" data-scroll-target="#general">General</a></li>
-  <li><a href="#structural" id="toc-structural" class="nav-link" data-scroll-target="#structural">Structural</a></li>
-  <li><a href="#functional" id="toc-functional" class="nav-link" data-scroll-target="#functional">Functional</a></li>
-  <li><a href="#inhomogeneity-correction-and-brain-extraction" id="toc-inhomogeneity-correction-and-brain-extraction" class="nav-link" data-scroll-target="#inhomogeneity-correction-and-brain-extraction">Inhomogeneity correction and brain extraction</a></li>
-  </ul></li>
-  <li><a href="#registration" id="toc-registration" class="nav-link" data-scroll-target="#registration">Registration</a>
-  <ul class="collapse">
-  <li><a href="#goal" id="toc-goal" class="nav-link" data-scroll-target="#goal">Goal</a></li>
-  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
-  <li><a href="#general-theory" id="toc-general-theory" class="nav-link" data-scroll-target="#general-theory">General theory</a></li>
-  <li><a href="#rigid-body" id="toc-rigid-body" class="nav-link" data-scroll-target="#rigid-body">Rigid-body</a></li>
-  <li><a href="#affine-linear-registration" id="toc-affine-linear-registration" class="nav-link" data-scroll-target="#affine-linear-registration">Affine (linear) registration</a></li>
-  <li><a href="#example-of-registration-results" id="toc-example-of-registration-results" class="nav-link" data-scroll-target="#example-of-registration-results">Example of registration results</a></li>
-  <li><a href="#interpolation" id="toc-interpolation" class="nav-link" data-scroll-target="#interpolation">Interpolation</a></li>
-  <li><a href="#nonlinear-deformable-registration" id="toc-nonlinear-deformable-registration" class="nav-link" data-scroll-target="#nonlinear-deformable-registration">Nonlinear (deformable) registration</a></li>
-  <li><a href="#registration-to-a-template" id="toc-registration-to-a-template" class="nav-link" data-scroll-target="#registration-to-a-template">Registration to a template</a></li>
-  <li><a href="#registration-output" id="toc-registration-output" class="nav-link" data-scroll-target="#registration-output">Registration output</a></li>
-  <li><a href="#advanced-registration-topics" id="toc-advanced-registration-topics" class="nav-link" data-scroll-target="#advanced-registration-topics">Advanced registration topics</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  </ul></li>
-  <li><a href="#spatial-smoothing" id="toc-spatial-smoothing" class="nav-link" data-scroll-target="#spatial-smoothing">Spatial smoothing</a>
-  <ul class="collapse">
-  <li><a href="#goal-1" id="toc-goal-1" class="nav-link" data-scroll-target="#goal-1">Goal</a></li>
-  <li><a href="#terminology-1" id="toc-terminology-1" class="nav-link" data-scroll-target="#terminology-1">Terminology</a></li>
-  </ul></li>
-  <li><a href="#structural-preprocessing-and-output" id="toc-structural-preprocessing-and-output" class="nav-link" data-scroll-target="#structural-preprocessing-and-output">Structural preprocessing and output</a>
-  <ul class="collapse">
-  <li><a href="#c-pac-anatomical-pipeline" id="toc-c-pac-anatomical-pipeline" class="nav-link" data-scroll-target="#c-pac-anatomical-pipeline">C-PAC anatomical pipeline</a></li>
-  <li><a href="#segmentation" id="toc-segmentation" class="nav-link" data-scroll-target="#segmentation">Segmentation</a></li>
-  <li><a href="#volume-estimation" id="toc-volume-estimation" class="nav-link" data-scroll-target="#volume-estimation">Volume estimation</a></li>
-  <li><a href="#volume-estimation-example" id="toc-volume-estimation-example" class="nav-link" data-scroll-target="#volume-estimation-example">Volume estimation example</a></li>
-  <li><a href="#derivatives-of-the-registration-process" id="toc-derivatives-of-the-registration-process" class="nav-link" data-scroll-target="#derivatives-of-the-registration-process">Derivatives of the registration process</a></li>
-  <li><a href="#cortical-surface-reconstruction" id="toc-cortical-surface-reconstruction" class="nav-link" data-scroll-target="#cortical-surface-reconstruction">Cortical surface reconstruction</a></li>
-  <li><a href="#freesurfer-software-output" id="toc-freesurfer-software-output" class="nav-link" data-scroll-target="#freesurfer-software-output">Freesurfer software output</a></li>
-  </ul></li>
-  <li><a href="#functional-preprocessing" id="toc-functional-preprocessing" class="nav-link" data-scroll-target="#functional-preprocessing">Functional preprocessing</a>
-  <ul class="collapse">
-  <li><a href="#what-are-fmri-data" id="toc-what-are-fmri-data" class="nav-link" data-scroll-target="#what-are-fmri-data">What are fMRI data?</a></li>
-  <li><a href="#functional-preprocessing-pipeline" id="toc-functional-preprocessing-pipeline" class="nav-link" data-scroll-target="#functional-preprocessing-pipeline">Functional preprocessing pipeline</a></li>
-  <li><a href="#slice-timing-correction" id="toc-slice-timing-correction" class="nav-link" data-scroll-target="#slice-timing-correction">Slice Timing Correction</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
-  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
-  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"></a></li>
-  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3"></a></li>
-  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4"></a></li>
-  <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5"></a></li>
-  <li><a href="#section-6" id="toc-section-6" class="nav-link" data-scroll-target="#section-6"></a></li>
-  <li><a href="#section-7" id="toc-section-7" class="nav-link" data-scroll-target="#section-7"></a></li>
-  <li><a href="#section-8" id="toc-section-8" class="nav-link" data-scroll-target="#section-8"></a></li>
-  <li><a href="#section-9" id="toc-section-9" class="nav-link" data-scroll-target="#section-9"></a></li>
-  <li><a href="#motion-correction" id="toc-motion-correction" class="nav-link" data-scroll-target="#motion-correction">Motion correction</a></li>
-  <li><a href="#motion-correction-output" id="toc-motion-correction-output" class="nav-link" data-scroll-target="#motion-correction-output">Motion correction output</a></li>
-  <li><a href="#section-10" id="toc-section-10" class="nav-link" data-scroll-target="#section-10"></a></li>
-  <li><a href="#section-11" id="toc-section-11" class="nav-link" data-scroll-target="#section-11"></a></li>
-  <li><a href="#section-12" id="toc-section-12" class="nav-link" data-scroll-target="#section-12"></a></li>
-  <li><a href="#section-13" id="toc-section-13" class="nav-link" data-scroll-target="#section-13"></a></li>
-  <li><a href="#section-14" id="toc-section-14" class="nav-link" data-scroll-target="#section-14"></a></li>
-  <li><a href="#section-15" id="toc-section-15" class="nav-link" data-scroll-target="#section-15"></a></li>
-  <li><a href="#field-map-distortion-correction" id="toc-field-map-distortion-correction" class="nav-link" data-scroll-target="#field-map-distortion-correction">Field Map / Distortion Correction</a></li>
-  <li><a href="#distortion-correction-in-fsl-skip-this" id="toc-distortion-correction-in-fsl-skip-this" class="nav-link" data-scroll-target="#distortion-correction-in-fsl-skip-this">Distortion correction in FSL (skip this)</a></li>
-  <li><a href="#functional-to-anatomical-registration" id="toc-functional-to-anatomical-registration" class="nav-link" data-scroll-target="#functional-to-anatomical-registration">Functional to Anatomical Registration</a></li>
-  <li><a href="#brain-extraction" id="toc-brain-extraction" class="nav-link" data-scroll-target="#brain-extraction">Brain Extraction</a></li>
-  <li><a href="#fsl-gui" id="toc-fsl-gui" class="nav-link" data-scroll-target="#fsl-gui">FSL GUI</a></li>
-  <li><a href="#fsl-preprocessing-summary" id="toc-fsl-preprocessing-summary" class="nav-link" data-scroll-target="#fsl-preprocessing-summary">FSL preprocessing summary</a></li>
-  <li><a href="#concluding-notes" id="toc-concluding-notes" class="nav-link" data-scroll-target="#concluding-notes">Concluding Notes</a></li>
-  </ul></li>
-  </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="preprocessing.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
-    </div>
-<!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Preprocessing</h1>
+</div>
 </div>
 
-
-
-<div class="quarto-title-meta">
-
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Simon Vandekar </p>
-          </div>
-  </div>
-    
-  
-    
-  </div>
-  
-
-</header>
-
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">eval=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<section id="objectives" class="level1">
+</section>
+<section id="objectives" class="title-slide slide level1 center">
 <h1>Objectives</h1>
 <ul>
 <li>These slides are a three lecture series
@@ -280,7 +428,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 </section>
-<section id="preprocessing" class="level1">
+
+<section>
+<section id="preprocessing" class="title-slide slide level1 center">
 <h1>Preprocessing</h1>
 <ul>
 <li>General</li>
@@ -291,8 +441,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>resting state fMRI</li>
 </ul></li>
 </ul>
-<section id="general" class="level2">
-<h2 class="anchored" data-anchor-id="general">General</h2>
+</section>
+<section id="general" class="slide level2">
+<h2>General</h2>
 <ul>
 <li>Inhomogeneity correction</li>
 <li>Brain extraction</li>
@@ -300,13 +451,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Spatial smoothing (applied downstream prior to analysis)</li>
 </ul>
 </section>
-<section id="structural" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="structural">Structural</h2>
+<section id="structural" class="slide level2 smaller">
+<h2>Structural</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">fsleyes</span> images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Inhomogeneity correction</li>
@@ -318,8 +466,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Spatial smoothing</li>
 </ul>
 </section>
-<section id="functional" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="functional">Functional</h2>
+<section id="functional" class="slide level2 smaller">
+<h2>Functional</h2>
 <ul>
 <li>Inhomogeneity correction</li>
 <li>Brain extraction (via structural image)</li>
@@ -331,20 +479,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Spatial smoothing</li>
 </ul>
 </section>
-<section id="inhomogeneity-correction-and-brain-extraction" class="level2">
-<h2 class="anchored" data-anchor-id="inhomogeneity-correction-and-brain-extraction">Inhomogeneity correction and brain extraction</h2>
+<section id="inhomogeneity-correction-and-brain-extraction" class="slide level2">
+<h2>Inhomogeneity correction and brain extraction</h2>
 <ul>
 <li>I won’t go into detail here, but know that these are preprocessing steps</li>
 <li>Inhomogeneity correction adjusts for systematic differences in the brightness of the image</li>
 <li>Brain extraction removes the skull, eyes, and surrounding tissue</li>
 </ul>
-</section>
-</section>
-<section id="registration" class="level1">
+</section></section>
+<section>
+<section id="registration" class="title-slide slide level1 center">
 <h1>Registration</h1>
 <ul>
 <li>Rigid-body</li>
-<li>Linear<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
+<li>Linear<sup>1</sup>
 <ul>
 <li><a href="https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/FLIRT(2f)UserGuide.html">flirt</a></li>
 </ul></li>
@@ -354,8 +502,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://github.com/ANTsX/ANTs">ANTS</a></li>
 </ul></li>
 </ul>
-<section id="goal" class="level2">
-<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Software lists are non-exhaustive and based on my personal exposure.</p></li></ol></aside></section>
+<section id="goal" class="slide level2">
+<h2>Goal</h2>
 <ul>
 <li>Brains are structurally very different</li>
 <li>Brains as functions/images can have different coordinate systems</li>
@@ -363,54 +512,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Making coordinates comparable is the goal of registration</li>
 </ul>
 </section>
-<section id="terminology" class="level2">
-<h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
+<section id="terminology" class="slide level2">
+<h2>Terminology</h2>
 <p><code>fsleyes images/MNI152_T1_1mm_brain.nii.gz images/simon.nii.gz</code></p>
 <ul>
-<li>Input/moving image <span class="math inline">\(I(v)\)</span>, <span class="math inline">\(v \in \mathbb{R}^3\)</span></li>
-<li>Reference/target/template image <span class="math inline">\(R(v)\)</span>, <span class="math inline">\(v \in \mathbb{R}^3\)</span></li>
-<li>We want to find a transformation <span class="math inline">\(T\)</span> such that</li>
+<li>Input/moving image <span class="math inline">I(v)</span>, <span class="math inline">v \in \mathbb{R}^3</span></li>
+<li>Reference/target/template image <span class="math inline">R(v)</span>, <span class="math inline">v \in \mathbb{R}^3</span></li>
+<li>We want to find a transformation <span class="math inline">T</span> such that</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 I(T(v)) \approx R(v)
-\]</span></p>
+</span></p>
 </section>
-<section id="general-theory" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="general-theory">General theory</h2>
+<section id="general-theory" class="slide level2 scrollable">
+<h2>General theory</h2>
 <ul>
 <li>Estimation: minimizes cost (or maximizes similarity)</li>
 <li>Similarity metrics/cost functions
 <ul>
-<li><p>Least squares (images have the same scale) <span class="math display">\[
+<li><p>Least squares (images have the same scale) <span class="math display">
 C\{ R(v), I(T(v))\} = \int_{v \subset \mathbb{R}^3} \{ I(T(v)) - R(v)\}^2 dv
-\]</span></p></li>
+</span></p></li>
 <li><p>Correlation (images on different scales)</p></li>
-<li><p>Mutual information (images with different contrasts/distributions) <span class="math display">\[
+<li><p>Mutual information (images with different contrasts/distributions) <span class="math display">
 \mathrm{MI}(R, I) = \sum_{r,i} \mathbb{P}_{RI}(r, i) \log \left( \frac{\mathbb{P}_{RI}(r, i)}{\mathbb{P}_R(r), \mathbb{P}_I(i)} \right)
-\]</span></p>
-<p>where <span class="math inline">\(\mathbb{P}_{RI}(r, i)\)</span>: is the joint probability, and <span class="math inline">\(\mathbb{P}_R(r), \mathbb{P}_I(i)\)</span> are the marginal probabilities</p></li>
+</span></p>
+<p>where <span class="math inline">\mathbb{P}_{RI}(r, i)</span>: is the joint probability, and <span class="math inline">\mathbb{P}_R(r), \mathbb{P}_I(i)</span> are the marginal probabilities</p></li>
 </ul></li>
-<li>Transformation computed to minimize <span class="math display">\[
+<li>Transformation computed to minimize <span class="math display">
 \min_T C\{R(v), I(T(v))\}
-\]</span></li>
+</span></li>
 <li>Some of these cost functions are convex given some assumptions on the images</li>
-<li>That would imply a global optimum, given some assumtions on <span class="math inline">\(I\)</span> and <span class="math inline">\(R\)</span></li>
-<li>Those assumptions are not met, so many <em>adhoc</em> approaches are implemented<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>That would imply a global optimum, given some assumtions on <span class="math inline">I</span> and <span class="math inline">R</span></li>
+<li>Those assumptions are not met, so many <em>adhoc</em> approaches are implemented<sup>1</sup></li>
 <li>Penalty terms are often useful</li>
 <li>Registration is a challenging problem</li>
 </ul>
-</section>
-<section id="rigid-body" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="rigid-body">Rigid-body</h2>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>“In theory, there is no difference between theory and practice. In practice, there is.”</p></li></ol></aside></section>
+<section id="rigid-body" class="slide level2 scrollable">
+<h2>Rigid-body</h2>
 <ul>
 <li>Six parameter <a href="https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf2/pdfs/Ch2.pdf">rigid registration</a></li>
 <li>Used to align functional images over time (motion correction)</li>
 <li>Also used to align images from the same participant collect in the same scan session.</li>
-<li><span class="math inline">\(y = (y_1, y_2, y_3, 1)\)</span> - template coordinates, <span class="math inline">\(x = (x_1, x_2, x_3, 1)\)</span> input coordinates</li>
+<li><span class="math inline">y = (y_1, y_2, y_3, 1)</span> - template coordinates, <span class="math inline">x = (x_1, x_2, x_3, 1)</span> input coordinates</li>
 <li>Appended with an intercept for transformation</li>
 <li>Can be described as the composition of four transformations</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \begin{bmatrix}
 y_1 \\
 y_2 \\
@@ -424,61 +573,53 @@ x_2 \\
 x_3\\
 1
 \end{bmatrix}
-\]</span></p>
-<p>Translation of image <span class="math display">\[
+</span></p>
+<p>Translation of image <span class="math display">
 T_4 = \begin{bmatrix}
 1 &amp; 0 &amp; 0 &amp; q_1 \\
 0 &amp; 1 &amp; 0 &amp; q_2 \\
 0 &amp; 0 &amp; 1 &amp; q_3\\
 0 &amp; 0 &amp; 0 &amp; 1
 \end{bmatrix}
-\]</span></p>
+</span></p>
 <p>Rotation around the x-axis:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 T_1 = \begin{bmatrix}
 1 &amp; 0 &amp; 0 &amp; 0 \\
 0 &amp; \cos(q_4) &amp; \sin(q_4) &amp; 0 \\
 0 &amp; -\sin(q_4) &amp; \cos(q_4) &amp; 0\\
 0 &amp; 0 &amp; 0 &amp; 1
 \end{bmatrix}
-\]</span></p>
+</span></p>
 <p>Other rotations are defined similarly. See the reference above.</p>
 </section>
-<section id="affine-linear-registration" class="level2">
-<h2 class="anchored" data-anchor-id="affine-linear-registration">Affine (linear) registration</h2>
+<section id="affine-linear-registration" class="slide level2">
+<h2>Affine (linear) registration</h2>
 <ul>
 <li>Linear (Affine, actually) registration is 12 parameters</li>
 <li>The rigid body transformations are further augmented with “zoom” and “shear”</li>
 <li>All registrations should be invertible so that the reference can be moved to the space of the input</li>
 </ul>
 </section>
-<section id="example-of-registration-results" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="example-of-registration-results">Example of registration results</h2>
+<section id="example-of-registration-results" class="slide level2 smaller">
+<h2>Example of registration results</h2>
 <p>Commands I ran:</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bet</span> images/simon.nii.gz images/simonReg/simon_brain.nii.gz</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dof controls number of parameters 6 is rigid-body</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">flirt</span> <span class="at">-in</span> images/simonReg/simon_brain.nii.gz <span class="at">-ref</span> images/MNI152_T1_1mm_brain.nii.gz <span class="at">-dof</span> 6 <span class="at">-o</span> images/simonReg/simon_brain_rigidReg.nii.gz <span class="at">-omat</span> images/simonReg/rigidReg.txt</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># defaults to 12 for affine transformation</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">flirt</span> <span class="at">-in</span> images/simonReg/simon_brain.nii.gz <span class="at">-ref</span> images/MNI152_T1_1mm_brain.nii.gz <span class="at">-o</span> images/simonReg/simon_brain_affineReg.nii.gz <span class="at">-omat</span> images/simonReg/affineReg.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">fast</span> <span class="at">-B</span> images/simon_bc.nii.gz images/simon.nii.gz</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="ex">bet</span> images/simon_bc.nii.gz images/simonReg/simon_brain.nii.gz</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># dof controls number of parameters 6 is rigid-body</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="ex">flirt</span> <span class="at">-in</span> images/simonReg/simon_brain.nii.gz <span class="at">-ref</span> images/MNI152_T1_1mm_brain.nii.gz <span class="at">-dof</span> 6 <span class="at">-o</span> images/simonReg/simon_brain_rigidReg.nii.gz <span class="at">-omat</span> images/simonReg/rigidReg.txt</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># defaults to 12 for affine transformation</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="ex">flirt</span> <span class="at">-in</span> images/simonReg/simon_brain.nii.gz <span class="at">-ref</span> images/MNI152_T1_1mm_brain.nii.gz <span class="at">-o</span> images/simonReg/simon_brain_affineReg.nii.gz <span class="at">-omat</span> images/simonReg/affineReg.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To view the results with the MNI template</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain.nii.gz images/simonReg/simon_brain_rigidReg.nii.gz images/simonReg/simon_brain_affineReg.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">fsleyes</span> images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain.nii.gz images/simonReg/simon_brain_rigidReg.nii.gz images/simonReg/simon_brain_affineReg.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To view transformation matrices</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> images/simonReg/rigidReg.txt</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> images/simonReg/affineReg.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">cat</span> images/simonReg/rigidReg.txt</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">cat</span> images/simonReg/affineReg.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Brain extraction</li>
@@ -486,11 +627,11 @@ T_1 = \begin{bmatrix}
 <li>Affine</li>
 </ul>
 </section>
-<section id="interpolation" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="interpolation">Interpolation</h2>
+<section id="interpolation" class="slide level2 scrollable">
+<h2>Interpolation</h2>
 <ul>
-<li>Images are measured on a grid, so applying the transformation <span class="math inline">\(T\)</span> may require evaluation of the image, <span class="math inline">\(I\)</span>, at locations not represented by a grid coordinate</li>
-<li>Interpolation computes <span class="math inline">\(I(T(v))\)</span> at non-grid locations</li>
+<li>Images are measured on a grid, so applying the transformation <span class="math inline">T</span> may require evaluation of the image, <span class="math inline">I</span>, at locations not represented by a grid coordinate</li>
+<li>Interpolation computes <span class="math inline">I(T(v))</span> at non-grid locations</li>
 <li>Required for evaluating cost function and when applying the resulting transformation matrix.</li>
 <li><a href="https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf2/pdfs/Ch2.pdf">Interpolation methods</a></li>
 <li>Nearest neighbor interpolation is important when registering atlas images
@@ -499,11 +640,11 @@ T_1 = \begin{bmatrix}
 </ul></li>
 </ul>
 </section>
-<section id="nonlinear-deformable-registration" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="nonlinear-deformable-registration">Nonlinear (deformable) registration</h2>
+<section id="nonlinear-deformable-registration" class="slide level2 scrollable">
+<h2>Nonlinear (deformable) registration</h2>
 <ul>
 <li>Deformable registration allows different parts of the image to have a unique transformation matrix</li>
-<li>Called a <strong>deformation field</strong> <span class="math inline">\(\phi(x)\)</span> such that <span class="math inline">\(y = \phi(x)\)</span>.</li>
+<li>Called a <strong>deformation field</strong> <span class="math inline">\phi(x)</span> such that <span class="math inline">y = \phi(x)</span>.</li>
 <li>Different approaches:
 <ul>
 <li>B‑splines, diffeomorphisms (e.g., LDDMM, SyN), demons, finite-element</li>
@@ -514,21 +655,15 @@ T_1 = \begin{bmatrix}
 <li>ANTs registration paper <a href="https://www.sciencedirect.com/science/article/abs/pii/S1361841507000606">Avants et al (2009)</a>.</li>
 </ul>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fnirt</span> <span class="at">--ref</span><span class="op">=</span>images/MNI152_T1_1mm_brain.nii.gz <span class="at">--in</span><span class="op">=</span>images/simonReg/simon_brain.nii.gz <span class="at">--aff</span><span class="op">=</span>images/simonReg/affineReg.txt <span class="at">--fout</span><span class="op">=</span>images/simonReg/field.nii.gz <span class="at">--jout</span><span class="op">=</span>images/simonReg/jacobian.nii.gz <span class="at">--iout</span><span class="op">=</span>images/simonReg/simon_nonlinearReg.nii.gz <span class="at">--cout</span><span class="op">=</span>images/simonReg/simon2MNI.nii.gz </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">fnirt</span> <span class="at">--ref</span><span class="op">=</span>images/MNI152_T1_1mm_brain.nii.gz <span class="at">--in</span><span class="op">=</span>images/simonReg/simon_brain.nii.gz <span class="at">--aff</span><span class="op">=</span>images/simonReg/affineReg.txt <span class="at">--fout</span><span class="op">=</span>images/simonReg/field.nii.gz <span class="at">--jout</span><span class="op">=</span>images/simonReg/jacobian.nii.gz <span class="at">--iout</span><span class="op">=</span>images/simonReg/simon_nonlinearReg.nii.gz <span class="at">--cout</span><span class="op">=</span>images/simonReg/simon2MNI.nii.gz </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Visualize results</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain_affineReg.nii.gz images/simonReg/simon_nonlinearReg.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">fsleyes</span> images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain_affineReg.nii.gz images/simonReg/simon_nonlinearReg.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="registration-to-a-template" class="level2">
-<h2 class="anchored" data-anchor-id="registration-to-a-template">Registration to a template</h2>
+<section id="registration-to-a-template" class="slide level2">
+<h2>Registration to a template</h2>
 <ul>
 <li>Common template images
 <ul>
@@ -537,13 +672,10 @@ T_1 = \begin{bmatrix}
 </ul></li>
 </ul>
 </section>
-<section id="registration-output" class="level2">
-<h2 class="anchored" data-anchor-id="registration-output">Registration output</h2>
+<section id="registration-output" class="slide level2">
+<h2>Registration output</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ../images/simonReg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">ls</span> ../images/simonReg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MNI2simon.nii.gz
 affineReg.txt
@@ -564,8 +696,8 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>Jacobian of the transformation</li>
 </ul>
 </section>
-<section id="advanced-registration-topics" class="level2">
-<h2 class="anchored" data-anchor-id="advanced-registration-topics">Advanced registration topics</h2>
+<section id="advanced-registration-topics" class="slide level2">
+<h2>Advanced registration topics</h2>
 <ul>
 <li>Study specific templates
 <ul>
@@ -574,19 +706,20 @@ simon_nonlinearReg.nii.gz</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="references" class="slide level2">
+<h2>References</h2>
 <ul>
 <li><a href="https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf1/">Human brain function online book</a> (from the authors of SPM software</li>
 <li><a href="https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf2/pdfs/Ch2.pdf">Chapter 2 from HBF book</a></li>
 </ul>
-</section>
-</section>
-<section id="spatial-smoothing" class="level1">
+</section></section>
+<section>
+<section id="spatial-smoothing" class="title-slide slide level1 center">
 <h1>Spatial smoothing</h1>
 <p>A relatively simple processing step</p>
-<section id="goal-1" class="level2">
-<h2 class="anchored" data-anchor-id="goal-1">Goal</h2>
+</section>
+<section id="goal-1" class="slide level2">
+<h2>Goal</h2>
 <ul>
 <li>Registration is imperfect, applying spatial smoothing reduces between subject</li>
 <li>If there is voxel-level independent Gaussian noise, spatial smoothing will reduce noise</li>
@@ -594,41 +727,33 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>Value at a smoothed voxel is a Guassian weighted average of surrounding voxels in unsmoothed image</li>
 </ul>
 </section>
-<section id="terminology-1" class="level2">
-<h2 class="anchored" data-anchor-id="terminology-1">Terminology</h2>
+<section id="terminology-1" class="slide level2">
+<h2>Terminology</h2>
 <ul>
 <li><strong>FWHM</strong> - full width at half maximum, typically in mm. Description of size of Gaussian kernel for smooth</li>
-<li><strong>Sigma</strong> - <span class="math inline">\(\sigma = \frac{\mathrm{FWHM}}{2\sqrt{2\log(2)}}\)</span></li>
+<li><strong>Sigma</strong> - <span class="math inline">\sigma = \frac{\mathrm{FWHM}}{2\sqrt{2\log(2)}}</span></li>
 </ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/cpac_smoothing.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Smoothing kernels <a href="https://fcp-indi.github.io/docs/latest/user/after_warp">CPAC pipeline</a></figcaption>
-</figure>
-</div>
+
+<img data-src="figures/cpac_smoothing.png" class="r-stretch quarto-figure-center"><p class="caption">Smoothing kernels <a href="https://fcp-indi.github.io/docs/latest/user/after_warp">CPAC pipeline</a></p></section></section>
+<section>
+<section id="structural-preprocessing-and-output" class="title-slide slide level1 smaller center">
+<h1>Structural preprocessing and output</h1>
+
 </section>
+<section id="c-pac-anatomical-pipeline" class="slide level2">
+<h2><a href="https://fcp-indi.github.io/docs/latest/user/index.html">C-PAC</a> anatomical pipeline</h2>
+
+<img data-src="figures/cpac_anatomical.svg" class="r-stretch quarto-figure-center"><p class="caption">Anatomical pipeline</p><p>Option/Alt + click to zoom in.</p>
 </section>
-<section id="structural-preprocessing-and-output" class="level1 smaller">
-<h1 class="smaller">Structural preprocessing and output</h1>
-<section id="c-pac-anatomical-pipeline" class="level2">
-<h2 class="anchored" data-anchor-id="c-pac-anatomical-pipeline"><a href="https://fcp-indi.github.io/docs/latest/user/index.html">C-PAC</a> anatomical pipeline</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/cpac_anatomical.svg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Anatomical pipeline</figcaption>
-</figure>
-</div>
-<p>Option/Alt + click to zoom in.</p>
-</section>
-<section id="segmentation" class="level2">
-<h2 class="anchored" data-anchor-id="segmentation">Segmentation</h2>
+<section id="segmentation" class="slide level2">
+<h2>Segmentation</h2>
 <ul>
 <li>Segmentation estimates gray/white matter, CSF/ventricles</li>
 <li>Variations on mixture models that incorporate priors and spatial dependence</li>
 </ul>
 </section>
-<section id="volume-estimation" class="level2">
-<h2 class="anchored" data-anchor-id="volume-estimation">Volume estimation</h2>
+<section id="volume-estimation" class="slide level2">
+<h2>Volume estimation</h2>
 <p>Estimation of volumes of regions defined from an anatomical atlas.</p>
 <p>Approaches:</p>
 <ul>
@@ -637,42 +762,36 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>Probabilistic atlases/Bayesian models</li>
 </ul>
 </section>
-<section id="volume-estimation-example" class="level2 scrollable smaller">
-<h2 class="scrollable smaller anchored" data-anchor-id="volume-estimation-example">Volume estimation example</h2>
+<section id="volume-estimation-example" class="slide level2 scrollable smaller">
+<h2>Volume estimation example</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># invert the warp from subject space to template space</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">invwarp</span> <span class="at">-w</span> images/simonReg/simon2MNI.nii.gz <span class="at">-o</span> images/simonReg/MNI2simon.nii.gz <span class="at">-r</span> images/simonReg/simon_brain.nii.gz</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert atlas to subject space. Use nearest neighbor interpolation</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">applywarp</span> <span class="at">--i</span><span class="op">=</span>/Users/vandeks/fsl/data/atlases/HarvardOxford/HarvardOxford-cort-maxprob-thr25-1mm.nii.gz <span class="at">--ref</span><span class="op">=</span>images/simonReg/simon_brain.nii.gz <span class="at">--warp</span><span class="op">=</span>images/simonReg/MNI2simon.nii.gz <span class="at">--out</span><span class="op">=</span>images/simonReg/HO_simon.nii.gz <span class="at">--interp</span><span class="op">=</span>nn</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize results on simon's brain</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> images/simonReg/simon_brain.nii.gz images/simonReg/HO_simon.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># invert the warp from subject space to template space</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="ex">invwarp</span> <span class="at">-w</span> images/simonReg/simon2MNI.nii.gz <span class="at">-o</span> images/simonReg/MNI2simon.nii.gz <span class="at">-r</span> images/simonReg/simon_brain.nii.gz</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co"># convert atlas to subject space. Use nearest neighbor interpolation</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="ex">applywarp</span> <span class="at">--i</span><span class="op">=</span>/Users/vandeks/fsl/data/atlases/HarvardOxford/HarvardOxford-cort-maxprob-thr25-1mm.nii.gz <span class="at">--ref</span><span class="op">=</span>images/simonReg/simon_brain.nii.gz <span class="at">--warp</span><span class="op">=</span>images/simonReg/MNI2simon.nii.gz <span class="at">--out</span><span class="op">=</span>images/simonReg/HO_simon.nii.gz <span class="at">--interp</span><span class="op">=</span>nn</span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co"># visualize results on simon's brain</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="ex">fsleyes</span> images/simonReg/simon_brain.nii.gz images/simonReg/HO_simon.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Code from ChatGPT to compute volumes.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Estimate voxel volume (assumes cubic mm)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="va">voxel_volume</span><span class="op">=</span><span class="va">$(</span><span class="ex">fslval</span> <span class="va">${ref_image}</span> pixdim1<span class="va">)</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="va">voxel_volume</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">${voxel_volume}</span><span class="st"> * </span><span class="va">$(</span><span class="ex">fslval</span> <span class="va">${ref_image}</span> pixdim2<span class="va">)</span><span class="st"> * </span><span class="va">$(</span><span class="ex">fslval</span> <span class="va">${ref_image}</span> pixdim3<span class="va">)</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Loop over atlas labels to count voxels and estimate volume</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Label,VoxelCount,Volume_mm3"</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">48</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="va">count</span><span class="op">=</span><span class="va">$(</span><span class="ex">fslstats</span> <span class="va">${atlas_subj}</span> <span class="at">-l</span> <span class="va">$(($label</span> <span class="op">-</span> <span class="dv">1</span><span class="va">))</span> <span class="at">-u</span> <span class="va">$label</span> <span class="at">-V</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1}'</span><span class="va">)</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="va">volume</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st"> * </span><span class="va">$voxel_volume</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"</span><span class="va">$label</span><span class="st">,</span><span class="va">$count</span><span class="st">,</span><span class="va">$volume</span><span class="st">"</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># 2. Estimate voxel volume (assumes cubic mm)</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="va">voxel_volume</span><span class="op">=</span><span class="va">$(</span><span class="ex">fslval</span> <span class="va">${ref_image}</span> pixdim1<span class="va">)</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="va">voxel_volume</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">${voxel_volume}</span><span class="st"> * </span><span class="va">$(</span><span class="ex">fslval</span> <span class="va">${ref_image}</span> pixdim2<span class="va">)</span><span class="st"> * </span><span class="va">$(</span><span class="ex">fslval</span> <span class="va">${ref_image}</span> pixdim3<span class="va">)</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co"># 3. Loop over atlas labels to count voxels and estimate volume</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="bu">echo</span> <span class="st">"Label,VoxelCount,Volume_mm3"</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="cf">for</span> label <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">48</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>  <span class="va">count</span><span class="op">=</span><span class="va">$(</span><span class="ex">fslstats</span> <span class="va">${atlas_subj}</span> <span class="at">-l</span> <span class="va">$(($label</span> <span class="op">-</span> <span class="dv">1</span><span class="va">))</span> <span class="at">-u</span> <span class="va">$label</span> <span class="at">-V</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{print $1}'</span><span class="va">)</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>  <span class="va">volume</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$count</span><span class="st"> * </span><span class="va">$voxel_volume</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>  <span class="bu">echo</span> <span class="st">"</span><span class="va">$label</span><span class="st">,</span><span class="va">$count</span><span class="st">,</span><span class="va">$volume</span><span class="st">"</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li></li>
 </ul>
 </section>
-<section id="derivatives-of-the-registration-process" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="derivatives-of-the-registration-process">Derivatives of the registration process</h2>
+<section id="derivatives-of-the-registration-process" class="slide level2 scrollable">
+<h2>Derivatives of the registration process</h2>
 <ul>
 <li>Features of the registration process are informative of brain structure</li>
 <li><strong>Probabilistic tissue segmentation</strong>: images can be analyzed across participants after registration to template space</li>
@@ -684,8 +803,8 @@ simon_nonlinearReg.nii.gz</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="cortical-surface-reconstruction" class="level2 scrollable smaller">
-<h2 class="scrollable smaller anchored" data-anchor-id="cortical-surface-reconstruction">Cortical surface reconstruction</h2>
+<section id="cortical-surface-reconstruction" class="slide level2 scrollable smaller">
+<h2>Cortical surface reconstruction</h2>
 <p>Freesurfer is among the most popular software for cortical surface reconstruction</p>
 <ul>
 <li>Allows projection of other data (e.g.&nbsp;fMRI) to the surface</li>
@@ -700,42 +819,40 @@ simon_nonlinearReg.nii.gz</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/irimia_FSvis.jpg" class="img-fluid figure-img" style="width:75.0%"></p>
-<figcaption class="figure-caption"><a href="https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2012.00010/full">Irimia et al.&nbsp;2012</a></figcaption>
+<figure>
+<p><img data-src="figures/irimia_FSvis.jpg" style="width:75.0%"></p>
+<figcaption><a href="https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2012.00010/full">Irimia et al.&nbsp;2012</a></figcaption>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/surfaceBasedMapping.jpg" class="img-fluid figure-img" style="width:75.0%"></p>
-<figcaption class="figure-caption">Inflated surface</figcaption>
+<figure>
+<p><img data-src="figures/surfaceBasedMapping.jpg" style="width:75.0%"></p>
+<figcaption>Inflated surface</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="freesurfer-software-output" class="level2">
-<h2 class="anchored" data-anchor-id="freesurfer-software-output">Freesurfer software output</h2>
+<section id="freesurfer-software-output" class="slide level2">
+<h2>Freesurfer software output</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">recon-all</span> <span class="at">-subjid</span> subjid <span class="at">-i</span> inputFile.nii.gz <span class="at">-all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="ex">recon-all</span> <span class="at">-subjid</span> subjid <span class="at">-i</span> inputFile.nii.gz <span class="at">-all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Fully automated call, though it is not without errors/flaws</li>
 <li>A look at the Freesurfer output</li>
 </ul>
-</section>
-</section>
-<section id="functional-preprocessing" class="level1">
+</section></section>
+<section>
+<section id="functional-preprocessing" class="title-slide slide level1 center">
 <h1>Functional preprocessing</h1>
 <ul>
 <li>We will discuss common preprocessing steps and view some input/output in FSL</li>
 </ul>
-<section id="what-are-fmri-data" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="what-are-fmri-data">What are fMRI data?</h2>
+</section>
+<section id="what-are-fmri-data" class="slide level2 scrollable">
+<h2>What are fMRI data?</h2>
 <ul>
 <li>fMRI measures brain activity over time by detecting changes in blood oxygenation.</li>
 <li>fMRI data are a time series of 3D brain images, collected every 1–3 seconds (TR = repetition time).</li>
@@ -753,8 +870,8 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>fMRI is indirect: it measures blood flow, not neural activity itself.</li>
 </ul>
 </section>
-<section id="functional-preprocessing-pipeline" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="functional-preprocessing-pipeline">Functional preprocessing pipeline</h2>
+<section id="functional-preprocessing-pipeline" class="slide level2 scrollable">
+<h2>Functional preprocessing pipeline</h2>
 <ul>
 <li>Scientists have developed many software tools for preprocessing</li>
 <li>The analysis pipeline is very sophisticated</li>
@@ -763,15 +880,10 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>Example <a href="https://fcp-indi.github.io/docs/latest/user/func">CPAC</a> functional pipeline</li>
 </ul></li>
 </ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/cpac_functional.svg" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Functional pipeline</figcaption>
-</figure>
-</div>
-</section>
-<section id="slice-timing-correction" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="slice-timing-correction">Slice Timing Correction</h2>
+
+<img data-src="figures/cpac_functional.svg" style="width:100.0%" class="r-stretch quarto-figure-center"><p class="caption">Functional pipeline</p></section>
+<section id="slice-timing-correction" class="slide level2 scrollable">
+<h2>Slice Timing Correction</h2>
 <ul>
 <li>fMRI data are collected sequentially in 2-d slices in the z-plane
 <ul>
@@ -786,48 +898,48 @@ simon_nonlinearReg.nii.gz</code></pre>
 </ul>
 <p><a href="https://andysbrainbook.readthedocs.io/en/latest/fMRI_Short_Course/Preprocessing/Slice_Timing_Correction.html">Slice timing GIF in Andy’s Brain Book</a></p>
 </section>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
-<p><img src="figures/FSLimgs/image13.png" class="img-fluid"></p>
-</section>
-<section id="section-1" class="level2">
-<h2 class="anchored" data-anchor-id="section-1"></h2>
-<p><img src="figures/FSLimgs/image14.png" class="img-fluid"></p>
-</section>
-<section id="section-2" class="level2">
-<h2 class="anchored" data-anchor-id="section-2"></h2>
-<p><img src="figures/FSLimgs/image15.png" class="img-fluid"></p>
-</section>
-<section id="section-3" class="level2">
-<h2 class="anchored" data-anchor-id="section-3"></h2>
-<p><img src="figures/FSLimgs/image16.png" class="img-fluid"></p>
-</section>
-<section id="section-4" class="level2">
-<h2 class="anchored" data-anchor-id="section-4"></h2>
-<p><img src="figures/FSLimgs/image17.png" class="img-fluid"></p>
-</section>
-<section id="section-5" class="level2">
-<h2 class="anchored" data-anchor-id="section-5"></h2>
-<p><img src="figures/FSLimgs/image18.png" class="img-fluid"></p>
-</section>
-<section id="section-6" class="level2">
-<h2 class="anchored" data-anchor-id="section-6"></h2>
-<p><img src="figures/FSLimgs/image19.png" class="img-fluid"></p>
-</section>
-<section id="section-7" class="level2">
-<h2 class="anchored" data-anchor-id="section-7"></h2>
-<p><img src="figures/FSLimgs/image20.png" class="img-fluid"></p>
-</section>
-<section id="section-8" class="level2">
-<h2 class="anchored" data-anchor-id="section-8"></h2>
-<p><img src="figures/FSLimgs/image21.png" class="img-fluid"></p>
-</section>
-<section id="section-9" class="level2">
-<h2 class="anchored" data-anchor-id="section-9"></h2>
-<p><img src="figures/FSLimgs/image22.png" class="img-fluid"></p>
-</section>
-<section id="motion-correction" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="motion-correction">Motion correction</h2>
+<section id="section" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image13.png" class="r-stretch"></section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image14.png" class="r-stretch"></section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image15.png" class="r-stretch"></section>
+<section id="section-3" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image16.png" class="r-stretch"></section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image17.png" class="r-stretch"></section>
+<section id="section-5" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image18.png" class="r-stretch"></section>
+<section id="section-6" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image19.png" class="r-stretch"></section>
+<section id="section-7" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image20.png" class="r-stretch"></section>
+<section id="section-8" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image21.png" class="r-stretch"></section>
+<section id="section-9" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image22.png" class="r-stretch"></section>
+<section id="motion-correction" class="slide level2 scrollable">
+<h2>Motion correction</h2>
 <ul>
 <li>The participant will move across the scan time</li>
 <li>Motion correction in FSL
@@ -841,14 +953,11 @@ simon_nonlinearReg.nii.gz</code></pre>
 </ol></li>
 </ul>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="ex">fsleyes</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="motion-correction-output" class="level2">
-<h2 class="anchored" data-anchor-id="motion-correction-output">Motion correction output</h2>
+<section id="motion-correction-output" class="slide level2">
+<h2>Motion correction output</h2>
 <ul>
 <li>Outputs:
 <ul>
@@ -858,39 +967,34 @@ simon_nonlinearReg.nii.gz</code></pre>
 </ul></li>
 <li>Motion parameter time series are used as covariates in first-level analysis</li>
 </ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/trans.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Motion parameters from <em>Despicable Me</em></figcaption>
-</figure>
-</div>
-</section>
-<section id="section-10" class="level2">
-<h2 class="anchored" data-anchor-id="section-10"></h2>
-<p><img src="figures/FSLimgs/image9.png" class="img-fluid"></p>
-</section>
-<section id="section-11" class="level2">
-<h2 class="anchored" data-anchor-id="section-11"></h2>
-<p><img src="figures/FSLimgs/image10.png" class="img-fluid"></p>
-</section>
-<section id="section-12" class="level2">
-<h2 class="anchored" data-anchor-id="section-12"></h2>
-<p><img src="figures/FSLimgs/image11.png" class="img-fluid"></p>
-</section>
-<section id="section-13" class="level2">
-<h2 class="anchored" data-anchor-id="section-13"></h2>
-<p><img src="figures/FSLimgs/image12.png" class="img-fluid"></p>
-</section>
-<section id="section-14" class="level2">
-<h2 class="anchored" data-anchor-id="section-14"></h2>
-<p><img src="figures/FSLimgs/image23.png" class="img-fluid"></p>
-</section>
-<section id="section-15" class="level2">
-<h2 class="anchored" data-anchor-id="section-15"></h2>
-<p><img src="figures/FSLimgs/image24.png" class="img-fluid"></p>
-</section>
-<section id="field-map-distortion-correction" class="level2">
-<h2 class="anchored" data-anchor-id="field-map-distortion-correction">Field Map / Distortion Correction</h2>
+
+<img data-src="figures/trans.png" class="r-stretch quarto-figure-center"><p class="caption">Motion parameters from <em>Despicable Me</em></p></section>
+<section id="section-10" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image9.png" class="r-stretch"></section>
+<section id="section-11" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image10.png" class="r-stretch"></section>
+<section id="section-12" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image11.png" class="r-stretch"></section>
+<section id="section-13" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image12.png" class="r-stretch"></section>
+<section id="section-14" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image23.png" class="r-stretch"></section>
+<section id="section-15" class="slide level2">
+<h2></h2>
+
+<img data-src="figures/FSLimgs/image24.png" class="r-stretch"></section>
+<section id="field-map-distortion-correction" class="slide level2">
+<h2>Field Map / Distortion Correction</h2>
 <ul>
 <li>Correction of <strong>EPI geometric distortions</strong> due to inhomogeneity in the magnetic field</li>
 <li>Supported if you collected a fieldmap image<br>
@@ -901,30 +1005,27 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li><a href="https://www.fmrib.ox.ac.uk/datasets/techrep/tr04ss2/tr04ss2/node17.html">More details from FSL</a></li>
 </ul>
 </section>
-<section id="distortion-correction-in-fsl-skip-this" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="distortion-correction-in-fsl-skip-this">Distortion correction in FSL (skip this)</h2>
+<section id="distortion-correction-in-fsl-skip-this" class="slide level2 scrollable">
+<h2>Distortion correction in FSL (skip this)</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># merge the two phase encoding images</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmerge</span> <span class="at">-t</span> AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"0 -1 0 0.04565\n0 1 0 0.04565"</span> <span class="op">&gt;</span> acquisitionParams.txt</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># apply topup</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="ex">topup</span> <span class="at">--imain</span><span class="op">=</span>AP_PA_merged.nii.gz <span class="dt">\</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>--datain=acquisitionParams.txt <span class="dt">\</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>--config=b02b0.cnf <span class="dt">\</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>--out=topup_AP_PA_b0 <span class="dt">\</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>--iout=topup_AP_PA_b0_iout <span class="dt">\</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>--fout=topup_AP_PA_b0_fout</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create mean of two unwarped images</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmaths</span> topup_AP_PA_b0_fout.nii.gz <span class="at">-abs</span> <span class="at">-Tmean</span> b0_mean.nii.gz</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co"># brain extract the mean image</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="ex">bet</span> b0_mean.nii.gz b0_mean_brain.nii.gz <span class="at">-m</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># convert Hz to radians</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmaths</span> topup_AP_PA_b0_iout.nii.gz <span class="at">-mul</span> 6.283185307179586 field_rads.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="bu">cd</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/fmap</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co"># merge the two phase encoding images</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="ex">fslmerge</span> <span class="at">-t</span> AP_PA_merged.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-AP_epi.nii.gz sub-NDARAA306NT2_ses-HBNsiteRU_acq-fMRI_dir-PA_epi.nii.gz</span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># write acquistion parameters x, y, z phase encoding directions. Final parameter is total readout time</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="bu">echo</span> <span class="st">"0 -1 0 0.04565\n0 1 0 0.04565"</span> <span class="op">&gt;</span> acquisitionParams.txt</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="co"># apply topup</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="ex">topup</span> <span class="at">--imain</span><span class="op">=</span>AP_PA_merged.nii.gz <span class="dt">\</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>--datain=acquisitionParams.txt <span class="dt">\</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>--config=b02b0.cnf <span class="dt">\</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>--out=topup_AP_PA_b0 <span class="dt">\</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>--iout=topup_AP_PA_b0_iout <span class="dt">\</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>--fout=topup_AP_PA_b0_fout</span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co"># create mean of two unwarped images</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="ex">fslmaths</span> topup_AP_PA_b0_fout.nii.gz <span class="at">-abs</span> <span class="at">-Tmean</span> b0_mean.nii.gz</span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="co"># brain extract the mean image</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="ex">bet</span> b0_mean.nii.gz b0_mean_brain.nii.gz <span class="at">-m</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="co"># convert Hz to radians</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="ex">fslmaths</span> topup_AP_PA_b0_iout.nii.gz <span class="at">-mul</span> 6.283185307179586 field_rads.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>FEAT B0 options:</p>
 <ul>
@@ -935,38 +1036,31 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>EPI TE not needed</li>
 </ul>
 </section>
-<section id="functional-to-anatomical-registration" class="level2">
-<h2 class="anchored" data-anchor-id="functional-to-anatomical-registration">Functional to Anatomical Registration</h2>
+<section id="functional-to-anatomical-registration" class="slide level2">
+<h2>Functional to Anatomical Registration</h2>
 <ul>
 <li>Uses “boundary-based registration” for EPI-to-T1 alignment<br>
 </li>
 <li>Outputs the transform matrix for resampling EPI into subject/anatomical space</li>
 </ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/example_func2highres.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Functional registration</figcaption>
-</figure>
-</div>
-</section>
-<section id="brain-extraction" class="level2">
-<h2 class="anchored" data-anchor-id="brain-extraction">Brain Extraction</h2>
+
+<img data-src="figures/example_func2highres.png" class="r-stretch quarto-figure-center"><p class="caption">Functional registration</p></section>
+<section id="brain-extraction" class="slide level2">
+<h2>Brain Extraction</h2>
 <ul>
 <li>Removes skull/face from fMRI data</li>
 <li>FSL’s BET tool fails for this participant</li>
 <li>Visualization below</li>
 </ul>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># brain extraction fails here</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bet</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># brain extraction fails here</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="ex">fast</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bc.nii.gz</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="ex">bet</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bc.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz</span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="ex">fsleyes</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="fsl-gui" class="level2 scrollable smaller">
-<h2 class="scrollable smaller anchored" data-anchor-id="fsl-gui">FSL GUI</h2>
+<section id="fsl-gui" class="slide level2 scrollable smaller">
+<h2>FSL GUI</h2>
 <ul>
 <li>FSL has a GUI for preprocessing</li>
 <li>Input:
@@ -979,41 +1073,35 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>Brain extraction for this participant failed. As a solution, I created a brain extracted anatomical image with the following commands</li>
 </ul>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create mask with no holes</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmaths</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz <span class="at">-fillh</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Input images</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="va">func</span><span class="op">=</span><span class="st">"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz"</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="va">anat</span><span class="op">=</span><span class="st">"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz"</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># register to the template</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ex">flirt</span> <span class="at">-in</span> <span class="va">$anat</span> <span class="at">-ref</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm.nii.gz <span class="at">-dof</span> 12 <span class="at">-omat</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># get inverse transform</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="ex">convert_xfm</span> <span class="at">-inverse</span> <span class="at">-omat</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Move MNI mask into subject space</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="ex">flirt</span> <span class="at">-in</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz <span class="at">-ref</span> <span class="va">$anat</span> <span class="at">-applyxfm</span> <span class="at">-init</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt <span class="at">-interp</span> nearestneighbour <span class="at">-out</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># view the MNI mask in subject space</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co"># fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz</span></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co"># create brain only image by applying brain mask</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmaths</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz <span class="at">-mas</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># create mask with no holes</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="ex">fslmaths</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz <span class="at">-fillh</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co"># Input images</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="va">func</span><span class="op">=</span><span class="st">"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.nii.gz"</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="va">anat</span><span class="op">=</span><span class="st">"data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz"</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a></span>
+<span id="cb15-8"><a href="#cb15-8"></a></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co"># register to the template</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="ex">flirt</span> <span class="at">-in</span> <span class="va">$anat</span> <span class="at">-ref</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm.nii.gz <span class="at">-dof</span> 12 <span class="at">-omat</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt</span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co"># get inverse transform</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="ex">convert_xfm</span> <span class="at">-inverse</span> <span class="at">-omat</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/linearReg.txt</span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co"># Move MNI mask into subject space</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="ex">flirt</span> <span class="at">-in</span> /Users/vandeks/fsl/data/standard/MNI152_T1_1mm_brain_noholes_mask.nii.gz <span class="at">-ref</span> <span class="va">$anat</span> <span class="at">-applyxfm</span> <span class="at">-init</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/inv_linearReg.txt <span class="at">-interp</span> nearestneighbour <span class="at">-out</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz</span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="co"># view the MNI mask in subject space</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a><span class="co"># fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="co"># create brain only image by applying brain mask</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a><span class="ex">fslmaths</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz <span class="at">-mas</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain_mask.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_brain.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="fsl-preprocessing-summary" class="level2">
-<h2 class="anchored" data-anchor-id="fsl-preprocessing-summary">FSL preprocessing summary</h2>
+<section id="fsl-preprocessing-summary" class="slide level2">
+<h2>FSL preprocessing summary</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">chrome</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_prestats.html</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">chrome</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_reg.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="ex">chrome</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_prestats.html</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="ex">chrome</span> data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/func/sub-NDARAA306NT2_ses-HBNsiteRU_task-movieDM_bold.feat/report_reg.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="concluding-notes" class="level2">
-<h2 class="anchored" data-anchor-id="concluding-notes">Concluding Notes</h2>
+<section id="concluding-notes" class="slide level2">
+<h2>Concluding Notes</h2>
 <ul>
 <li>Preprocessing pipelines like <a href="https://fcp-indi.github.io/docs/latest/user/index.html">C-PAC</a> are developed to choose the best/preferred software for each step</li>
 <li>C‑PAC is highly configurable/adaptable</li>
@@ -1022,267 +1110,401 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li>Subsequent steps include nuisance regression</li>
 </ul>
 
+<div class="footer footer-default">
 
-</section>
-</section>
+</div>
+</section></section>
 
+    </div>
+  </div>
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
 
-<ol>
-<li id="fn1"><p>Software lists are non-exhaustive and based on my personal exposure.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>“In theory, there is no difference between theory and practice. In practice, there is.”<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
-    };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"right","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
       });
-    }
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
       }
-    }
-});
-</script>
-</div> <!-- /content -->
-
-
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+              // target, if specified
+              link.setAttribute("target", "_blank");
+          }
+        }
+    });
+    </script>
+    
 
 </body></html>

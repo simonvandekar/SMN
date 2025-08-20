@@ -20,10 +20,10 @@ website:
           href: 3first-level_analysis/first-level_analysis.html
           target: "_blank"
         - text: "Group-level Analysis"
-          href: 3group-level_analysis/group-level_analysis.html
+          href: 4group-level_analysis/group-level_analysis.html
           target: "_blank"
-        - text: "Modern Topics"
-          href: 4modern_topics/modern_topics.html
+        - text: "Common Mistakes and Challenges"
+          href: 5common_mistakes_challenges/common_mistakes_challenges.html
           target: "_blank"
 
 format:

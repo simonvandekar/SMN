@@ -10,8 +10,6 @@ format:
     slide-number: true
     code-overflow: wrap
     html-math-method: katex
-    self-contained: true
-    standalone: true
 ---
 
 ```{r}

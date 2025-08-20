@@ -1,0 +1,70 @@
+---
+title: "Group-level Analysis"
+author: "Simon Vandekar"
+engine: knitr
+format:
+  revealjs:
+    menu:
+      side: right
+    link-external-newwindow: true
+    slide-number: true
+    code-overflow: wrap
+    html-math-method: katex
+---
+
+
+
+```{r, eval=FALSE, echo=FALSE}
+# pulls images from Taki's slides
+library(officer)
+slides = read_pptx('~/Downloads/2022-2023/lectures/2022-10-18/lecture_2022-10-18.pptx')
+images = content[content$content_type %in% "image", ]
+lapply(1:nrow(images), function(ind){
+media_extract(x=slides,
+              path=images$media_file[ind],
+              target=file.path('~/Downloads/2022-2023/lectures/2022-10-18/imgs', basename(images$media_file[ind]) ) ) })
+```
+
+## Overview
+
+* Group-level analysis refers to analyses that seek to model associations between nonimaging individual differences with measures of the brain derived from MRI (or another imaging modality)
+* For univariate data, this often would correspond to a mixed model or other multi-level analysis model
+* Because of computational demand, in Neuroimaging these are fit in multiple stages
+
+## Section outline
+
+1. Modeling and estimation
+2. Statistical inference
+
+```{r, eval=TRUE, echo=FALSE, results='asis'}
+invisible(for(img in 71:82){
+  cat("##\n\n")
+  cat( paste0("![](", "figures/FSLimgs/image", img, ".png)\n\n"))
+})
+```
+
+
+# Modeling and estimation
+
+```{r, eval=TRUE, echo=FALSE, results='asis'}
+invisible(for(img in 2:35){
+  cat("##\n\n")
+  cat( paste0("![](", "figures/PPTXimgs/Slide", img, ".png)\n\n"))
+})
+```
+
+
+## Why are neuroimaging data multilevel?
+
+* Introduces two challenges
+    1. Correlation among measurements
+    2. Heteroskedasticity (variance differs between participants)
+
+## Example: Group differences in
+
+## Multiple measurements on the same participant
+
+## Random effects analysis
+
+## Heteroskedasticity
+
