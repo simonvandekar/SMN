@@ -20,6 +20,10 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 # Welcome
 
 -   [Syllabus](https://simonvandekar.github.io/SMN/)
+-   There will be group projects
+    + Most of the things you learn will come from the projects
+-   Auditors -- decide if you want to participate in the group projects.
+
 
 # Homework
 
