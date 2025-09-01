@@ -1,7 +1,7 @@
 Date,Day,Section,Topic,In class interactive,Assignment,Due date
 20-Aug,Wednesday,Introduction,Introduction and Setup,Software debug,[Quiz](https://brightspace.vanderbilt.edu/d2l/lms/quizzing/user/quiz_summary.d2l?ou=596109&qi=140517&cfql=0) & install software ,27-Aug
 25-Aug,Monday,Data Modalities,Introduction to Neuroimaging Modalities,,,
-27-Aug,Wednesday,Preprocessing,Preprocessing Pipeline,Registration with FSL,,
+27-Aug,Wednesday,Preprocessing,Preprocessing Pipeline,Registration with FSL,[Quiz](https://brightspace.vanderbilt.edu/d2l/lms/quizzing/user/quiz_summary.d2l?bp=1&isprv=1&qi=144511&ou=596109) ,12-Sep
 1-Sep,Monday,,**No class:** Labor day,,,
 3-Sep,Wednesday,Preprocessing,Structural preprocessing,,,
 8-Sep,Monday,Preprocessing,Functional preprocessing,,[*Despicable Me* preprocessing](2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html),21-Sep
