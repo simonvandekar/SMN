@@ -870,6 +870,62 @@ t = \frac{c^T \hat{\beta}}{\hat{\sigma} \sqrt{c^T (X^T \hat V^{-1} X)^{-1} c}}
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>sites <span class="ot">=</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">'../data/RBC/sites.txt'</span>, <span class="at">sep =</span> <span class="st">'/'</span>, <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="fu">c</span>(<span class="st">'subject'</span>, <span class="st">'site'</span>))</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="fu">table</span>(sites<span class="sc">$</span>site)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section></section>
+<section>
+<section id="resting-state-fmri-preprocessing" class="title-slide slide level1 center">
+<h1>resting state fMRI preprocessing</h1>
+<p>A lot of this preprocessing occurs in a regression framework</p>
+</section>
+<section id="recap-of-task-fmri-processing" class="slide level2">
+<h2>Recap of task fMRI processing</h2>
+<ul>
+<li>Inhomogeneity correction</li>
+<li>Brain extraction (via structural image)</li>
+<li>Registration</li>
+<li>Motion correction</li>
+<li>Slice timing correction</li>
+<li>Distortion correction (if field map available)</li>
+<li>Temporal filtering &amp; confound regression</li>
+<li>Spatial smoothing</li>
+</ul>
+</section>
+<section id="rs-fmri-unique-processing" class="slide level2">
+<h2>rs-fMRI unique processing</h2>
+<ul>
+<li>rs-fMRI is highly sensitive to motion artifact and noise</li>
+<li>More aggressive preprocessing steps:
+<ul>
+<li>Scrubbing – removing/modeling out high-motion time points</li>
+<li>Intensive nuisance covariate removal (24 parameters)</li>
+<li>Band-pass filtering (removing high frequency components as well)</li>
+<li>Independent Components Analysis (ICA) denoising – potential alternative to regression</li>
+</ul></li>
+</ul>
+<p>References <a href="https://pubmed.ncbi.nlm.nih.gov/28302591/">Ciric et al., 2017</a> <a href="https://pubmed.ncbi.nlm.nih.gov/29278773/">Parkes et al.&nbsp;2018</a></p>
+</section>
+<section id="band-pass-filtering" class="slide level2">
+<h2>Band-pass filtering</h2>
+<ul>
+<li>Similar, but keeping only frequencies in a range</li>
+<li>Performed at the same time as nuisance regression</li>
+</ul>
+</section>
+<section id="nuisance-regression" class="slide level2">
+<h2>Nuisance regression</h2>
+<ul>
+<li>Motion –</li>
+<li>aCompCor – regress out white matter and CSF signals
+<ul>
+<li>Means?</li>
+<li>What is aCompCor?</li>
+</ul></li>
+</ul>
+</section>
+<section id="scrubbing" class="slide level2">
+<h2>Scrubbing</h2>
+</section>
+<section id="references-1" class="slide level2">
+<h2>References</h2>
 
 <div class="footer footer-default">
 

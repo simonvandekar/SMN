@@ -693,9 +693,16 @@ field.nii.gz
 jacobian.nii.gz
 rigidReg.txt
 simon2MNI.nii.gz
+simon_bet.nii.gz
 simon_brain.nii.gz
 simon_brain_affineReg.nii.gz
+simon_brain_mixeltype.nii.gz
+simon_brain_pve_0.nii.gz
+simon_brain_pve_1.nii.gz
+simon_brain_pve_2.nii.gz
+simon_brain_pveseg.nii.gz
 simon_brain_rigidReg.nii.gz
+simon_brain_seg.nii.gz
 simon_brain_to_MNI152_T1_1mm_brain.log
 simon_brain_warpcoef.nii.gz
 simon_nonlinearReg.nii.gz</code></pre>
@@ -1016,6 +1023,82 @@ simon_nonlinearReg.nii.gz</code></pre>
 <h2></h2>
 
 <img data-src="figures/FSLimgs/image24.png" class="r-stretch"></section>
+<section id="temporal-high-pass-filtering" class="slide level2">
+<h2>Temporal (high-pass) filtering</h2>
+<ul>
+<li>Occurs as part of the first-level analysis to remove low-frequency drift</li>
+<li>Uses a discrete cosine transform on the time series and uses them as covariates in a regression (first-level analysis)</li>
+</ul>
+</section>
+<section id="implementation-in-fsl" class="slide level2">
+<h2>Implementation in FSL</h2>
+<ul>
+<li>The <strong>cutoff in FSL’s high-pass filter</strong> (implemented via DCT regressors) is chosen based on the <strong>longest period of signal variation you want to <em>keep</em></strong> relative to your <strong>task design</strong>.</li>
+</ul>
+<p><strong>How the DCT cutoff works</strong></p>
+<ul>
+<li><p>FEAT asks you for a <strong>high-pass filter cutoff (in seconds)</strong>, e.g.&nbsp;100s.</p></li>
+<li><p>This is the <strong>minimum period length</strong> that will be modeled as noise.</p>
+<ul>
+<li><p>All fluctuations <strong>slower than this period</strong> (i.e., longer trends) are captured by the DCT regressors and removed.</p></li>
+<li><p>Faster fluctuations (shorter than this period) remain in the data/GLM.</p></li>
+<li><p>Implementation: a set of cosine basis functions with periods <strong>≥ cutoff</strong> are generated, spaced to cover the run length.</p></li>
+<li><p><strong>Rule of thumb in FSL</strong>: <strong>2 × the longest inter-stimulus interval (ISI) / block length</strong> in your design.</p></li>
+<li><p><strong>Simon:</strong> Needs to be longer than the longest block length</p></li>
+<li><p>Rationale: you want to preserve your task regressors of interest, but still remove very slow scanner drift.</p></li>
+</ul></li>
+<li><p><strong>Typical defaults</strong>:</p></li>
+</ul>
+<p>Perfect — let’s dig into the math of how FSL implements the <strong>high-pass filter cutoff with DCT regressors</strong>.</p>
+</section>
+<section id="notes-from-chatgpt-about-dct-ii-used-in-fsl" class="slide level2 scrollable smaller">
+<h2>Notes from ChatGPT about DCT-II used in FSL</h2>
+<p>FSL uses a <strong>Discrete Cosine Transform (DCT, Type II)</strong> basis set to model slow drifts.</p>
+<p>If you have a run of length <strong>T</strong> seconds (N volumes × TR), then for each time point <span class="math inline">t = 0, 1, \dots, N-1</span>:</p>
+<p><span class="math display">
+X_{k}(t) \;=\; \cos\!\Bigg( \frac{\pi (t+0.5)k}{N} \Bigg), \quad k=0,1,\dots,N-1
+</span></p>
+<p>This is the standard <strong>DCT-II</strong> form. Each <span class="math inline">k</span> corresponds to a different frequency (periodicity).</p>
+</section>
+<section class="slide level2">
+
+<p><strong>Mapping cutoff to maximum period</strong></p>
+<p>The <strong>cutoff you choose in FEAT (e.g., 100 s)</strong> determines which DCT frequencies are included as nuisance regressors.</p>
+<ul>
+<li><p>Let <strong>TR</strong> = sampling interval (e.g., 2 s).</p></li>
+<li><p>Let <strong>N</strong> = number of volumes.</p></li>
+<li><p>Total run length = <span class="math inline">T = N \times \text{TR}</span>.</p></li>
+<li><p>The fundamental frequency increment of the DCT is:</p>
+<p><span class="math display">
+f_k = \frac{k}{2T} \quad \text{(Hz)}.
+</span></p></li>
+<li><p>Corresponding period:</p>
+<p><span class="math display">
+P_k = \frac{1}{f_k} = \frac{2T}{k}.
+</span></p></li>
+</ul>
+<p>Now, the <strong>high-pass cutoff</strong> (say 100 s) means: include all cosines with <strong>periods ≥ cutoff</strong>, i.e., <span class="math inline">P_k \geq 100 \, \text{s}</span>. Equivalently, all frequencies <span class="math inline">f_k \leq 0.01 \,\text{Hz}</span>.</p>
+</section>
+<section id="implementation-in-feat" class="slide level2">
+<h2>3. Implementation in FEAT</h2>
+<ul>
+<li><p>FEAT computes how many DCT terms are needed so that the <strong>lowest frequency kept</strong> matches the cutoff.</p></li>
+<li><p>Example: run length <span class="math inline">T=600</span> s (10 min).</p>
+<ul>
+<li>With TR=2 s, N=300.</li>
+<li>Period for k=1: <span class="math inline">P_1 = 2T/1 = 1200</span> s.</li>
+<li>Period for k=6: <span class="math inline">P_6 = 200</span> s.</li>
+<li>Period for k=12: <span class="math inline">P_{12} = 100</span> s.</li>
+<li>So for cutoff=100 s, FEAT will include regressors up through k=12.</li>
+</ul></li>
+</ul>
+<p>This way, any oscillation longer than 100 s is modeled by the DCT regressors and removed.</p>
+<ul>
+<li><strong>Cutoff = 100 s</strong> → all trends slower than 0.01 Hz are treated as nuisance.</li>
+<li>The DCT-II regressors are simply orthogonal cosines spanning these low frequencies.</li>
+<li>They’re included in the design matrix, so FILM estimates and removes them along with the task regressors.</li>
+</ul>
+</section>
 <section id="field-map-distortion-correction" class="slide level2">
 <h2>Field Map / Distortion Correction</h2>
 <ul>

@@ -503,6 +503,93 @@ invisible(for(img in c(9:12,23:24)){
 })
 ```
 
+## Temporal (high-pass) filtering
+
+* Occurs as part of the first-level analysis to remove low-frequency drift
+* Uses a discrete cosine transform on the time series and uses them as covariates in a regression (first-level analysis)
+
+## Implementation in FSL
+
+* The **cutoff in FSL’s high-pass filter** (implemented via DCT regressors) is chosen based on the **longest period of signal variation you want to *keep*** relative to your **task design**.
+
+
+**How the DCT cutoff works**
+
+* FEAT asks you for a **high-pass filter cutoff (in seconds)**, e.g. 100s.
+* This is the **minimum period length** that will be modeled as noise.
+
+  * All fluctuations **slower than this period** (i.e., longer trends) are captured by the DCT regressors and removed.
+  * Faster fluctuations (shorter than this period) remain in the data/GLM.
+  * Implementation: a set of cosine basis functions with periods **≥ cutoff** are generated, spaced to cover the run length.
+  * **Rule of thumb in FSL**:  **2 × the longest inter-stimulus interval (ISI) / block length** in your design.
+  * **Simon:** Needs to be longer than the longest block length
+
+  * Rationale: you want to preserve your task regressors of interest, but still remove very slow scanner drift.
+* **Typical defaults**:
+
+Perfect — let’s dig into the math of how FSL implements the **high-pass filter cutoff with DCT regressors**.
+
+---
+
+## Notes from ChatGPT about DCT-II used in FSL {.scrollable .smaller}
+
+FSL uses a **Discrete Cosine Transform (DCT, Type II)** basis set to model slow drifts.
+
+If you have a run of length **T** seconds (N volumes × TR), then for each time point $t = 0, 1, \dots, N-1$:
+
+$$
+X_{k}(t) \;=\; \cos\!\Bigg( \frac{\pi (t+0.5)k}{N} \Bigg), \quad k=0,1,\dots,N-1
+$$
+
+This is the standard **DCT-II** form. Each $k$ corresponds to a different frequency (periodicity).
+
+---
+
+**Mapping cutoff to maximum period**
+
+The **cutoff you choose in FEAT (e.g., 100 s)** determines which DCT frequencies are included as nuisance regressors.
+
+* Let **TR** = sampling interval (e.g., 2 s).
+* Let **N** = number of volumes.
+* Total run length = $T = N \times \text{TR}$.
+* The fundamental frequency increment of the DCT is:
+
+  $$
+  f_k = \frac{k}{2T} \quad \text{(Hz)}.
+  $$
+* Corresponding period:
+
+  $$
+  P_k = \frac{1}{f_k} = \frac{2T}{k}.
+  $$
+
+Now, the **high-pass cutoff** (say 100 s) means:
+include all cosines with **periods ≥ cutoff**, i.e., $P_k \geq 100 \, \text{s}$.
+Equivalently, all frequencies $f_k \leq 0.01 \,\text{Hz}$.
+
+---
+
+## 3. Implementation in FEAT
+
+* FEAT computes how many DCT terms are needed so that the **lowest frequency kept** matches the cutoff.
+* Example: run length $T=600$ s (10 min).
+
+  * With TR=2 s, N=300.
+  * Period for k=1: $P_1 = 2T/1 = 1200$ s.
+  * Period for k=6: $P_6 = 200$ s.
+  * Period for k=12: $P_{12} = 100$ s.
+  * So for cutoff=100 s, FEAT will include regressors up through k=12.
+
+This way, any oscillation longer than 100 s is modeled by the DCT regressors and removed.
+
+
+* **Cutoff = 100 s** → all trends slower than 0.01 Hz are treated as nuisance.
+* The DCT-II regressors are simply orthogonal cosines spanning these low frequencies.
+* They’re included in the design matrix, so FILM estimates and removes them along with the task regressors.
+
+
+
+
 ## Field Map / Distortion Correction
 
 - Correction of **EPI geometric distortions** due to inhomogeneity in the magnetic field

@@ -200,7 +200,7 @@
     "href": "2preprocessing/preprocessing.html#registration-output",
     "title": "Preprocessing",
     "section": "Registration output",
-    "text": "Registration output\n\nls ../images/simonReg\n\nMNI2simon.nii.gz\naffineReg.txt\nfield.nii.gz\njacobian.nii.gz\nrigidReg.txt\nsimon2MNI.nii.gz\nsimon_brain.nii.gz\nsimon_brain_affineReg.nii.gz\nsimon_brain_rigidReg.nii.gz\nsimon_brain_to_MNI152_T1_1mm_brain.log\nsimon_brain_warpcoef.nii.gz\nsimon_nonlinearReg.nii.gz\n\n\n\nWarp field – Tells the registration algorithm how much and what direction to move each voxel value\nJacobian of the transformation – More accurately, the Jacobian determinant.\n\nThe Jacobian is the (matrix valued) derivative of the warp field at each location. It describes how the voxel coordinates get moved at a given location\nThe determinant of the transformation describes the amount the voxel has to move"
+    "text": "Registration output\n\nls ../images/simonReg\n\nMNI2simon.nii.gz\naffineReg.txt\nfield.nii.gz\njacobian.nii.gz\nrigidReg.txt\nsimon2MNI.nii.gz\nsimon_bet.nii.gz\nsimon_brain.nii.gz\nsimon_brain_affineReg.nii.gz\nsimon_brain_mixeltype.nii.gz\nsimon_brain_pve_0.nii.gz\nsimon_brain_pve_1.nii.gz\nsimon_brain_pve_2.nii.gz\nsimon_brain_pveseg.nii.gz\nsimon_brain_rigidReg.nii.gz\nsimon_brain_seg.nii.gz\nsimon_brain_to_MNI152_T1_1mm_brain.log\nsimon_brain_warpcoef.nii.gz\nsimon_nonlinearReg.nii.gz\n\n\n\nWarp field – Tells the registration algorithm how much and what direction to move each voxel value\nJacobian of the transformation – More accurately, the Jacobian determinant.\n\nThe Jacobian is the (matrix valued) derivative of the warp field at each location. It describes how the voxel coordinates get moved at a given location\nThe determinant of the transformation describes the amount the voxel has to move"
   },
   {
     "objectID": "2preprocessing/preprocessing.html#advanced-registration-topics",
@@ -985,5 +985,75 @@
     "title": "Group-level Analysis",
     "section": "Heteroskedasticity",
     "text": "Heteroskedasticity"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#temporal-high-pass-filtering",
+    "href": "2preprocessing/preprocessing.html#temporal-high-pass-filtering",
+    "title": "Preprocessing",
+    "section": "Temporal (high-pass) filtering",
+    "text": "Temporal (high-pass) filtering\n\nOccurs as part of the first-level analysis to remove low-frequency drift\nUses a discrete cosine transform on the time series and uses them as covariates in a regression (first-level analysis)"
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#implementation-in-fsl",
+    "href": "2preprocessing/preprocessing.html#implementation-in-fsl",
+    "title": "Preprocessing",
+    "section": "Implementation in FSL",
+    "text": "Implementation in FSL\n\nThe cutoff in FSL’s high-pass filter (implemented via DCT regressors) is chosen based on the longest period of signal variation you want to keep relative to your task design.\n\nHow the DCT cutoff works\n\nFEAT asks you for a high-pass filter cutoff (in seconds), e.g. 100s.\nThis is the minimum period length that will be modeled as noise.\n\nAll fluctuations slower than this period (i.e., longer trends) are captured by the DCT regressors and removed.\nFaster fluctuations (shorter than this period) remain in the data/GLM.\nImplementation: a set of cosine basis functions with periods ≥ cutoff are generated, spaced to cover the run length.\nRule of thumb in FSL: 2 × the longest inter-stimulus interval (ISI) / block length in your design.\nSimon: Needs to be longer than the longest block length\nRationale: you want to preserve your task regressors of interest, but still remove very slow scanner drift.\n\nTypical defaults:\n\nPerfect — let’s dig into the math of how FSL implements the high-pass filter cutoff with DCT regressors."
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#notes-from-chatgpt-about-dct-ii-used-in-fsl",
+    "href": "2preprocessing/preprocessing.html#notes-from-chatgpt-about-dct-ii-used-in-fsl",
+    "title": "Preprocessing",
+    "section": "Notes from ChatGPT about DCT-II used in FSL",
+    "text": "Notes from ChatGPT about DCT-II used in FSL\nFSL uses a Discrete Cosine Transform (DCT, Type II) basis set to model slow drifts.\nIf you have a run of length T seconds (N volumes × TR), then for each time point t = 0, 1, \\dots, N-1:\n\nX_{k}(t) \\;=\\; \\cos\\!\\Bigg( \\frac{\\pi (t+0.5)k}{N} \\Bigg), \\quad k=0,1,\\dots,N-1\n\nThis is the standard DCT-II form. Each k corresponds to a different frequency (periodicity)."
+  },
+  {
+    "objectID": "2preprocessing/preprocessing.html#implementation-in-feat",
+    "href": "2preprocessing/preprocessing.html#implementation-in-feat",
+    "title": "Preprocessing",
+    "section": "3. Implementation in FEAT",
+    "text": "3. Implementation in FEAT\n\nFEAT computes how many DCT terms are needed so that the lowest frequency kept matches the cutoff.\nExample: run length T=600 s (10 min).\n\nWith TR=2 s, N=300.\nPeriod for k=1: P_1 = 2T/1 = 1200 s.\nPeriod for k=6: P_6 = 200 s.\nPeriod for k=12: P_{12} = 100 s.\nSo for cutoff=100 s, FEAT will include regressors up through k=12.\n\n\nThis way, any oscillation longer than 100 s is modeled by the DCT regressors and removed.\n\nCutoff = 100 s → all trends slower than 0.01 Hz are treated as nuisance.\nThe DCT-II regressors are simply orthogonal cosines spanning these low frequencies.\nThey’re included in the design matrix, so FILM estimates and removes them along with the task regressors."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#recap-of-task-fmri-processing",
+    "href": "3first-level_analysis/first-level_analysis.html#recap-of-task-fmri-processing",
+    "title": "First-level Analysis",
+    "section": "Recap of task fMRI processing",
+    "text": "Recap of task fMRI processing\n\nInhomogeneity correction\nBrain extraction (via structural image)\nRegistration\nMotion correction\nSlice timing correction\nDistortion correction (if field map available)\nTemporal filtering & confound regression\nSpatial smoothing"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#rs-fmri-unique-processing",
+    "href": "3first-level_analysis/first-level_analysis.html#rs-fmri-unique-processing",
+    "title": "First-level Analysis",
+    "section": "rs-fMRI unique processing",
+    "text": "rs-fMRI unique processing\n\nrs-fMRI is highly sensitive to motion artifact and noise\nMore aggressive preprocessing steps:\n\nScrubbing – removing/modeling out high-motion time points\nIntensive nuisance covariate removal (24 parameters)\nBand-pass filtering (removing high frequency components as well)\nIndependent Components Analysis (ICA) denoising – potential alternative to regression\n\n\nReferences Ciric et al., 2017 Parkes et al. 2018"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#band-pass-filtering",
+    "href": "3first-level_analysis/first-level_analysis.html#band-pass-filtering",
+    "title": "First-level Analysis",
+    "section": "Band-pass filtering",
+    "text": "Band-pass filtering\n\nSimilar, but keeping only frequencies in a range\nPerformed at the same time as nuisance regression"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#nuisance-regression",
+    "href": "3first-level_analysis/first-level_analysis.html#nuisance-regression",
+    "title": "First-level Analysis",
+    "section": "Nuisance regression",
+    "text": "Nuisance regression\n\nMotion –\naCompCor – regress out white matter and CSF signals\n\nMeans?\nWhat is aCompCor?"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#scrubbing",
+    "href": "3first-level_analysis/first-level_analysis.html#scrubbing",
+    "title": "First-level Analysis",
+    "section": "Scrubbing",
+    "text": "Scrubbing"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#references-1",
+    "href": "3first-level_analysis/first-level_analysis.html#references-1",
+    "title": "First-level Analysis",
+    "section": "References",
+    "text": "References"
   }
 ]

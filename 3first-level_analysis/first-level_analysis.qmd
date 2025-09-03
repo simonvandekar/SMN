@@ -315,3 +315,53 @@ sites = read.table(file = '../data/RBC/sites.txt', sep = '/', header = FALSE, co
 table(sites$site)
 ```
 
+
+
+
+# resting state fMRI preprocessing
+
+A lot of this preprocessing occurs in a regression framework
+
+## Recap of task fMRI processing
+
+* Inhomogeneity correction
+* Brain extraction (via structural image)
+* Registration
+* Motion correction
+* Slice timing correction
+* Distortion correction (if field map available)
+* Temporal filtering & confound regression
+* Spatial smoothing
+
+## rs-fMRI unique processing
+
+* rs-fMRI is highly sensitive to motion artifact and noise
+* More aggressive preprocessing steps:
+   + Scrubbing -- removing/modeling out high-motion time points
+   + Intensive nuisance covariate removal (24 parameters)
+   + Band-pass filtering (removing high frequency components as well)
+   + Independent Components Analysis (ICA) denoising -- potential alternative to regression
+
+References
+[Ciric et al., 2017](https://pubmed.ncbi.nlm.nih.gov/28302591/)
+[Parkes et al. 2018](https://pubmed.ncbi.nlm.nih.gov/29278773/)
+
+## Band-pass filtering
+
+* Similar, but keeping only frequencies in a range
+* Performed at the same time as nuisance regression
+
+## Nuisance regression
+
+* Motion --
+* aCompCor -- regress out white matter and CSF signals
+   + Means?
+   + What is aCompCor?
+
+
+## Scrubbing
+
+
+## References
+
+
