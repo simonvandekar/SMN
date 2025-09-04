@@ -6,6 +6,7 @@ format:
   revealjs:
     menu:
       side: right
+    scrollable: true
     link-external-newwindow: true
     slide-number: true
     code-overflow: wrap
@@ -265,7 +266,7 @@ fsleyes images/MNI152_T1_1mm_brain.nii.gz images/simonReg/simon_brain_affineReg.
     - e.g. Pediatric, aging, or patient populations
 
 
-## Registration output
+## Registration output {.scrollable}
 
 ```{bash, eval=TRUE}
 ls ../images/simonReg

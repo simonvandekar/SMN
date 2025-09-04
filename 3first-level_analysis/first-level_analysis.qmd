@@ -4,6 +4,7 @@ author: "Simon Vandekar"
 engine: knitr
 format:
   revealjs:
+    scrollable: true
     menu:
       side: right
     link-external-newwindow: true
@@ -351,17 +352,76 @@ References
 * Similar, but keeping only frequencies in a range
 * Performed at the same time as nuisance regression
 
-## Nuisance regression
+## Nuisance regression (related to motion)
 
-* Motion --
-* aCompCor -- regress out white matter and CSF signals
-   + Means?
-   + What is aCompCor?
+* Motion -- 24 parameters total
+    + Translation and rotation -- 6 total parameters
+    + Derivatives -- 6 more
+    + Squares of translation and rotations
+    + Squares of derivatives
+    
+    
+## Nuisance regression (nuisance signal)
 
+**aCompCor** -- Anatomical Component Correlation
+
++ In addition to motion covariates
++ CSF and white matter are not "active" -- regress out signal associated with these
++ PCA of the signal in these regions, e.g.
+   $$
+   Y_{\mathrm{CSF}} \in \mathbb{R}^{T \times V_{\mathrm{CSF} }} \\
+   Y_{\mathrm{CSF}} = U D W^T
+   $$
+   Choose the first $K$ components and regress them out of the data
+   
+   
+## Global signal regression
+
++ Controversial because there is evidence it increases motion-related correlations between distant brain regions
++ I am not too familiar why, could be a good advanced topic
++ REFs.
 
 ## Scrubbing
 
+"Dummy"/"One hot" coding of scans where participant move a lot
 
-## References
+In the end, the preprocessing regression design matrix for rs-fMRI might look something like
+
+$$
+\begin{bmatrix}
+\vert & \vert & \vert& \vert \\
+\text{Temp filt} & \text{Motion} & \text{aCompCor} & \text{Dummy variables} \\
+ \vert & \vert & \vert & \vert
+\end{bmatrix}
+$$
+
+## rs-fMRI before and after preprocessing
+
+* Histogram of signal changes
+* Positive/negative correlations are relative to preprocessing
+
+![Whitfield-Gabrieli 2012](figures/whitfield-gabrieli_2012_Fig2.png)
+
+## rs-fMRI first-level analysis
+
+* Pretty straightforward after preprocessing
+* Functional connectivity is defined as Pearson correlation between two locations ($R(v,t)$ is the residuals from the preprocessing)
+
+$$
+\hat \rho(v,w) = \frac{\sum_{t=1}^T R(v, t) R(w, t)}{\sqrt{\sum_{t=1}^T R(v, t) ^2 \times \sum_{t=1}^T R(w, t)^2  } }
+$$
+* Correlations are Fisher Z-transformed so that they are approximately normal
+
+$$
+Z(v,w) = \mathrm{atanh}(\hat \rho(v,w))
+$$
+
+* Types of analyses
+    + Network -- all voxel-to-voxel or region-to-region correlations
+    + Seed-based -- Correlation of preselected seed region with entire image (image-valued)
+
+## Overview of rs-fMRI
+
+![Whitfield-Gabrieli 2012](figures/whitfield-gabrieli_2012_Fig1.png)
 
 

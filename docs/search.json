@@ -1047,7 +1047,7 @@
     "href": "3first-level_analysis/first-level_analysis.html#scrubbing",
     "title": "First-level Analysis",
     "section": "Scrubbing",
-    "text": "Scrubbing"
+    "text": "Scrubbing\n“Dummy”/“One hot” coding of scans where participant move a lot\nIn the end, the preprocessing regression design matrix for rs-fMRI might look something like\n\n\\begin{bmatrix}\n\\vert & \\vert & \\vert& \\vert \\\\\n\\text{Temp filt} & \\text{Motion} & \\text{aCompCor} & \\text{Dummy variables} \\\\\n\\vert & \\vert & \\vert & \\vert\n\\end{bmatrix}"
   },
   {
     "objectID": "3first-level_analysis/first-level_analysis.html#references-1",
@@ -1055,5 +1055,47 @@
     "title": "First-level Analysis",
     "section": "References",
     "text": "References"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#nuisance-regression-related-to-motion",
+    "href": "3first-level_analysis/first-level_analysis.html#nuisance-regression-related-to-motion",
+    "title": "First-level Analysis",
+    "section": "Nuisance regression (related to motion)",
+    "text": "Nuisance regression (related to motion)\n\nMotion – 24 parameters total\n\nTranslation and rotation – 6 total parameters\nDerivatives – 6 more\nSquares of translation and rotations\nSquares of derivatives"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#nuisance-regression-nuisance-signal",
+    "href": "3first-level_analysis/first-level_analysis.html#nuisance-regression-nuisance-signal",
+    "title": "First-level Analysis",
+    "section": "Nuisance regression (nuisance signal)",
+    "text": "Nuisance regression (nuisance signal)\naCompCor – Anatomical Component Correlation\n\nIn addition to motion covariates\nCSF and white matter are not “active” – regress out signal associated with these\nPCA of the signal in these regions, e.g. \nY_{\\mathrm{CSF}} \\in \\mathbb{R}^{T \\times V_{\\mathrm{CSF} }} \\\\\nY_{\\mathrm{CSF}} = U D W^T\n Choose the first K components and regress them out of the data"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#global-signal-regression",
+    "href": "3first-level_analysis/first-level_analysis.html#global-signal-regression",
+    "title": "First-level Analysis",
+    "section": "Global signal regression",
+    "text": "Global signal regression\n\nControversial because there is evidence it increases motion-related correlations between distant brain regions\nI am not too familiar why, could be a good advanced topic\nREFs."
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#rs-fmri-before-and-after-preprocessing",
+    "href": "3first-level_analysis/first-level_analysis.html#rs-fmri-before-and-after-preprocessing",
+    "title": "First-level Analysis",
+    "section": "rs-fMRI before and after preprocessing",
+    "text": "rs-fMRI before and after preprocessing\n\nHistogram of signal changes\nPositive/negative correlations are relative to preprocessing\n\n\nWhitfield-Gabrieli 2012"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#rs-fmri-first-level-analysis",
+    "href": "3first-level_analysis/first-level_analysis.html#rs-fmri-first-level-analysis",
+    "title": "First-level Analysis",
+    "section": "rs-fMRI first-level analysis",
+    "text": "rs-fMRI first-level analysis\n\nPretty straightforward after preprocessing\nFunctional connectivity is defined as Pearson correlation between two locations (R(v,t) is the residuals from the preprocessing)\n\n\n\\hat \\rho(v,w) = \\frac{\\sum_{t=1}^T R(v, t) R(w, t)}{\\sqrt{\\sum_{t=1}^T R(v, t) ^2 \\times \\sum_{t=1}^T R(w, t)^2  } }\n * Correlations are Fisher Z-transformed so that they are approximately normal\n\nZ(v,w) = \\mathrm{atanh}(\\hat \\rho(v,w))\n\n\nTypes of analyses\n\nNetwork – all voxel-to-voxel or region-to-region correlations\nSeed-based – Correlation of preselected seed region with entire image (image-valued)"
+  },
+  {
+    "objectID": "3first-level_analysis/first-level_analysis.html#overview-of-rs-fmri",
+    "href": "3first-level_analysis/first-level_analysis.html#overview-of-rs-fmri",
+    "title": "First-level Analysis",
+    "section": "Overview of rs-fMRI",
+    "text": "Overview of rs-fMRI\n\n\nWhitfield-Gabrieli 2012"
   }
 ]

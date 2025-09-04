@@ -324,6 +324,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -910,24 +911,83 @@ t = \frac{c^T \hat{\beta}}{\hat{\sigma} \sqrt{c^T (X^T \hat V^{-1} X)^{-1} c}}
 <li>Performed at the same time as nuisance regression</li>
 </ul>
 </section>
-<section id="nuisance-regression" class="slide level2">
-<h2>Nuisance regression</h2>
+<section id="nuisance-regression-related-to-motion" class="slide level2">
+<h2>Nuisance regression (related to motion)</h2>
 <ul>
-<li>Motion –</li>
-<li>aCompCor – regress out white matter and CSF signals
+<li>Motion – 24 parameters total
 <ul>
-<li>Means?</li>
-<li>What is aCompCor?</li>
+<li>Translation and rotation – 6 total parameters</li>
+<li>Derivatives – 6 more</li>
+<li>Squares of translation and rotations</li>
+<li>Squares of derivatives</li>
 </ul></li>
+</ul>
+</section>
+<section id="nuisance-regression-nuisance-signal" class="slide level2">
+<h2>Nuisance regression (nuisance signal)</h2>
+<p><strong>aCompCor</strong> – Anatomical Component Correlation</p>
+<ul>
+<li>In addition to motion covariates</li>
+<li>CSF and white matter are not “active” – regress out signal associated with these</li>
+<li>PCA of the signal in these regions, e.g. <span class="math display">
+Y_{\mathrm{CSF}} \in \mathbb{R}^{T \times V_{\mathrm{CSF} }} \\
+Y_{\mathrm{CSF}} = U D W^T
+</span> Choose the first <span class="math inline">K</span> components and regress them out of the data</li>
+</ul>
+</section>
+<section id="global-signal-regression" class="slide level2">
+<h2>Global signal regression</h2>
+<ul>
+<li>Controversial because there is evidence it increases motion-related correlations between distant brain regions</li>
+<li>I am not too familiar why, could be a good advanced topic</li>
+<li>REFs.</li>
 </ul>
 </section>
 <section id="scrubbing" class="slide level2">
 <h2>Scrubbing</h2>
+<p>“Dummy”/“One hot” coding of scans where participant move a lot</p>
+<p>In the end, the preprocessing regression design matrix for rs-fMRI might look something like</p>
+<p><span class="math display">
+\begin{bmatrix}
+\vert &amp; \vert &amp; \vert&amp; \vert \\
+\text{Temp filt} &amp; \text{Motion} &amp; \text{aCompCor} &amp; \text{Dummy variables} \\
+\vert &amp; \vert &amp; \vert &amp; \vert
+\end{bmatrix}
+</span></p>
 </section>
-<section id="references-1" class="slide level2">
-<h2>References</h2>
+<section id="rs-fmri-before-and-after-preprocessing" class="slide level2">
+<h2>rs-fMRI before and after preprocessing</h2>
+<ul>
+<li>Histogram of signal changes</li>
+<li>Positive/negative correlations are relative to preprocessing</li>
+</ul>
 
-<div class="footer footer-default">
+<img data-src="figures/whitfield-gabrieli_2012_Fig2.png" class="r-stretch quarto-figure-center"><p class="caption">Whitfield-Gabrieli 2012</p></section>
+<section id="rs-fmri-first-level-analysis" class="slide level2">
+<h2>rs-fMRI first-level analysis</h2>
+<ul>
+<li>Pretty straightforward after preprocessing</li>
+<li>Functional connectivity is defined as Pearson correlation between two locations (<span class="math inline">R(v,t)</span> is the residuals from the preprocessing)</li>
+</ul>
+<p><span class="math display">
+\hat \rho(v,w) = \frac{\sum_{t=1}^T R(v, t) R(w, t)}{\sqrt{\sum_{t=1}^T R(v, t) ^2 \times \sum_{t=1}^T R(w, t)^2  } }
+</span> * Correlations are Fisher Z-transformed so that they are approximately normal</p>
+<p><span class="math display">
+Z(v,w) = \mathrm{atanh}(\hat \rho(v,w))
+</span></p>
+<ul>
+<li>Types of analyses
+<ul>
+<li>Network – all voxel-to-voxel or region-to-region correlations</li>
+<li>Seed-based – Correlation of preselected seed region with entire image (image-valued)</li>
+</ul></li>
+</ul>
+</section>
+<section id="overview-of-rs-fmri" class="slide level2">
+<h2>Overview of rs-fMRI</h2>
+
+
+<img data-src="figures/whitfield-gabrieli_2012_Fig1.png" class="r-stretch quarto-figure-center"><p class="caption">Whitfield-Gabrieli 2012</p><div class="footer footer-default">
 
 </div>
 </section></section>
