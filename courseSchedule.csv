@@ -4,7 +4,7 @@ Date,Day,Section,Topic,In class interactive,Assignment,Due date
 27-Aug,Wednesday,Preprocessing,Preprocessing Pipeline,Registration with FSL,[Quiz](https://brightspace.vanderbilt.edu/d2l/lms/quizzing/user/quiz_summary.d2l?bp=1&isprv=1&qi=144511&ou=596109) ,12-Sep
 1-Sep,Monday,,**No class:** Labor day,,,
 3-Sep,Wednesday,Preprocessing,Structural preprocessing,,,
-8-Sep,Monday,Preprocessing,**Recorded:** Structural and functional preprocessing,,[*Despicable Me* preprocessing](2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html),21-Sep
+8-Sep,Monday,Preprocessing,**Recorded:** [Structural and functional preprocessing](https://vanderbilt.zoom.us/rec/share/Nn5ENJKRJ8eXyeWqGcDOSb6WRUwMJVxxkTrAVBEJTK_Au9hKefV9q89QVYEUw0Az.DjPXRat-6fxHTZZ3),,[*Despicable Me* preprocessing](2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html),21-Sep
 10-Sep,Wednesday,,**Recorded:** Functional preprocessing,*Despicable Me* preprocessing,,
 15-Sep,Monday,First-Level Analysis,First-Level Statistical Analysis,,,
 17-Sep,Wednesday,First-Level Analysis,First-Level Statistical Analysis with FSL,*Despicable Me* first-level analysis,[First-level fMRI analysis of *Despicable Me* data](3first-level_analysis/homework/first-level_analysis/first-level_analysis.html),
