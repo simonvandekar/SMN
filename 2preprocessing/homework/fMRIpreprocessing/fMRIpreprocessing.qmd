@@ -28,11 +28,7 @@ format:
 For fMRI preprocessing, FSL requires a brain extracted anatomical T1 image. It needs to be with the same name in the same folder as the T1, with the suffix `<T1 name>_brain.nii.gz`.
 
 1.  Use FSL's tool to bias correct and then brain extract the T1. If you do not apply bias correction, the brain extraction might look bad.
-2.  FSL's tool for brain extraction actually doesn't work too well oftentimes. Create another brain extracted image using the following steps:
-    -   Linearly register the participants T1 with skull to the MNI 1mm template with skull and save out the transformation matrix.
-    -   Invert the transformation matrix.
-    -   Register the MNI brain mask to the participant's T1 image using nearest neighbor interpolation.
-    -   Mask the participant's T1 with the registered brain mask.
+2.  Use `fsl_anat` to process the anatomical image.
 3.  Include a screenshot in this document of both methods of the brain extracted image overlaid in semitransparent color or with a boundary on the unextracted (with skull) T1. Use 1-3 sentences to describe why you prefer one method or another.
 4.  For the method that works better, name that file `<T1 name>_brain.nii.gz` in the `anat` folder to be used for fMRI preprocessing.
 5.  Save all other output in the folder with the T1 image.
@@ -57,7 +53,7 @@ The slice timing information for the fMRI data are included in the `.json` file 
 
 ### Temporal filtering (6 pts)
 
-The stimulus time series we will use is in the first level model in the `data/RBC/stimulusTimeSeries/despicableMe/stickFile.txt` file. Choose an appropriate temporal filtering value in FSL based on the stimuli durations.
+The stimulus time series we will use is in the first level model in the `data/RBC/stimulusTimeSeries/despicableMe/positiveStimulus.txt` and `data/RBC/stimulusTimeSeries/despicableMe/negativeStimulus.txt`files. Choose an appropriate temporal filtering value in FSL based on the stimuli durations.
 
 Explain here in 1-2 sentences how you decided on your temporal filtering settings.
 
