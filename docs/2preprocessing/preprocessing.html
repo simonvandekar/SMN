@@ -688,7 +688,8 @@ T_1 = \begin{bmatrix}
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ls</span> ../images/simonReg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>MNI2simon.nii.gz
+<pre><code>HO_simon.nii.gz
+MNI2simon.nii.gz
 affineReg.txt
 field.nii.gz
 jacobian.nii.gz
@@ -1048,9 +1049,7 @@ simon_nonlinearReg.nii.gz</code></pre>
 <li><p><strong>Simon:</strong> Needs to be longer than the longest block length</p></li>
 <li><p>Rationale: you want to preserve your task regressors of interest, but still remove very slow scanner drift.</p></li>
 </ul></li>
-<li><p><strong>Typical defaults</strong>:</p></li>
 </ul>
-<p>Perfect — let’s dig into the math of how FSL implements the <strong>high-pass filter cutoff with DCT regressors</strong>.</p>
 </section>
 <section id="notes-from-chatgpt-about-dct-ii-used-in-fsl" class="slide level2 scrollable smaller">
 <h2>Notes from ChatGPT about DCT-II used in FSL</h2>

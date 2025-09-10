@@ -526,11 +526,8 @@ invisible(for(img in c(9:12,23:24)){
   * **Simon:** Needs to be longer than the longest block length
 
   * Rationale: you want to preserve your task regressors of interest, but still remove very slow scanner drift.
-* **Typical defaults**:
 
-Perfect — let’s dig into the math of how FSL implements the **high-pass filter cutoff with DCT regressors**.
 
----
 
 ## Notes from ChatGPT about DCT-II used in FSL {.scrollable .smaller}
 
@@ -544,7 +541,6 @@ $$
 
 This is the standard **DCT-II** form. Each $k$ corresponds to a different frequency (periodicity).
 
----
 
 **Mapping cutoff to maximum period**
 
@@ -568,9 +564,8 @@ Now, the **high-pass cutoff** (say 100 s) means:
 include all cosines with **periods ≥ cutoff**, i.e., $P_k \geq 100 \, \text{s}$.
 Equivalently, all frequencies $f_k \leq 0.01 \,\text{Hz}$.
 
----
 
-## 3. Implementation in FEAT
+## Implementation in FEAT
 
 * FEAT computes how many DCT terms are needed so that the **lowest frequency kept** matches the cutoff.
 * Example: run length $T=600$ s (10 min).
