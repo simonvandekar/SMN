@@ -646,7 +646,7 @@ FEAT B0 options:
 
 ```{bash}
 # brain extraction fails here
-fast data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bc.nii.gz
+fast data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w.nii.gz
 bet data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bc.nii.gz data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz
 fsleyes data/RBC/HBN_BIDS/sub-NDARAA306NT2/ses-HBNsiteRU/anat/sub-NDARAA306NT2_ses-HBNsiteRU_acq-HCP_T1w_bet.nii.gz
 ```

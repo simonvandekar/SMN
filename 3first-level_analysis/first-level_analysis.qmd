@@ -31,8 +31,8 @@ media_extract(x=slides,
 # Objectives
 
 * These slides will introduce first-level fMRI analysis
-  + Part 1: time series analysis
-  + Part 2: task fMRI
+  + Part 1: task fMRI
+  + Part 2: time series analysis
   + Part 3: resting state fMRI
 
 
