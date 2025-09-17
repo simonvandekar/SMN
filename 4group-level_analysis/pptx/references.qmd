@@ -1,0 +1,13 @@
+
+
+* [Friston et al. (1994) *Assessing the significance of focal activations using their spatial extent*](https://pubmed.ncbi.nlm.nih.gov/8056269/)
+* [Brett, Johnsrude & Owen (2002) *Introduction to Random Field Theory*](https://www.fil.ion.ucl.ac.uk/spm/doc/books/hbf2/pdfs/Ch14.pdf)
+* [Worsley et al. (1992) *Three-dimensional statistical analysis for CBF activation studies*](https://www.math.mcgill.ca/keith/jcbf/jcbf.pdf)
+ * [Woo, Krishnan & Wager (2014) *Cluster-extent based thresholding in fMRI analyses*](https://pubmed.ncbi.nlm.nih.gov/23747457/)
+* [Eklund, Nichols & Knutsson (2016) *Cluster failure: Why fMRI inferences…*](https://www.pnas.org/doi/10.1073/pnas.1602413113)* **Nonstationary RFT:** [Hayasaka et al. (2004)](https://pubmed.ncbi.nlm.nih.gov/15193696/)
+* **Cluster-Mass RFT:** [Zhang et al. (2009)](https://pubmed.ncbi.nlm.nih.gov/19162277/)
+* **Threshold-Free Cluster Enhancement (TFCE):** [Smith & Nichols (2009)](https://doi.org/10.1016/j.neuroimage.2008.03.061)
+* Peaks as test statistics, EC gives expected number of maxima.
+* [Cao & Worsley (1999) *The distribution of the maximum of Gaussian random fields on 6D correlation matrices*](https://pubmed.ncbi.nlm.nih.gov/10080365/)
+* [Davenport & Nichols (2020) *Selective peak inference…*](https://pubmed.ncbi.nlm.nih.gov/32603899/)
+* [Davenport et al. (2023) *Robust FWER control in neuroimaging using RFT*](https://academic.oup.com/biostatistics/article/24/4/1132/6931270)
