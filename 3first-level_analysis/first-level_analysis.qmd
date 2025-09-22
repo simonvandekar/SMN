@@ -159,7 +159,7 @@ $$
 * Raw estimator for correlation with lag $\tau$
   
 $$
-r_{xx}(\tau) = \frac{1}{\hat\sigma} \sum_{t=1}^{N-\tau} x(t) x(t+\tau)/(N-\tau)
+r_{xx}(\tau) = \frac{1}{\hat\sigma^2} \sum_{t=1}^{N-\tau} x(t) x(t+\tau)/(N-\tau)
 $$
     
 * Tapered estimators, such as the Tukey single-tapering
