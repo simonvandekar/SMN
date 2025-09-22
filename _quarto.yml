@@ -20,7 +20,7 @@ website:
           href: 3first-level_analysis/first-level_analysis.html
           target: "_blank"
         - text: "Group-level Analysis"
-          href: 4group-level_analysis/group-level_analysis.html
+          href: 4group-level_analysis/pptx/group-level_analysis.pdf
           target: "_blank"
         - text: "Common Mistakes and Challenges"
           href: 5common_mistakes_challenges/common_mistakes_challenges.html
