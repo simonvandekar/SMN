@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs/
+  render:
+    - "*.qmd"
+    - "!data/"
 website:
   title: "Statistical Methods for Neuroimaging"
   navbar:
@@ -24,7 +27,6 @@ website:
         - text: "Common Mistakes and Challenges"
           href: 5common_mistakes_challenges/common_mistakes_challenges.html
           target: "_blank"
-
 format:
   html:
     theme: cosmo
