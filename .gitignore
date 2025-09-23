@@ -1,4 +1,6 @@
 /.quarto/
 *.mp4
 *.m4a
-*.vvt
+*.vtt
+.Rproj.user
+data
