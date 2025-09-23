@@ -1,0 +1,52 @@
+---
+title: "Group-level analysis tutorial"
+editor: source
+format:
+  html:
+    toc: true
+    standalone: true
+    code-fold: true
+---
+
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+## Overview
+
+### Analysis goals and data input
+
+### Outline of steps
+
+1. Download ABIDE data
+2. Data quality assurance
+    * Create study level brain mask
+    * Motion exclusions
+    * Covariate exclusions
+3. Group-level analysis
+    * FEAT and `easythresh`
+    * `Randomise`
+    * `pbj` package in `R`
+4. Reporting results
+
+## Download ABIDE data
+
+## Data quality assurance
+
+### Create study level brain mask
+
+### Motion exclusions
+
+### Covariate exclusions
+
+## Group-level analysis
+
+### FEAT and `easythresh`
+
+### `Randomise`
+
+### `pbj` package in `R`
+
+## Reporting results
+

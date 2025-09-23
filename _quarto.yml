@@ -1,5 +1,7 @@
 project:
   type: website
+  render:
+     - "!data/"
   output-dir: docs/
 
 website:
