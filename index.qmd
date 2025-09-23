@@ -3,7 +3,7 @@ title: "Statistical Methods for Neuroimaging"
 ---
 
 
-## Goals
+## Goals 
 - **Goal 1:** Provide basic knowledge of neuroimaging so that you (Biostatisticians) can read and understand neuroimaging research.
 - **Goal 2:** Cover modern contributions of biostatistics to neuroimaging methods so you can contribute to novel research in the field.
 

@@ -6,13 +6,13 @@ Date,Day,Section,Topic,In class interactive,Assignment,Due date
 3-Sep,Wednesday,Preprocessing,Structural preprocessing,,,
 8-Sep,Monday,Preprocessing,**Recorded:** [Structural and functional preprocessing](https://vanderbilt.zoom.us/rec/share/Nn5ENJKRJ8eXyeWqGcDOSb6WRUwMJVxxkTrAVBEJTK_Au9hKefV9q89QVYEUw0Az.DjPXRat-6fxHTZZ3),,[*Despicable Me* preprocessing](2preprocessing/homework/fMRIpreprocessing/fMRIpreprocessing.html),22-Sep
 10-Sep,Wednesday,,**Recorded:** [Functional preprocessing](https://vanderbilt.zoom.us/rec/share/D3aIET4ZXwJJ72HX-vUQFbQmmXXb0a-M8wt6bEZYJZa95muJfwr83ozqomHwZp2X.L_y7IfFSFAcceohO),**Recorded:** [*Despicable Me* preprocessing](https://vanderbilt.zoom.us/rec/share/7arrHiTnaV3OLdwqWPYJnPwQyi_mEg6_I9GHQpgna0tv6lUU24T2NX29iIXjjNSV.DdofqbFBx3Vo-1Au),,
-15-Sep,Monday,First-Level Analysis,First-Level fMRI Analysis,,[Quiz](https://brightspace.vanderbilt.edu/d2l/lms/quizzing/user/quiz_summary.d2l?qi=145491&ou=596109),26-Sep
+15-Sep,Monday,First-Level Analysis,First-Level fMRI Analysis,,[Quiz](https://brightspace.vanderbilt.edu/d2l/lms/quizzing/user/quiz_summary.d2l?qi=145491&ou=596109) ,26-Sep
 17-Sep,Wednesday,First-Level Analysis,Time Series Analysis,,[First-level fMRI analysis of *Despicable Me* data](3first-level_analysis/homework/first-level_analysis/first-level_analysis.html),6-Oct
 22-Sep,Monday,First-Level Analysis,rs-fMRI First-Level Analysis,**Recorded:** [*Despicable Me* first-level analysis](https://vanderbilt.zoom.us/rec/share/Ld2rm96hQ8RwaGqOL8AhKAVyNFEVuwzOZAj3cif6shxVfq7rsRWFVt2-jeIBASj4.3fwp2S82Jr_-QN7a),,
-24-Sep,Wednesday,Group-Level Analysis,**Recorded:** [Estimation](https://vanderbilt.zoom.us/rec/share/OmxJuuROInrUEEvIhY21MaehBMtz_tQPCPI8Dm7VFUGOmNnTFNy_5bPGAwv4vH0s.LcWDPFrR-aH7HYuG),,,
+24-Sep,Wednesday,Group-Level Analysis,**Recorded:** [Estimation](https://vanderbilt.zoom.us/rec/share/OmxJuuROInrUEEvIhY21MaehBMtz_tQPCPI8Dm7VFUGOmNnTFNy_5bPGAwv4vH0s.LcWDPFrR-aH7HYuG),,Quiz- see Brightspace,30-Sep
 29-Sep,Monday,Group-Level Analysis,"**Recorded:** [Multiplicity, Type 1 error, FWER, FDR](https://vanderbilt.zoom.us/rec/share/AbQshfSkbUspfQqKeApnoxWwCFTzTgtuIrN0Ta5CKmmqfKWYK65niiUlh-ZsGo9l.1-L6WqRVdk75CeGd)",,,
 1-Oct,Wednesday,Group-Level Analysis,"Cluster extent inference, Gaussian field theory, TFCE, Excursion set inference",,,
-6-Oct,Monday,Group-Level Analysis,,Group-level analysis of *Despicable Me*,Group-level analysis of *Despicable Me*,
+6-Oct,Monday,Group-Level Analysis,,Group-level analysis of *Despicable Me*,Group-level analysis of *Despicable Me*,26-Sep
 8-Oct,Wednesday,Group-Level Analysis,,,,
 13-Oct,Monday,Group-Level Analysis,"Functional Connectivity group-level analysis, implementation in FSL and R",,,
 15-Oct,Wednesday,Common Mistakes and Ongoing Challenges,"""Voodoo"" correlation, circularity errors, data leakage",,,
