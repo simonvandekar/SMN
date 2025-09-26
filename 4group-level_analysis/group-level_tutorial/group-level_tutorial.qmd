@@ -10,12 +10,32 @@ format:
 
 
 ```{r}
-knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, eval=TRUE)
 ```
 
 ## Overview
 
+We will analyze diagnostic and age associations in individuals with autism spectrum disorder and typically developing controls.
+The data we will analyze are called fractional amplitude of low frequency fluctuations (fALFF).
+The are available already processed from the Autism Brain Imaging Data Exchange (ABIDE) dataset in MNI space at 3mm resolution.
+
 ### Analysis goals and data input
+
+```{r}
+# install the latest version of the NIsim package, which includes a function to download the preprocessed ABIDE data.
+# devtools::install_github('statimagcoll/NIsim', ref='master')
+
+### LIBRARIES ###
+library(RNifti)
+library(parallel)
+library(splines)
+library(progress)
+library(table1)
+#library(pbj)
+library(PCP)
+```
+
+
 
 ### Outline of steps
 
@@ -32,13 +52,99 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 
 ## Download ABIDE data
 
+The `PCP` `R` package has access to the preprocessed ABIDE data. Here, the code downloads fALFF images, which is a measure derived from the rs-fMRI data.
+
+```{r, eval=FALSE}
+### DATA LOCATION ###
+# SMN data folder
+datadir = file.path(dirname(dirname(getwd())), 'data/abide')
+derivative='falff'
+# will be created by downloadABIDE
+dbimagedir = file.path(datadir, 'neuroimaging/cpac/filt_global', derivative)
+templatefile = file.path(datadir, 'neuroimaging/MNI152_T1_3mm.nii.gz')
+# created by simSetup... Not used in this analysis
+dbresimagedir = file.path(datadir, 'neuroimaging/cpac/alff_res')
+# created below
+maskfile = file.path(datadir, 'neuroimaging/cpac/mask.nii.gz')
+
+# load in data and get directories
+dat = ABIDE(datadir, derivatives=derivative)
+# some data curation is done on download. Subset all pass on visual inspection and making sex and dx factors, remove rows with no file name
+dat$imgname = paste(dat$file_id, paste0(derivative, '.nii.gz'), sep='_')
+dat$files = file.path(dbimagedir, dat$imgname)
+```
+
+
 ## Data quality assurance
 
-### Create study level brain mask
+```{r table1}
+dat$sex = factor(dat$sex, levels=1:2, labels = c('Male', 'Female'))
+label(dat$sex) = "Sex"
+dat$dx_group = factor(toupper(dat$dx_group))
+dat$site_id = factor(dat$site_id)
+label(dat$age_at_scan) = "Age"
+label(dat$func_mean_fd) = "Mean displacement"
+label(dat$dx_group) = "Diagnosis"
+table1(~ sex + func_mean_fd + age_at_scan | dx_group, data=dat, caption = "ABIDE analysis summary table.")
+```
+
 
 ### Motion exclusions
 
+```{r motion, fig.cap="Mean framewise displacement (FD) for each participant. The dashed line indicates the 0.5mm threshold we use to exclude participants with high motion."}
+# plot motion
+plot(dat$func_mean_fd, main="Mean relative frame displacement", bty='l')
+# greater than half a millimeter
+abline(h=0.5, lty=2, lwd=2)
+# add number of exclusions as text in the top right corner of plot
+
+# subset to participants less than half a milimeter mean framewise displacement
+dat = dat[which(dat$func_mean_fd<0.5), ]
+```
+
+
 ### Covariate exclusions
+
+This is just a check to make sure we don't have any missing non-imaging variables.
+
+```{r}
+
+```
+
+
+
+### Create study level brain mask
+
+After downloading the data, we create a study specific mask based on the subset of the data where all subjects have coverage. We make a small number of exclusions to increase the coverage above 30,000 voxels at 3mm isotropic resolution. This first chunk of code creates a study-level mask by the intersection of all participants where their data are non-zero.
+It the iteratively excludes the participant that will increase the study-level mask, until we reach a coverage over 30,000 voxels.
+
+```{r}
+imgs = simplify2array(readNifti(dat$files) )
+# choose
+# number of people with zeros at that location
+inds=numeric()
+ids = c()
+subids = dat$sub_id
+# number of voxels with no zeros
+nnzero = 0
+# iteratively removes subjects who will increase the mask the largest
+while(nnzero<30000){
+  voxSums = rowSums(imgs==0, dims=3)
+  tab = as.data.frame(table(voxSums))
+  nnzero=tab[1,2]
+  # number of unique voxels for each subject
+  uniquevox = apply(imgs, 4, function(img) sum(img==0 & voxSums==1) )
+ 
+  inds = which.max(uniquevox)
+  cat('\nIteration:\nsubject removed: ', paste(subids[inds], collapse=', '), '\nmask size is now ', nnzero+sum(uniquevox[inds]), '\nNumber of voxels added:', sum(uniquevox[inds]) )
+  imgs = imgs[,,,-inds]
+  subids = subids[-inds]
+  nnzero=nnzero+sum(uniquevox[inds])
+}
+```
+
+
+There are issues with the orientation of the images for a small number of participants. We can visualize them here to see what the problem is.
 
 ## Group-level analysis
 
@@ -47,6 +153,19 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 ### `Randomise`
 
 ### `pbj` package in `R`
+
+```{r}
+# need age_at_scan in both models for testing nonlinear functions
+form = paste0(" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id" )
+formred = paste0(" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id")
+formredAge = paste0(" ~ sex + dx_group + func_mean_fd + func_fber + func_outlier + site_id")
+#  weights for each subject. Can be a character vector
+weights = "func_mean_fd"
+mask = maskfile
+output = paste0(tempfile(), '.rdata')
+ncores = 24
+```
+
 
 ## Reporting results
 
