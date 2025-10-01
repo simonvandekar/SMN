@@ -24,7 +24,13 @@ The data we will analyze are called fractional amplitude of low frequency fluctu
 
 The fALFF data are available already processed from the Autism Brain Imaging Data Exchange (ABIDE) dataset in MNI space at 3mm resolution.
 
-```{r}
+To analyze the data, we will look at associations of fALFF with diagnosis and age, controlling for other covariates.
+
+$$
+\text{fALFF}_i \sim \text{age}_i + \text{sex}_i + \text{diagnosis}_i + \text{motion covariates}_i + \text{site}_i
+$$
+
+```{r, message=FALSE}
 # install the latest version of the NIsim package, which includes a function to download the preprocessed ABIDE data.
 # devtools::install_github('statimagcoll/PCP', ref='master')
 # devtools::install_github('statimagcoll/pbj', ref='master')
@@ -223,7 +229,7 @@ ncores = 4
 ```
 
 
-## `fsl_glm`
+## `fsl_glm`: OLS regression
 
 We can use FSL's FEAT to do a group-level analysis using a simple GLM (least squares approach). Here we create a text file with the list of images, and text files with the design matrix and contrasts for diagnosis and age.
 
@@ -271,9 +277,13 @@ fsl_glm -i $featDir/falff_outcome.nii.gz -d $featDir/design.mat -c $featDir/desi
 ```
 
 
-## `Randomise`
+## `flameo`: random effects model with subject-specific error variance
 
-## `pbj` package in `R`
+FSL's FLAME model accounts for differences in variance among participants. It also can account for repeated measurements among participants. Might be helpful to review slides 12-16 in the [group-level analysis notes](4group-level_analysis/pptx/group-level_analysis.pdf).
+
+## `randomise`: permutation approach
+
+## `pbj` package in `R`: robust variance estimation
 
 First, try to replicate the GLM results from fsl
 
@@ -286,17 +296,19 @@ write.statMap(abideDXglm, outdir=file.path(analysisDir, 'dxGLM'), statMethod = '
 ```
 
 
+This analysis uses the default settings, which includes a robust covariance estimator.
+
 ```{r}
 # DX analysis
-abideDX = lmPBJ(dat$files, form=form, formred=formred, mask=mask, data=dat, template = templatefile)
+abideDX = lmPBJ(dat$files, form=form, formred=formred, mask=mask, data=dat, template = templatefile, transform='t')
 abideDX
 ```
 
 
+
 ```{r, fig.height=30, fig.width=50}
 image(abideDX, cft_p=0.05, crop=TRUE, index = 18:47)
-write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'))
-write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'S')
+write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'Z')
 ```
 
 Load interactively with `fsleyes`. Open also with MNI 1mm template for better resolution viewing. `fsleyes` can overlay them correctly.
@@ -306,11 +318,11 @@ fsleyes /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/
 ```
 
 
-
+The same approach but testing the age effect.
 
 ```{r}
 # Age analysis
-abideAge = lmPBJ(dat$files, form=form, formred=formredAge, mask=mask, data=dat, template = templatefile)
+abideAge = lmPBJ(dat$files, form=form, formred=formredAge, mask=mask, data=dat, template = templatefile, transform='t')
 ```
 
 ```{r, fig.height=30, fig.width=50}

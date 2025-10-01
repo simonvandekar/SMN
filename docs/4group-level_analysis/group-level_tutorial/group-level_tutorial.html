@@ -96,6 +96,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link href="../../site_libs/table1-1.0/table1_defaults.css" rel="stylesheet">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -166,7 +168,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
-  <li><a href="#analysis-goals-and-data-input" id="toc-analysis-goals-and-data-input" class="nav-link" data-scroll-target="#analysis-goals-and-data-input">Analysis goals and data input</a></li>
   <li><a href="#outline-of-steps" id="toc-outline-of-steps" class="nav-link" data-scroll-target="#outline-of-steps">Outline of steps</a></li>
   </ul></li>
   <li><a href="#download-abide-data" id="toc-download-abide-data" class="nav-link" data-scroll-target="#download-abide-data">Download ABIDE data</a></li>
@@ -180,9 +181,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#group-level-analysis" id="toc-group-level-analysis" class="nav-link" data-scroll-target="#group-level-analysis">Group-level analysis</a>
   <ul class="collapse">
-  <li><a href="#feat-and-easythresh" id="toc-feat-and-easythresh" class="nav-link" data-scroll-target="#feat-and-easythresh">FEAT and <code>easythresh</code></a></li>
-  <li><a href="#randomise" id="toc-randomise" class="nav-link" data-scroll-target="#randomise"><code>Randomise</code></a></li>
-  <li><a href="#pbj-package-in-r" id="toc-pbj-package-in-r" class="nav-link" data-scroll-target="#pbj-package-in-r"><code>pbj</code> package in <code>R</code></a></li>
+  <li><a href="#fsl_glm-ols-regression" id="toc-fsl_glm-ols-regression" class="nav-link" data-scroll-target="#fsl_glm-ols-regression"><code>fsl_glm</code>: OLS regression</a></li>
+  <li><a href="#flameo-random-effects-model-with-subject-specific-error-variance" id="toc-flameo-random-effects-model-with-subject-specific-error-variance" class="nav-link" data-scroll-target="#flameo-random-effects-model-with-subject-specific-error-variance"><code>flameo</code>: random effects model with subject-specific error variance</a></li>
+  <li><a href="#randomise-permutation-approach" id="toc-randomise-permutation-approach" class="nav-link" data-scroll-target="#randomise-permutation-approach"><code>randomise</code>: permutation approach</a></li>
+  <li><a href="#pbj-package-in-r-robust-variance-estimation" id="toc-pbj-package-in-r-robust-variance-estimation" class="nav-link" data-scroll-target="#pbj-package-in-r-robust-variance-estimation"><code>pbj</code> package in <code>R</code>: robust variance estimation</a></li>
   </ul></li>
   <li><a href="#reporting-results" id="toc-reporting-results" class="nav-link" data-scroll-target="#reporting-results">Reporting results</a></li>
   </ul>
@@ -216,9 +218,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="overview" class="level1">
 <h1>Overview</h1>
-<p>We will analyze diagnostic and age associations in individuals with autism spectrum disorder and typically developing controls. The data we will analyze are called fractional amplitude of low frequency fluctuations (fALFF). The are available already processed from the Autism Brain Imaging Data Exchange (ABIDE) dataset in MNI space at 3mm resolution.</p>
-<section id="analysis-goals-and-data-input" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-goals-and-data-input">Analysis goals and data input</h2>
+<p>We will analyze diagnostic and age associations in individuals with autism spectrum disorder and typically developing controls. The data we will analyze are called fractional amplitude of low frequency fluctuations <a href="http://www.sciencedirect.com/science/article/pii/S0165027008002458">fALFF</a>. They are computed from rs-fMRI data using the following steps:</p>
+<ol type="1">
+<li>The data are preprocessed as usual for rs-fMRI data.</li>
+<li>fALFF is the power in the spectrum 0-0.08Hz divided by the power in the spectrum 0-0.25Hz.</li>
+<li>fALFF is computed at every voxel in the image.</li>
+</ol>
+<p>The fALFF data are available already processed from the Autism Brain Imaging Data Exchange (ABIDE) dataset in MNI space at 3mm resolution.</p>
+<p>To analyze the data, we will look at associations of fALFF with diagnosis and age, controlling for other covariates.</p>
+<p><span class="math display">\[
+\text{fALFF}_i \sim \text{age}_i + \text{sex}_i + \text{diagnosis}_i + \text{motion covariates}_i + \text{site}_i
+\]</span></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -231,32 +241,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(splines)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(progress)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(table1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'table1'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    units, units&lt;-</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pbj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Registered S3 method overwritten by 'clubSandwich':
-  method    from    
-  bread.mlm sandwich</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PCP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(table1)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pbj)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PCP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
 <section id="outline-of-steps" class="level2">
 <h2 class="anchored" data-anchor-id="outline-of-steps">Outline of steps</h2>
 <ol type="1">
@@ -283,23 +272,23 @@ Attaching package: 'table1'</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DATA LOCATION ##</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SMN data folder</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">dirname</span>(<span class="fu">dirname</span>(<span class="fu">getwd</span>())), <span class="st">'data/abide'</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>derivative<span class="ot">=</span><span class="st">'falff'</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># will be created by downloadABIDE</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dbimagedir <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/filt_global'</span>, derivative)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>templatefile <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/MNI152_T1_3mm.nii.gz'</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># created by simSetup... Not used in this analysis</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>dbresimagedir <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/alff_res'</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># created below</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>maskfile <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/mask.nii.gz'</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># load in data and get directories</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">ABIDE</span>(datadir, <span class="at">derivatives=</span>derivative)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># some data curation is done on download. Subset all pass on visual inspection and making sex and dx factors, remove rows with no file name</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>imgname <span class="ot">=</span> <span class="fu">paste</span>(dat<span class="sc">$</span>file_id, <span class="fu">paste0</span>(derivative, <span class="st">'.nii.gz'</span>), <span class="at">sep=</span><span class="st">'_'</span>)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>files <span class="ot">=</span> <span class="fu">file.path</span>(dbimagedir, dat<span class="sc">$</span>imgname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DATA LOCATION ##</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SMN data folder</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">dirname</span>(<span class="fu">dirname</span>(<span class="fu">getwd</span>())), <span class="st">'data/abide'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>derivative<span class="ot">=</span><span class="st">'falff'</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># will be created by downloadABIDE</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>dbimagedir <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/filt_global'</span>, derivative)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>templatefile <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/MNI152_T1_3mm.nii.gz'</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># created by simSetup... Not used in this analysis</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>dbresimagedir <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/alff_res'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># created below</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>maskfile <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/mask.nii.gz'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># load in data and get directories</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">ABIDE</span>(datadir, <span class="at">derivatives=</span>derivative)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># some data curation is done on download. Subset all pass on visual inspection and making sex and dx factors, remove rows with no file name</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>imgname <span class="ot">=</span> <span class="fu">paste</span>(dat<span class="sc">$</span>file_id, <span class="fu">paste0</span>(derivative, <span class="st">'.nii.gz'</span>), <span class="at">sep=</span><span class="st">'_'</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>files <span class="ot">=</span> <span class="fu">file.path</span>(dbimagedir, dat<span class="sc">$</span>imgname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -308,14 +297,14 @@ Attaching package: 'table1'</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>sex <span class="ot">=</span> <span class="fu">factor</span>(dat<span class="sc">$</span>sex, <span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Male'</span>, <span class="st">'Female'</span>))</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>sex) <span class="ot">=</span> <span class="st">"Sex"</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>dx_group <span class="ot">=</span> <span class="fu">factor</span>(<span class="fu">toupper</span>(dat<span class="sc">$</span>dx_group))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>site_id <span class="ot">=</span> <span class="fu">factor</span>(dat<span class="sc">$</span>site_id)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>age_at_scan) <span class="ot">=</span> <span class="st">"Age"</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>func_mean_fd) <span class="ot">=</span> <span class="st">"Mean displacement"</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>dx_group) <span class="ot">=</span> <span class="st">"Diagnosis"</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">table1</span>(<span class="sc">~</span> sex <span class="sc">+</span> func_mean_fd <span class="sc">+</span> age_at_scan <span class="sc">|</span> dx_group, <span class="at">data=</span>dat, <span class="at">caption =</span> <span class="st">"ABIDE analysis summary table."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>sex <span class="ot">=</span> <span class="fu">factor</span>(dat<span class="sc">$</span>sex, <span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Male'</span>, <span class="st">'Female'</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>sex) <span class="ot">=</span> <span class="st">"Sex"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>dx_group <span class="ot">=</span> <span class="fu">factor</span>(<span class="fu">toupper</span>(dat<span class="sc">$</span>dx_group))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>site_id <span class="ot">=</span> <span class="fu">factor</span>(dat<span class="sc">$</span>site_id)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>age_at_scan) <span class="ot">=</span> <span class="st">"Age"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>func_mean_fd) <span class="ot">=</span> <span class="st">"Mean displacement"</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>dx_group) <span class="ot">=</span> <span class="st">"Diagnosis"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">table1</span>(<span class="sc">~</span> sex <span class="sc">+</span> func_mean_fd <span class="sc">+</span> age_at_scan <span class="sc">|</span> dx_group, <span class="at">data=</span>dat, <span class="at">caption =</span> <span class="st">"ABIDE analysis summary table."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
@@ -411,10 +400,10 @@ Attaching package: 'table1'</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot motion</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dat<span class="sc">$</span>func_mean_fd, <span class="at">main=</span><span class="st">"Mean relative frame displacement"</span>, <span class="at">bty=</span><span class="st">'l'</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># greater than half a millimeter</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.5</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot motion</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dat<span class="sc">$</span>func_mean_fd, <span class="at">main=</span><span class="st">"Mean relative frame displacement"</span>, <span class="at">bty=</span><span class="st">'l'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># greater than half a millimeter</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.5</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -426,10 +415,10 @@ Attaching package: 'table1'</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add number of exclusions as text in the top right corner of plot</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to participants less than half a milimeter mean framewise displacement</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[<span class="fu">which</span>(dat<span class="sc">$</span>func_mean_fd<span class="sc">&lt;</span><span class="fl">0.5</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add number of exclusions as text in the top right corner of plot</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to participants less than half a milimeter mean framewise displacement</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[<span class="fu">which</span>(dat<span class="sc">$</span>func_mean_fd<span class="sc">&lt;</span><span class="fl">0.5</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -439,7 +428,7 @@ Attaching package: 'table1'</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[<span class="fu">rowMeans</span>(<span class="sc">!</span><span class="fu">is.na</span>(dat[,<span class="fu">c</span>(<span class="st">"sex"</span>, <span class="st">"age_at_scan"</span>, <span class="st">"func_mean_fd"</span>, <span class="st">"func_fber"</span>, <span class="st">"func_outlier"</span>, <span class="st">"dx_group"</span>, <span class="st">"site_id"</span>)]))<span class="sc">==</span><span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[<span class="fu">rowMeans</span>(<span class="sc">!</span><span class="fu">is.na</span>(dat[,<span class="fu">c</span>(<span class="st">"sex"</span>, <span class="st">"age_at_scan"</span>, <span class="st">"func_mean_fd"</span>, <span class="st">"func_fber"</span>, <span class="st">"func_outlier"</span>, <span class="st">"dx_group"</span>, <span class="st">"site_id"</span>)]))<span class="sc">==</span><span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -449,28 +438,28 @@ Attaching package: 'table1'</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">=</span> <span class="fu">simplify2array</span>(<span class="fu">readNifti</span>(dat<span class="sc">$</span>files) )</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># choose</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># number of people with zeros at that location</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>inds<span class="ot">=</span><span class="fu">numeric</span>()</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">=</span> <span class="fu">c</span>()</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>subids <span class="ot">=</span> dat<span class="sc">$</span>sub_id</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># number of voxels with no zeros</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>nnzero <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># iteratively removes subjects who will increase the mask the largest</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(nnzero<span class="sc">&lt;</span><span class="dv">30000</span>){</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  voxSums <span class="ot">=</span> <span class="fu">rowSums</span>(imgs<span class="sc">==</span><span class="dv">0</span>, <span class="at">dims=</span><span class="dv">3</span>)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(voxSums))</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  nnzero<span class="ot">=</span>tab[<span class="dv">1</span>,<span class="dv">2</span>]</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># number of unique voxels for each subject</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  uniquevox <span class="ot">=</span> <span class="fu">apply</span>(imgs, <span class="dv">4</span>, <span class="cf">function</span>(img) <span class="fu">sum</span>(img<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> voxSums<span class="sc">==</span><span class="dv">1</span>) )</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  inds <span class="ot">=</span> <span class="fu">which.max</span>(uniquevox)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">Iteration:</span><span class="sc">\n</span><span class="st">subject removed: '</span>, <span class="fu">paste</span>(subids[inds], <span class="at">collapse=</span><span class="st">', '</span>), <span class="st">'</span><span class="sc">\n</span><span class="st">mask size is now '</span>, nnzero<span class="sc">+</span><span class="fu">sum</span>(uniquevox[inds]), <span class="st">'</span><span class="sc">\n</span><span class="st">Number of voxels added:'</span>, <span class="fu">sum</span>(uniquevox[inds]) )</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  imgs <span class="ot">=</span> imgs[,,,<span class="sc">-</span>inds]</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  subids <span class="ot">=</span> subids[<span class="sc">-</span>inds]</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  nnzero<span class="ot">=</span>nnzero<span class="sc">+</span><span class="fu">sum</span>(uniquevox[inds])</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">=</span> <span class="fu">simplify2array</span>(<span class="fu">readNifti</span>(dat<span class="sc">$</span>files) )</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># choose</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># number of people with zeros at that location</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>inds<span class="ot">=</span><span class="fu">numeric</span>()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">=</span> <span class="fu">c</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>subids <span class="ot">=</span> dat<span class="sc">$</span>sub_id</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># number of voxels with no zeros</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>nnzero <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># iteratively removes subjects who will increase the mask the largest</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(nnzero<span class="sc">&lt;</span><span class="dv">30000</span>){</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  voxSums <span class="ot">=</span> <span class="fu">rowSums</span>(imgs<span class="sc">==</span><span class="dv">0</span>, <span class="at">dims=</span><span class="dv">3</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(voxSums))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  nnzero<span class="ot">=</span>tab[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># number of unique voxels for each subject</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  uniquevox <span class="ot">=</span> <span class="fu">apply</span>(imgs, <span class="dv">4</span>, <span class="cf">function</span>(img) <span class="fu">sum</span>(img<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> voxSums<span class="sc">==</span><span class="dv">1</span>) )</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  inds <span class="ot">=</span> <span class="fu">which.max</span>(uniquevox)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">Iteration:</span><span class="sc">\n</span><span class="st">subject removed: '</span>, <span class="fu">paste</span>(subids[inds], <span class="at">collapse=</span><span class="st">', '</span>), <span class="st">'</span><span class="sc">\n</span><span class="st">mask size is now '</span>, nnzero<span class="sc">+</span><span class="fu">sum</span>(uniquevox[inds]), <span class="st">'</span><span class="sc">\n</span><span class="st">Number of voxels added:'</span>, <span class="fu">sum</span>(uniquevox[inds]) )</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  imgs <span class="ot">=</span> imgs[,,,<span class="sc">-</span>inds]</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  subids <span class="ot">=</span> subids[<span class="sc">-</span>inds]</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  nnzero<span class="ot">=</span>nnzero<span class="sc">+</span><span class="fu">sum</span>(uniquevox[inds])</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -512,19 +501,19 @@ Number of voxels added: 583</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>badDat <span class="ot">=</span> dat[<span class="sc">!</span> dat<span class="sc">$</span>sub_id <span class="sc">%in%</span> subids,]</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[ dat<span class="sc">$</span>sub_id <span class="sc">%in%</span> subids,]</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now create the mask</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>mask <span class="ot">=</span> <span class="fu">readNifti</span>(dat<span class="sc">$</span>files[<span class="dv">1</span>])</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">=</span> <span class="fu">simplify2array</span>(<span class="fu">readNifti</span>(dat<span class="sc">$</span>files) )</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mask actually still has pretty low coverage</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>mask[,,] <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>mask[,,] <span class="ot">=</span> <span class="fu">apply</span>(imgs<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, all)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">writeNifti</span>(mask, maskfile)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>nvox <span class="ot">=</span> <span class="fu">sum</span>(mask)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>ulimit <span class="ot">=</span> <span class="fu">quantile</span>(<span class="fu">apply</span>(imgs, <span class="dv">4</span>, <span class="cf">function</span>(x) x[mask<span class="sc">!=</span><span class="dv">0</span>]), <span class="fl">0.9</span>)</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(imgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>badDat <span class="ot">=</span> dat[<span class="sc">!</span> dat<span class="sc">$</span>sub_id <span class="sc">%in%</span> subids,]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[ dat<span class="sc">$</span>sub_id <span class="sc">%in%</span> subids,]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now create the mask</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>mask <span class="ot">=</span> <span class="fu">readNifti</span>(dat<span class="sc">$</span>files[<span class="dv">1</span>])</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">=</span> <span class="fu">simplify2array</span>(<span class="fu">readNifti</span>(dat<span class="sc">$</span>files) )</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mask actually still has pretty low coverage</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>mask[,,] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>mask[,,] <span class="ot">=</span> <span class="fu">apply</span>(imgs<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, all)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">writeNifti</span>(mask, maskfile)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>nvox <span class="ot">=</span> <span class="fu">sum</span>(mask)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ulimit <span class="ot">=</span> <span class="fu">quantile</span>(<span class="fu">apply</span>(imgs, <span class="dv">4</span>, <span class="cf">function</span>(x) x[mask<span class="sc">!=</span><span class="dv">0</span>]), <span class="fl">0.9</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(imgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -842,13 +831,13 @@ Number of voxels added: 583</code></pre>
 <p>There are issues with the orientation of the images for a small number of participants. We can visualize them here to see what the problem is.</p>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>niftis <span class="ot">=</span> <span class="fu">readNifti</span>(badDat<span class="sc">$</span>files)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the ones that had bad coverage</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">0</span>))</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(niftis)){</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image</span>(niftis[[i]], <span class="at">index=</span><span class="dv">45</span>, <span class="at">lo=</span><span class="cn">FALSE</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,ulimit), <span class="at">crop=</span><span class="cn">FALSE</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(badDat<span class="sc">$</span>sub_id[i], <span class="at">outer=</span><span class="cn">FALSE</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>niftis <span class="ot">=</span> <span class="fu">readNifti</span>(badDat<span class="sc">$</span>files)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the ones that had bad coverage</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">0</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(niftis)){</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image</span>(niftis[[i]], <span class="at">index=</span><span class="dv">45</span>, <span class="at">lo=</span><span class="cn">FALSE</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,ulimit), <span class="at">crop=</span><span class="cn">FALSE</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(badDat<span class="sc">$</span>sub_id[i], <span class="at">outer=</span><span class="cn">FALSE</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -863,45 +852,45 @@ Number of voxels added: 583</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>analysisDir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"abide_results"</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># need age_at_scan in both models for testing nonlinear functions</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>form <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id"</span> )</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>formred <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id"</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>formredAge <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + dx_group + func_mean_fd + func_fber + func_outlier + site_id"</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>mask <span class="ot">=</span> maskfile</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># output Rdata file</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>output <span class="ot">=</span> <span class="fu">paste0</span>(analysisDir, <span class="st">'abideModels.rdata'</span>)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>ncores <span class="ot">=</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>analysisDir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"abide_results"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># need age_at_scan in both models for testing nonlinear functions</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>form <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id"</span> )</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>formred <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>formredAge <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + dx_group + func_mean_fd + func_fber + func_outlier + site_id"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>mask <span class="ot">=</span> maskfile</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># output Rdata file</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>output <span class="ot">=</span> <span class="fu">paste0</span>(analysisDir, <span class="st">'abideModels.rdata'</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>ncores <span class="ot">=</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="feat-and-easythresh" class="level2">
-<h2 class="anchored" data-anchor-id="feat-and-easythresh">FEAT and <code>easythresh</code></h2>
-<p>We can use FSL’s FEAT to do a group-level analysis. Here we create a text file with the list of images, and text files with the design matrix and contrasts for diagnosis and age.</p>
+<section id="fsl_glm-ols-regression" class="level2">
+<h2 class="anchored" data-anchor-id="fsl_glm-ols-regression"><code>fsl_glm</code>: OLS regression</h2>
+<p>We can use FSL’s FEAT to do a group-level analysis using a simple GLM (least squares approach). Here we create a text file with the list of images, and text files with the design matrix and contrasts for diagnosis and age.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># feat setup files directory</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>featDir <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'feat'</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(featDir, <span class="at">recursive=</span><span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write text file with all iamges</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dat<span class="sc">$</span>files, <span class="at">file =</span> <span class="fu">file.path</span>(featDir, <span class="st">'images.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create design file for feat</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># save contrast names</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix without the intercept for feat and save it as a text file</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>design <span class="ot">=</span> <span class="fu">model.matrix</span>(<span class="fu">as.formula</span>(form), <span class="at">data=</span>dat)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(design, <span class="at">file=</span><span class="fu">file.path</span>(featDir, <span class="st">'design.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># create contrasts for dx and age</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">ncol=</span><span class="fu">ncol</span>(design))</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(contrasts) <span class="ot">=</span> <span class="fu">colnames</span>(design)</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(contrasts) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'dx'</span>, <span class="st">'age'</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>contrasts[<span class="dv">1</span>, <span class="fu">which</span>(<span class="fu">colnames</span>(contrasts)<span class="sc">==</span><span class="st">'dx_groupHC'</span>)] <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>contrasts[<span class="dv">2</span>, <span class="fu">which</span>(<span class="fu">colnames</span>(contrasts)<span class="sc">==</span><span class="st">'age_at_scan'</span>)] <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># save contrasts</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(contrasts, <span class="at">file=</span><span class="fu">file.path</span>(featDir, <span class="st">'contrasts.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># feat setup files directory</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>featDir <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'feat'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(featDir, <span class="at">recursive=</span><span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write text file with all iamges</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dat<span class="sc">$</span>files, <span class="at">file =</span> <span class="fu">file.path</span>(featDir, <span class="st">'images.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create design file for feat</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># save contrast names</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix without the intercept for feat and save it as a text file</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>design <span class="ot">=</span> <span class="fu">model.matrix</span>(<span class="fu">as.formula</span>(form), <span class="at">data=</span>dat)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(design, <span class="at">file=</span><span class="fu">file.path</span>(featDir, <span class="st">'design.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># create contrasts for dx and age</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">ncol=</span><span class="fu">ncol</span>(design))</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(contrasts) <span class="ot">=</span> <span class="fu">colnames</span>(design)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(contrasts) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'dx'</span>, <span class="st">'age'</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>contrasts[<span class="dv">1</span>, <span class="fu">which</span>(<span class="fu">colnames</span>(contrasts)<span class="sc">==</span><span class="st">'dx_groupHC'</span>)] <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>contrasts[<span class="dv">2</span>, <span class="fu">which</span>(<span class="fu">colnames</span>(contrasts)<span class="sc">==</span><span class="st">'age_at_scan'</span>)] <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co"># save contrasts</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(contrasts, <span class="at">file=</span><span class="fu">file.path</span>(featDir, <span class="st">'contrasts.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial"</code></pre>
@@ -910,34 +899,38 @@ Number of voxels added: 583</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># output directory</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="va">featDir</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/abide_results/feat</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># merge images to 4d file</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmerge</span> <span class="at">-t</span> <span class="va">$featDir</span>/falff_outcome.nii.gz <span class="va">$(</span><span class="fu">cat</span> <span class="va">$featDir</span>/images.txt<span class="va">)</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert text file to .mat format for fsl</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Text2Vest</span> <span class="va">$featDir</span>/design.txt <span class="va">$featDir</span>/design.mat</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># convert contrast text file to fsl format</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Text2Vest</span> <span class="va">$featDir</span>/contrasts.txt <span class="va">$featDir</span>/design.con</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># mask file</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="va">mask</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/../../data/abide/neuroimaging/cpac/mask.nii.gz</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># run glm command</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="ex">fsl_glm</span> <span class="at">-i</span> <span class="va">$featDir</span>/falff_outcome.nii.gz <span class="at">-d</span> <span class="va">$featDir</span>/design.mat <span class="at">-c</span> <span class="va">$featDir</span>/design.con <span class="at">-m</span> <span class="va">$mask</span> <span class="dt">\</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>-o <span class="va">$featDir</span>/pe.nii.gz <span class="at">--out_z</span><span class="op">=</span><span class="va">$featDir</span>/zstat.nii.gz  <span class="at">--out_t</span><span class="op">=</span><span class="va">$featDir</span>/tstat.nii.gz <span class="at">--out_p</span><span class="op">=</span><span class="va">$featDir</span>/pstat.nii.gz <span class="at">--out_cope</span><span class="op">=</span><span class="va">$featDir</span>/cope.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># output directory</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">featDir</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/abide_results/feat</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># merge images to 4d file</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmerge</span> <span class="at">-t</span> <span class="va">$featDir</span>/falff_outcome.nii.gz <span class="va">$(</span><span class="fu">cat</span> <span class="va">$featDir</span>/images.txt<span class="va">)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert text file to .mat format for fsl</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Text2Vest</span> <span class="va">$featDir</span>/design.txt <span class="va">$featDir</span>/design.mat</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># convert contrast text file to fsl format</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Text2Vest</span> <span class="va">$featDir</span>/contrasts.txt <span class="va">$featDir</span>/design.con</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># mask file</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="va">mask</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/../../data/abide/neuroimaging/cpac/mask.nii.gz</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># run glm command</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="ex">fsl_glm</span> <span class="at">-i</span> <span class="va">$featDir</span>/falff_outcome.nii.gz <span class="at">-d</span> <span class="va">$featDir</span>/design.mat <span class="at">-c</span> <span class="va">$featDir</span>/design.con <span class="at">-m</span> <span class="va">$mask</span> <span class="dt">\</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>-o <span class="va">$featDir</span>/pe.nii.gz <span class="at">--out_z</span><span class="op">=</span><span class="va">$featDir</span>/zstat.nii.gz  <span class="at">--out_t</span><span class="op">=</span><span class="va">$featDir</span>/tstat.nii.gz <span class="at">--out_p</span><span class="op">=</span><span class="va">$featDir</span>/pstat.nii.gz <span class="at">--out_cope</span><span class="op">=</span><span class="va">$featDir</span>/cope.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="randomise" class="level2">
-<h2 class="anchored" data-anchor-id="randomise"><code>Randomise</code></h2>
+<section id="flameo-random-effects-model-with-subject-specific-error-variance" class="level2">
+<h2 class="anchored" data-anchor-id="flameo-random-effects-model-with-subject-specific-error-variance"><code>flameo</code>: random effects model with subject-specific error variance</h2>
+<p>FSL’s FLAME model accounts for differences in variance among participants. It also can account for repeated measurements among participants. Might be helpful to review slides 12-16 in the <a href="4group-level_analysis/pptx/group-level_analysis.pdf">group-level analysis notes</a>.</p>
 </section>
-<section id="pbj-package-in-r" class="level2">
-<h2 class="anchored" data-anchor-id="pbj-package-in-r"><code>pbj</code> package in <code>R</code></h2>
+<section id="randomise-permutation-approach" class="level2">
+<h2 class="anchored" data-anchor-id="randomise-permutation-approach"><code>randomise</code>: permutation approach</h2>
+</section>
+<section id="pbj-package-in-r-robust-variance-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="pbj-package-in-r-robust-variance-estimation"><code>pbj</code> package in <code>R</code>: robust variance estimation</h2>
 <p>First, try to replicate the GLM results from fsl</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DX analysis</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>abideDXglm <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formred, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile, <span class="at">robust=</span><span class="cn">FALSE</span>, <span class="at">HC3 =</span> <span class="cn">FALSE</span>, <span class="at">transform=</span><span class="st">'t'</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>abideDXglm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DX analysis</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>abideDXglm <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formred, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile, <span class="at">robust=</span><span class="cn">FALSE</span>, <span class="at">HC3 =</span> <span class="cn">FALSE</span>, <span class="at">transform=</span><span class="st">'t'</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>abideDXglm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Full formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id
@@ -955,8 +948,8 @@ pbjInference not run yet.</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effect size for diagnosis effect</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDXglm, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dxGLM'</span>), <span class="at">statMethod =</span> <span class="st">'Z'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effect size for diagnosis effect</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDXglm, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dxGLM'</span>), <span class="at">statMethod =</span> <span class="st">'Z'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Writing stat and coef images.</code></pre>
@@ -972,39 +965,40 @@ $sqrtSigma
 [1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dxGLM/sqrtSigma.rds"</code></pre>
 </div>
 </div>
+<p>This analysis uses the default settings, which includes a robust covariance estimator.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DX analysis</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>abideDX <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formred, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>abideDX</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DX analysis</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>abideDX <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formred, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile, <span class="at">transform=</span><span class="st">'t'</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>abideDX</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Full formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id
 Reduced formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id  
 30307  voxels in mask
 StatMap quantiles (0, 0.01, 0.05, 0.95, 0.99, 1):
- [ 0, 0, 0.01, 6.99, 10.66, 24.51 ]
+ [ 0, 0, 0.01, 6.96, 10.59, 24.2 ]
 sqrtSigma: 
   [n =  997 ; df =  1 ; rdf =  971 ]
 id variable is:
  NULL
 lmPBJ inference settings:
-  robust =  TRUE ; HC3 =  TRUE ; transform =  none
+  robust =  TRUE ; HC3 =  TRUE ; transform =  t
 pbjInference not run yet.</code></pre>
 </div>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDX, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDX, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="4800"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDX, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDX, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>), <span class="at">statMethod =</span> <span class="st">'Z'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Writing stat and coef images.</code></pre>
@@ -1014,22 +1008,7 @@ pbjInference not run yet.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$stat
-[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz"
-
-$sqrtSigma
-[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/sqrtSigma.rds"</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDX, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Writing stat and coef images.
-Writing sqrtSigma object.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$stat
-[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_s.nii.gz"
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_z.nii.gz"
 
 $sqrtSigma
 [1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/sqrtSigma.rds"</code></pre>
@@ -1039,27 +1018,28 @@ $sqrtSigma
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The same approach but testing the age effect.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age analysis</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>abideAge <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formredAge, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile, <span class="at">transform=</span><span class="st">'t'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age analysis</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>abideAge <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formredAge, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideAge, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideAge, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="4800"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Writing stat and coef images.</code></pre>
@@ -1076,7 +1056,7 @@ $sqrtSigma
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Writing stat and coef images.
