@@ -2,5 +2,8 @@
 *.mp4
 *.m4a
 *.vtt
+*.rds
+*.nii.gz
+*.nii
 .Rproj.user
 data
