@@ -13,17 +13,21 @@ format:
 knitr::opts_chunk$set(echo = TRUE, eval=TRUE)
 ```
 
-## Overview
+# Overview
 
 We will analyze diagnostic and age associations in individuals with autism spectrum disorder and typically developing controls.
-The data we will analyze are called fractional amplitude of low frequency fluctuations (fALFF).
-The are available already processed from the Autism Brain Imaging Data Exchange (ABIDE) dataset in MNI space at 3mm resolution.
+The data we will analyze are called fractional amplitude of low frequency fluctuations [fALFF](http://www.sciencedirect.com/science/article/pii/S0165027008002458). They are computed from rs-fMRI data using the following steps:
 
-### Analysis goals and data input
+1. The data are preprocessed as usual for rs-fMRI data.
+2. fALFF is the power in the spectrum 0-0.08Hz divided by the power in the spectrum 0-0.25Hz.
+3. fALFF is computed at every voxel in the image.
+
+The fALFF data are available already processed from the Autism Brain Imaging Data Exchange (ABIDE) dataset in MNI space at 3mm resolution.
 
 ```{r}
 # install the latest version of the NIsim package, which includes a function to download the preprocessed ABIDE data.
-# devtools::install_github('statimagcoll/NIsim', ref='master')
+# devtools::install_github('statimagcoll/PCP', ref='master')
+# devtools::install_github('statimagcoll/pbj', ref='master')
 
 ### LIBRARIES ###
 library(RNifti)
@@ -31,13 +35,13 @@ library(parallel)
 library(splines)
 library(progress)
 library(table1)
-#library(pbj)
+library(pbj)
 library(PCP)
 ```
 
 
 
-### Outline of steps
+## Outline of steps
 
 1. Download ABIDE data
 2. Data quality assurance
@@ -50,12 +54,12 @@ library(PCP)
     * `pbj` package in `R`
 4. Reporting results
 
-## Download ABIDE data
+# Download ABIDE data
 
 The `PCP` `R` package has access to the preprocessed ABIDE data. Here, the code downloads fALFF images, which is a measure derived from the rs-fMRI data.
 
-```{r, eval=FALSE}
-### DATA LOCATION ###
+```{r, eval=TRUE}
+## DATA LOCATION ##
 # SMN data folder
 datadir = file.path(dirname(dirname(getwd())), 'data/abide')
 derivative='falff'
@@ -75,7 +79,7 @@ dat$files = file.path(dbimagedir, dat$imgname)
 ```
 
 
-## Data quality assurance
+# Data quality assurance
 
 ```{r table1}
 dat$sex = factor(dat$sex, levels=1:2, labels = c('Male', 'Female'))
@@ -89,7 +93,7 @@ table1(~ sex + func_mean_fd + age_at_scan | dx_group, data=dat, caption = "ABIDE
 ```
 
 
-### Motion exclusions
+## Motion exclusions
 
 ```{r motion, fig.cap="Mean framewise displacement (FD) for each participant. The dashed line indicates the 0.5mm threshold we use to exclude participants with high motion."}
 # plot motion
@@ -103,17 +107,17 @@ dat = dat[which(dat$func_mean_fd<0.5), ]
 ```
 
 
-### Covariate exclusions
+## Covariate exclusions
 
-This is just a check to make sure we don't have any missing non-imaging variables.
+This is just a check to make sure we don't have any missing non-imaging variables. One additional participant is excluded.
 
 ```{r}
-
+dat = dat[rowMeans(!is.na(dat[,c("sex", "age_at_scan", "func_mean_fd", "func_fber", "func_outlier", "dx_group", "site_id")]))==1,]
 ```
 
 
 
-### Create study level brain mask
+## Create study level brain mask { .tabset .tabset-fade}
 
 After downloading the data, we create a study specific mask based on the subset of the data where all subjects have coverage. We make a small number of exclusions to increase the coverage above 30,000 voxels at 3mm isotropic resolution. This first chunk of code creates a study-level mask by the intersection of all participants where their data are non-zero.
 It the iteratively excludes the participant that will increase the study-level mask, until we reach a coverage over 30,000 voxels.
@@ -143,29 +147,177 @@ while(nnzero<30000){
 }
 ```
 
+Create the mask from the overlap.
+
+```{r}
+badDat = dat[! dat$sub_id %in% subids,]
+dat = dat[ dat$sub_id %in% subids,]
+
+# now create the mask
+mask = readNifti(dat$files[1])
+imgs = simplify2array(readNifti(dat$files) )
+# mask actually still has pretty low coverage
+mask[,,] = 0
+mask[,,] = apply(imgs>0, 1:3, all)
+writeNifti(mask, maskfile)
+nvox = sum(mask)
+ulimit = quantile(apply(imgs, 4, function(x) x[mask!=0]), 0.9)
+rm(imgs)
+```
+
+## Subjects with good coverage
+
+
+Visualize a slice of the data for all participants included in the analysis.
+
+::: {.panel-tabset}
+
+```{r, fig.height=8, fig.width=12, results='asis'}
+# hardcoded at 90 percentile
+ulimit = 126.95
+niftis = readNifti(dat$files)
+#image(niftis[[5]], index=45, crop=FALSE)
+#image(niftis[[5]], index=45, crop=TRUE, title='test', fg='white', bg='black')
+# loop through and use tabset for each figure
+# create 10 image within each figure
+it = 0
+par(mfrow=c(2,5), mar=c(0,0,2,0))
+for(i in 1:length(niftis)){
+  if(i%%10==1){ it = it+1; cat('\n\n### P', it, ' \n')}
+  image(niftis[[i]], index=45, lo=FALSE, limits=c(0,ulimit), crop=FALSE)
+  mtext(dat$sub_id[i], outer=FALSE)
+}
+```
+
+:::
+
+
+
+## Subjects with bad coverage
 
 There are issues with the orientation of the images for a small number of participants. We can visualize them here to see what the problem is.
 
-## Group-level analysis
+```{r, fig.cap="Axial slice (z=45) of fALFF data for all participants excluded from the analysis due to poor coverage.", fig.height=8, fig.width=12, results='asis'}
+niftis = readNifti(badDat$files)
+# visualize the ones that had bad coverage
+par(mfrow=c(2,5), mar=c(0,0,2,0))
+for(i in 1:length(niftis)){
+  image(niftis[[i]], index=45, lo=FALSE, limits=c(0,ulimit), crop=FALSE)
+  mtext(badDat$sub_id[i], outer=FALSE)
+}
+```
 
-### FEAT and `easythresh`
 
-### `Randomise`
-
-### `pbj` package in `R`
+# Group-level analysis
 
 ```{r}
+analysisDir = file.path(getwd(), "abide_results")
 # need age_at_scan in both models for testing nonlinear functions
 form = paste0(" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id" )
 formred = paste0(" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id")
 formredAge = paste0(" ~ sex + dx_group + func_mean_fd + func_fber + func_outlier + site_id")
-#  weights for each subject. Can be a character vector
-weights = "func_mean_fd"
 mask = maskfile
-output = paste0(tempfile(), '.rdata')
-ncores = 24
+# output Rdata file
+output = paste0(analysisDir, 'abideModels.rdata')
+ncores = 4
 ```
 
 
-## Reporting results
+## `fsl_glm`
+
+We can use FSL's FEAT to do a group-level analysis using a simple GLM (least squares approach). Here we create a text file with the list of images, and text files with the design matrix and contrasts for diagnosis and age.
+
+
+```{r}
+# feat setup files directory
+featDir = file.path(analysisDir, 'feat')
+dir.create(featDir, recursive=TRUE, showWarnings = FALSE)
+
+# write text file with all iamges
+write.table(dat$files, file = file.path(featDir, 'images.txt'), row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+# create design file for feat
+# save contrast names
+# create design matrix without the intercept for feat and save it as a text file
+design = model.matrix(as.formula(form), data=dat)
+write.table(design, file=file.path(featDir, 'design.txt'), row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+# create contrasts for dx and age
+contrasts = matrix(0, nrow=2, ncol=ncol(design))
+colnames(contrasts) = colnames(design)
+rownames(contrasts) = c('dx', 'age')
+contrasts[1, which(colnames(contrasts)=='dx_groupHC')] = 1
+contrasts[2, which(colnames(contrasts)=='age_at_scan')] = 1
+# save contrasts
+write.table(contrasts, file=file.path(featDir, 'contrasts.txt'), row.names=FALSE, col.names=FALSE, quote=FALSE)
+getwd()
+```
+
+
+```{bash, eval=FALSE}
+# output directory
+featDir=$(pwd)/abide_results/feat
+# merge images to 4d file
+fslmerge -t $featDir/falff_outcome.nii.gz $(cat $featDir/images.txt)
+# convert text file to .mat format for fsl
+Text2Vest $featDir/design.txt $featDir/design.mat
+# convert contrast text file to fsl format
+Text2Vest $featDir/contrasts.txt $featDir/design.con
+# mask file
+mask=$(pwd)/../../data/abide/neuroimaging/cpac/mask.nii.gz
+# run glm command
+fsl_glm -i $featDir/falff_outcome.nii.gz -d $featDir/design.mat -c $featDir/design.con -m $mask \
+-o $featDir/pe.nii.gz --out_z=$featDir/zstat.nii.gz  --out_t=$featDir/tstat.nii.gz --out_p=$featDir/pstat.nii.gz --out_cope=$featDir/cope.nii.gz
+```
+
+
+## `Randomise`
+
+## `pbj` package in `R`
+
+First, try to replicate the GLM results from fsl
+
+```{r}
+# DX analysis
+abideDXglm = lmPBJ(dat$files, form=form, formred=formred, mask=mask, data=dat, template = templatefile, robust=FALSE, HC3 = FALSE, transform='t')
+abideDXglm
+# effect size for diagnosis effect
+write.statMap(abideDXglm, outdir=file.path(analysisDir, 'dxGLM'), statMethod = 'Z')
+```
+
+
+```{r}
+# DX analysis
+abideDX = lmPBJ(dat$files, form=form, formred=formred, mask=mask, data=dat, template = templatefile)
+abideDX
+```
+
+
+```{r, fig.height=30, fig.width=50}
+image(abideDX, cft_p=0.05, crop=TRUE, index = 18:47)
+write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'))
+write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'S')
+```
+
+Load interactively with `fsleyes`. Open also with MNI 1mm template for better resolution viewing. `fsleyes` can overlay them correctly.
+
+```{bash, eval=FALSE}
+fsleyes /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz
+```
+
+
+
+
+```{r}
+# Age analysis
+abideAge = lmPBJ(dat$files, form=form, formred=formredAge, mask=mask, data=dat, template = templatefile)
+```
+
+```{r, fig.height=30, fig.width=50}
+image(abideAge, cft_p=0.05, crop=TRUE, index = 18:47)
+write.statMap(abideAge, outdir=file.path(analysisDir, 'age'))
+write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'S')
+```
+
+# Reporting results
 

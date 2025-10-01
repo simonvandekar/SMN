@@ -94,6 +94,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+<link href="../../site_libs/table1-1.0/table1_defaults.css" rel="stylesheet">
+
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -170,9 +172,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#download-abide-data" id="toc-download-abide-data" class="nav-link" data-scroll-target="#download-abide-data">Download ABIDE data</a></li>
   <li><a href="#data-quality-assurance" id="toc-data-quality-assurance" class="nav-link" data-scroll-target="#data-quality-assurance">Data quality assurance</a>
   <ul class="collapse">
-  <li><a href="#create-study-level-brain-mask" id="toc-create-study-level-brain-mask" class="nav-link" data-scroll-target="#create-study-level-brain-mask">Create study level brain mask</a></li>
   <li><a href="#motion-exclusions" id="toc-motion-exclusions" class="nav-link" data-scroll-target="#motion-exclusions">Motion exclusions</a></li>
   <li><a href="#covariate-exclusions" id="toc-covariate-exclusions" class="nav-link" data-scroll-target="#covariate-exclusions">Covariate exclusions</a></li>
+  <li><a href="#create-study-level-brain-mask" id="toc-create-study-level-brain-mask" class="nav-link" data-scroll-target="#create-study-level-brain-mask">Create study level brain mask</a></li>
+  <li><a href="#subjects-with-good-coverage" id="toc-subjects-with-good-coverage" class="nav-link" data-scroll-target="#subjects-with-good-coverage">Subjects with good coverage</a></li>
+  <li><a href="#subjects-with-bad-coverage" id="toc-subjects-with-bad-coverage" class="nav-link" data-scroll-target="#subjects-with-bad-coverage">Subjects with bad coverage</a></li>
   </ul></li>
   <li><a href="#group-level-analysis" id="toc-group-level-analysis" class="nav-link" data-scroll-target="#group-level-analysis">Group-level analysis</a>
   <ul class="collapse">
@@ -207,16 +211,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">eval=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">eval=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<section id="analysis-goals-and-data-input" class="level3">
-<h3 class="anchored" data-anchor-id="analysis-goals-and-data-input">Analysis goals and data input</h3>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>We will analyze diagnostic and age associations in individuals with autism spectrum disorder and typically developing controls. The data we will analyze are called fractional amplitude of low frequency fluctuations (fALFF). The are available already processed from the Autism Brain Imaging Data Exchange (ABIDE) dataset in MNI space at 3mm resolution.</p>
+<section id="analysis-goals-and-data-input" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-goals-and-data-input">Analysis goals and data input</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the latest version of the NIsim package, which includes a function to download the preprocessed ABIDE data.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github('statimagcoll/PCP', ref='master')</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github('statimagcoll/pbj', ref='master')</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">### LIBRARIES </span><span class="al">###</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RNifti)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(splines)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(progress)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(table1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'table1'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    units, units&lt;-</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pbj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 method overwritten by 'clubSandwich':
+  method    from    
+  bread.mlm sandwich</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PCP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
-<section id="outline-of-steps" class="level3">
-<h3 class="anchored" data-anchor-id="outline-of-steps">Outline of steps</h3>
+<section id="outline-of-steps" class="level2">
+<h2 class="anchored" data-anchor-id="outline-of-steps">Outline of steps</h2>
 <ol type="1">
 <li>Download ABIDE data</li>
 <li>Data quality assurance
@@ -235,35 +277,823 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="download-abide-data" class="level2">
-<h2 class="anchored" data-anchor-id="download-abide-data">Download ABIDE data</h2>
+<section id="download-abide-data" class="level1">
+<h1>Download ABIDE data</h1>
+<p>The <code>PCP</code> <code>R</code> package has access to the preprocessed ABIDE data. Here, the code downloads fALFF images, which is a measure derived from the rs-fMRI data.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DATA LOCATION ##</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SMN data folder</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>datadir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">dirname</span>(<span class="fu">dirname</span>(<span class="fu">getwd</span>())), <span class="st">'data/abide'</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>derivative<span class="ot">=</span><span class="st">'falff'</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># will be created by downloadABIDE</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>dbimagedir <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/filt_global'</span>, derivative)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>templatefile <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/MNI152_T1_3mm.nii.gz'</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># created by simSetup... Not used in this analysis</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>dbresimagedir <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/alff_res'</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># created below</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>maskfile <span class="ot">=</span> <span class="fu">file.path</span>(datadir, <span class="st">'neuroimaging/cpac/mask.nii.gz'</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># load in data and get directories</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> <span class="fu">ABIDE</span>(datadir, <span class="at">derivatives=</span>derivative)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># some data curation is done on download. Subset all pass on visual inspection and making sex and dx factors, remove rows with no file name</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>imgname <span class="ot">=</span> <span class="fu">paste</span>(dat<span class="sc">$</span>file_id, <span class="fu">paste0</span>(derivative, <span class="st">'.nii.gz'</span>), <span class="at">sep=</span><span class="st">'_'</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>files <span class="ot">=</span> <span class="fu">file.path</span>(dbimagedir, dat<span class="sc">$</span>imgname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
-<section id="data-quality-assurance" class="level2">
-<h2 class="anchored" data-anchor-id="data-quality-assurance">Data quality assurance</h2>
-<section id="create-study-level-brain-mask" class="level3">
-<h3 class="anchored" data-anchor-id="create-study-level-brain-mask">Create study level brain mask</h3>
+<section id="data-quality-assurance" class="level1">
+<h1>Data quality assurance</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>sex <span class="ot">=</span> <span class="fu">factor</span>(dat<span class="sc">$</span>sex, <span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Male'</span>, <span class="st">'Female'</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>sex) <span class="ot">=</span> <span class="st">"Sex"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>dx_group <span class="ot">=</span> <span class="fu">factor</span>(<span class="fu">toupper</span>(dat<span class="sc">$</span>dx_group))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>site_id <span class="ot">=</span> <span class="fu">factor</span>(dat<span class="sc">$</span>site_id)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>age_at_scan) <span class="ot">=</span> <span class="st">"Age"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>func_mean_fd) <span class="ot">=</span> <span class="st">"Mean displacement"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">label</span>(dat<span class="sc">$</span>dx_group) <span class="ot">=</span> <span class="st">"Diagnosis"</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">table1</span>(<span class="sc">~</span> sex <span class="sc">+</span> func_mean_fd <span class="sc">+</span> age_at_scan <span class="sc">|</span> dx_group, <span class="at">data=</span>dat, <span class="at">caption =</span> <span class="st">"ABIDE analysis summary table."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div class="Rtable1">
+<table class="Rtable1 table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>ABIDE analysis summary table.</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th class="rowlabel firstrow lastrow" data-quarto-table-cell-role="th"></th>
+<th class="firstrow lastrow" data-quarto-table-cell-role="th"><span class="stratlabel">ASD<br>
+<span class="stratn">(N=505)</span></span></th>
+<th class="firstrow lastrow" data-quarto-table-cell-role="th"><span class="stratlabel">HC<br>
+<span class="stratn">(N=530)</span></span></th>
+<th class="firstrow lastrow" data-quarto-table-cell-role="th"><span class="stratlabel">Overall<br>
+<span class="stratn">(N=1035)</span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowlabel firstrow">Sex</td>
+<td class="firstrow"></td>
+<td class="firstrow"></td>
+<td class="firstrow"></td>
+</tr>
+<tr class="even">
+<td class="rowlabel">Male</td>
+<td>443 (87.7%)</td>
+<td>435 (82.1%)</td>
+<td>878 (84.8%)</td>
+</tr>
+<tr class="odd">
+<td class="rowlabel lastrow">Female</td>
+<td class="lastrow">62 (12.3%)</td>
+<td class="lastrow">95 (17.9%)</td>
+<td class="lastrow">157 (15.2%)</td>
+</tr>
+<tr class="even">
+<td class="rowlabel firstrow">Mean displacement</td>
+<td class="firstrow"></td>
+<td class="firstrow"></td>
+<td class="firstrow"></td>
+</tr>
+<tr class="odd">
+<td class="rowlabel">Mean (SD)</td>
+<td>0.157 (0.188)</td>
+<td>0.103 (0.0986)</td>
+<td>0.129 (0.152)</td>
+</tr>
+<tr class="even">
+<td class="rowlabel">Median [Min, Max]</td>
+<td>0.0926 [0.0180, 1.43]</td>
+<td>0.0718 [0.0161, 0.890]</td>
+<td>0.0834 [0.0161, 1.43]</td>
+</tr>
+<tr class="odd">
+<td class="rowlabel lastrow">Missing</td>
+<td class="lastrow">1 (0.2%)</td>
+<td class="lastrow">0 (0%)</td>
+<td class="lastrow">1 (0.1%)</td>
+</tr>
+<tr class="even">
+<td class="rowlabel firstrow">Age</td>
+<td class="firstrow"></td>
+<td class="firstrow"></td>
+<td class="firstrow"></td>
+</tr>
+<tr class="odd">
+<td class="rowlabel">Mean (SD)</td>
+<td>17.1 (8.55)</td>
+<td>16.8 (7.45)</td>
+<td>17.0 (8.00)</td>
+</tr>
+<tr class="even">
+<td class="rowlabel lastrow">Median [Min, Max]</td>
+<td class="lastrow">14.4 [7.00, 64.0]</td>
+<td class="lastrow">14.7 [6.47, 56.2]</td>
+<td class="lastrow">14.5 [6.47, 64.0]</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="motion-exclusions" class="level2">
+<h2 class="anchored" data-anchor-id="motion-exclusions">Motion exclusions</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot motion</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dat<span class="sc">$</span>func_mean_fd, <span class="at">main=</span><span class="st">"Mean relative frame displacement"</span>, <span class="at">bty=</span><span class="st">'l'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># greater than half a millimeter</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fl">0.5</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group-level_tutorial_files/figure-html/motion-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Mean framewise displacement (FD) for each participant. The dashed line indicates the 0.5mm threshold we use to exclude participants with high motion.</figcaption>
+</figure>
+</div>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add number of exclusions as text in the top right corner of plot</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to participants less than half a milimeter mean framewise displacement</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[<span class="fu">which</span>(dat<span class="sc">$</span>func_mean_fd<span class="sc">&lt;</span><span class="fl">0.5</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
-<section id="motion-exclusions" class="level3">
-<h3 class="anchored" data-anchor-id="motion-exclusions">Motion exclusions</h3>
+<section id="covariate-exclusions" class="level2">
+<h2 class="anchored" data-anchor-id="covariate-exclusions">Covariate exclusions</h2>
+<p>This is just a check to make sure we don’t have any missing non-imaging variables. One additional participant is excluded.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[<span class="fu">rowMeans</span>(<span class="sc">!</span><span class="fu">is.na</span>(dat[,<span class="fu">c</span>(<span class="st">"sex"</span>, <span class="st">"age_at_scan"</span>, <span class="st">"func_mean_fd"</span>, <span class="st">"func_fber"</span>, <span class="st">"func_outlier"</span>, <span class="st">"dx_group"</span>, <span class="st">"site_id"</span>)]))<span class="sc">==</span><span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
-<section id="covariate-exclusions" class="level3">
-<h3 class="anchored" data-anchor-id="covariate-exclusions">Covariate exclusions</h3>
+<section id="create-study-level-brain-mask" class="level2 tabset tabset-fade">
+<h2 class="tabset tabset-fade anchored" data-anchor-id="create-study-level-brain-mask">Create study level brain mask</h2>
+<p>After downloading the data, we create a study specific mask based on the subset of the data where all subjects have coverage. We make a small number of exclusions to increase the coverage above 30,000 voxels at 3mm isotropic resolution. This first chunk of code creates a study-level mask by the intersection of all participants where their data are non-zero. It the iteratively excludes the participant that will increase the study-level mask, until we reach a coverage over 30,000 voxels.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">=</span> <span class="fu">simplify2array</span>(<span class="fu">readNifti</span>(dat<span class="sc">$</span>files) )</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># choose</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># number of people with zeros at that location</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>inds<span class="ot">=</span><span class="fu">numeric</span>()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">=</span> <span class="fu">c</span>()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>subids <span class="ot">=</span> dat<span class="sc">$</span>sub_id</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># number of voxels with no zeros</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>nnzero <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># iteratively removes subjects who will increase the mask the largest</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(nnzero<span class="sc">&lt;</span><span class="dv">30000</span>){</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  voxSums <span class="ot">=</span> <span class="fu">rowSums</span>(imgs<span class="sc">==</span><span class="dv">0</span>, <span class="at">dims=</span><span class="dv">3</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(voxSums))</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  nnzero<span class="ot">=</span>tab[<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># number of unique voxels for each subject</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  uniquevox <span class="ot">=</span> <span class="fu">apply</span>(imgs, <span class="dv">4</span>, <span class="cf">function</span>(img) <span class="fu">sum</span>(img<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> voxSums<span class="sc">==</span><span class="dv">1</span>) )</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  inds <span class="ot">=</span> <span class="fu">which.max</span>(uniquevox)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">Iteration:</span><span class="sc">\n</span><span class="st">subject removed: '</span>, <span class="fu">paste</span>(subids[inds], <span class="at">collapse=</span><span class="st">', '</span>), <span class="st">'</span><span class="sc">\n</span><span class="st">mask size is now '</span>, nnzero<span class="sc">+</span><span class="fu">sum</span>(uniquevox[inds]), <span class="st">'</span><span class="sc">\n</span><span class="st">Number of voxels added:'</span>, <span class="fu">sum</span>(uniquevox[inds]) )</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  imgs <span class="ot">=</span> imgs[,,,<span class="sc">-</span>inds]</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  subids <span class="ot">=</span> subids[<span class="sc">-</span>inds]</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  nnzero<span class="ot">=</span>nnzero<span class="sc">+</span><span class="fu">sum</span>(uniquevox[inds])</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Iteration:
+subject removed:  51469 
+mask size is now  8687 
+Number of voxels added: 5360
+Iteration:
+subject removed:  51478 
+mask size is now  22842 
+Number of voxels added: 14155
+Iteration:
+subject removed:  50209 
+mask size is now  25327 
+Number of voxels added: 2485
+Iteration:
+subject removed:  50727 
+mask size is now  27404 
+Number of voxels added: 2077
+Iteration:
+subject removed:  50195 
+mask size is now  28394 
+Number of voxels added: 990
+Iteration:
+subject removed:  50216 
+mask size is now  29140 
+Number of voxels added: 746
+Iteration:
+subject removed:  51466 
+mask size is now  29724 
+Number of voxels added: 584
+Iteration:
+subject removed:  51471 
+mask size is now  30307 
+Number of voxels added: 583</code></pre>
+</div>
+</div>
+<p>Create the mask from the overlap.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>badDat <span class="ot">=</span> dat[<span class="sc">!</span> dat<span class="sc">$</span>sub_id <span class="sc">%in%</span> subids,]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> dat[ dat<span class="sc">$</span>sub_id <span class="sc">%in%</span> subids,]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now create the mask</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>mask <span class="ot">=</span> <span class="fu">readNifti</span>(dat<span class="sc">$</span>files[<span class="dv">1</span>])</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">=</span> <span class="fu">simplify2array</span>(<span class="fu">readNifti</span>(dat<span class="sc">$</span>files) )</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mask actually still has pretty low coverage</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>mask[,,] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>mask[,,] <span class="ot">=</span> <span class="fu">apply</span>(imgs<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, all)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="fu">writeNifti</span>(mask, maskfile)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>nvox <span class="ot">=</span> <span class="fu">sum</span>(mask)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>ulimit <span class="ot">=</span> <span class="fu">quantile</span>(<span class="fu">apply</span>(imgs, <span class="dv">4</span>, <span class="cf">function</span>(x) x[mask<span class="sc">!=</span><span class="dv">0</span>]), <span class="fl">0.9</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(imgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="subjects-with-good-coverage" class="level2">
+<h2 class="anchored" data-anchor-id="subjects-with-good-coverage">Subjects with good coverage</h2>
+<p>Visualize a slice of the data for all participants included in the analysis.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">P 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">P 2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">P 3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">P 4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">P 5</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">P 6</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false">P 7</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false">P 8</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-9-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-9" role="tab" aria-controls="tabset-1-9" aria-selected="false">P 9</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-10-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-10" role="tab" aria-controls="tabset-1-10" aria-selected="false">P 10</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-11-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-11" role="tab" aria-controls="tabset-1-11" aria-selected="false">P 11</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-12-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-12" role="tab" aria-controls="tabset-1-12" aria-selected="false">P 12</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-13-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-13" role="tab" aria-controls="tabset-1-13" aria-selected="false">P 13</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-14-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-14" role="tab" aria-controls="tabset-1-14" aria-selected="false">P 14</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-15-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-15" role="tab" aria-controls="tabset-1-15" aria-selected="false">P 15</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-16-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-16" role="tab" aria-controls="tabset-1-16" aria-selected="false">P 16</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-17-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-17" role="tab" aria-controls="tabset-1-17" aria-selected="false">P 17</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-18-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-18" role="tab" aria-controls="tabset-1-18" aria-selected="false">P 18</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-19-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-19" role="tab" aria-controls="tabset-1-19" aria-selected="false">P 19</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-20-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-20" role="tab" aria-controls="tabset-1-20" aria-selected="false">P 20</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-21-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-21" role="tab" aria-controls="tabset-1-21" aria-selected="false">P 21</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-22-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-22" role="tab" aria-controls="tabset-1-22" aria-selected="false">P 22</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-23-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-23" role="tab" aria-controls="tabset-1-23" aria-selected="false">P 23</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-24-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-24" role="tab" aria-controls="tabset-1-24" aria-selected="false">P 24</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-25-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-25" role="tab" aria-controls="tabset-1-25" aria-selected="false">P 25</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-26-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-26" role="tab" aria-controls="tabset-1-26" aria-selected="false">P 26</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-27-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-27" role="tab" aria-controls="tabset-1-27" aria-selected="false">P 27</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-28-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-28" role="tab" aria-controls="tabset-1-28" aria-selected="false">P 28</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-29-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-29" role="tab" aria-controls="tabset-1-29" aria-selected="false">P 29</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-30-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-30" role="tab" aria-controls="tabset-1-30" aria-selected="false">P 30</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-31-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-31" role="tab" aria-controls="tabset-1-31" aria-selected="false">P 31</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-32-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-32" role="tab" aria-controls="tabset-1-32" aria-selected="false">P 32</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-33-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-33" role="tab" aria-controls="tabset-1-33" aria-selected="false">P 33</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-34-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-34" role="tab" aria-controls="tabset-1-34" aria-selected="false">P 34</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-35-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-35" role="tab" aria-controls="tabset-1-35" aria-selected="false">P 35</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-36-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-36" role="tab" aria-controls="tabset-1-36" aria-selected="false">P 36</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-37-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-37" role="tab" aria-controls="tabset-1-37" aria-selected="false">P 37</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-38-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-38" role="tab" aria-controls="tabset-1-38" aria-selected="false">P 38</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-39-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-39" role="tab" aria-controls="tabset-1-39" aria-selected="false">P 39</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-40-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-40" role="tab" aria-controls="tabset-1-40" aria-selected="false">P 40</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-41-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-41" role="tab" aria-controls="tabset-1-41" aria-selected="false">P 41</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-42-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-42" role="tab" aria-controls="tabset-1-42" aria-selected="false">P 42</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-43-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-43" role="tab" aria-controls="tabset-1-43" aria-selected="false">P 43</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-44-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-44" role="tab" aria-controls="tabset-1-44" aria-selected="false">P 44</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-45-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-45" role="tab" aria-controls="tabset-1-45" aria-selected="false">P 45</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-46-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-46" role="tab" aria-controls="tabset-1-46" aria-selected="false">P 46</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-47-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-47" role="tab" aria-controls="tabset-1-47" aria-selected="false">P 47</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-48-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-48" role="tab" aria-controls="tabset-1-48" aria-selected="false">P 48</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-49-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-49" role="tab" aria-controls="tabset-1-49" aria-selected="false">P 49</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-50-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-50" role="tab" aria-controls="tabset-1-50" aria-selected="false">P 50</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-51-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-51" role="tab" aria-controls="tabset-1-51" aria-selected="false">P 51</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-52-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-52" role="tab" aria-controls="tabset-1-52" aria-selected="false">P 52</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-53-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-53" role="tab" aria-controls="tabset-1-53" aria-selected="false">P 53</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-54-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-54" role="tab" aria-controls="tabset-1-54" aria-selected="false">P 54</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-55-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-55" role="tab" aria-controls="tabset-1-55" aria-selected="false">P 55</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-56-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-56" role="tab" aria-controls="tabset-1-56" aria-selected="false">P 56</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-57-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-57" role="tab" aria-controls="tabset-1-57" aria-selected="false">P 57</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-58-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-58" role="tab" aria-controls="tabset-1-58" aria-selected="false">P 58</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-59-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-59" role="tab" aria-controls="tabset-1-59" aria-selected="false">P 59</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-60-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-60" role="tab" aria-controls="tabset-1-60" aria-selected="false">P 60</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-61-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-61" role="tab" aria-controls="tabset-1-61" aria-selected="false">P 61</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-62-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-62" role="tab" aria-controls="tabset-1-62" aria-selected="false">P 62</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-63-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-63" role="tab" aria-controls="tabset-1-63" aria-selected="false">P 63</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-64-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-64" role="tab" aria-controls="tabset-1-64" aria-selected="false">P 64</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-65-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-65" role="tab" aria-controls="tabset-1-65" aria-selected="false">P 65</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-66-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-66" role="tab" aria-controls="tabset-1-66" aria-selected="false">P 66</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-67-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-67" role="tab" aria-controls="tabset-1-67" aria-selected="false">P 67</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-68-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-68" role="tab" aria-controls="tabset-1-68" aria-selected="false">P 68</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-69-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-69" role="tab" aria-controls="tabset-1-69" aria-selected="false">P 69</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-70-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-70" role="tab" aria-controls="tabset-1-70" aria-selected="false">P 70</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-71-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-71" role="tab" aria-controls="tabset-1-71" aria-selected="false">P 71</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-72-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-72" role="tab" aria-controls="tabset-1-72" aria-selected="false">P 72</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-73-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-73" role="tab" aria-controls="tabset-1-73" aria-selected="false">P 73</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-74-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-74" role="tab" aria-controls="tabset-1-74" aria-selected="false">P 74</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-75-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-75" role="tab" aria-controls="tabset-1-75" aria-selected="false">P 75</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-76-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-76" role="tab" aria-controls="tabset-1-76" aria-selected="false">P 76</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-77-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-77" role="tab" aria-controls="tabset-1-77" aria-selected="false">P 77</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-78-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-78" role="tab" aria-controls="tabset-1-78" aria-selected="false">P 78</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-79-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-79" role="tab" aria-controls="tabset-1-79" aria-selected="false">P 79</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-80-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-80" role="tab" aria-controls="tabset-1-80" aria-selected="false">P 80</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-81-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-81" role="tab" aria-controls="tabset-1-81" aria-selected="false">P 81</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-82-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-82" role="tab" aria-controls="tabset-1-82" aria-selected="false">P 82</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-83-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-83" role="tab" aria-controls="tabset-1-83" aria-selected="false">P 83</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-84-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-84" role="tab" aria-controls="tabset-1-84" aria-selected="false">P 84</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-85-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-85" role="tab" aria-controls="tabset-1-85" aria-selected="false">P 85</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-86-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-86" role="tab" aria-controls="tabset-1-86" aria-selected="false">P 86</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-87-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-87" role="tab" aria-controls="tabset-1-87" aria-selected="false">P 87</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-88-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-88" role="tab" aria-controls="tabset-1-88" aria-selected="false">P 88</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-89-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-89" role="tab" aria-controls="tabset-1-89" aria-selected="false">P 89</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-90-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-90" role="tab" aria-controls="tabset-1-90" aria-selected="false">P 90</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-91-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-91" role="tab" aria-controls="tabset-1-91" aria-selected="false">P 91</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-92-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-92" role="tab" aria-controls="tabset-1-92" aria-selected="false">P 92</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-93-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-93" role="tab" aria-controls="tabset-1-93" aria-selected="false">P 93</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-94-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-94" role="tab" aria-controls="tabset-1-94" aria-selected="false">P 94</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-95-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-95" role="tab" aria-controls="tabset-1-95" aria-selected="false">P 95</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-96-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-96" role="tab" aria-controls="tabset-1-96" aria-selected="false">P 96</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-97-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-97" role="tab" aria-controls="tabset-1-97" aria-selected="false">P 97</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-98-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-98" role="tab" aria-controls="tabset-1-98" aria-selected="false">P 98</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-99-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-99" role="tab" aria-controls="tabset-1-99" aria-selected="false">P 99</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-100-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-100" role="tab" aria-controls="tabset-1-100" aria-selected="false">P 100</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-5.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-6.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-7.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-8.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-9" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-9-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-9.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-10" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-10-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-10.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-11" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-11-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-11.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-12" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-12-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-12.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-13" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-13-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-13.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-14" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-14-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-14.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-15" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-15-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-15.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-16" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-16-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-16.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-17" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-17-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-17.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-18" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-18-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-18.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-19" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-19-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-19.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-20" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-20-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-20.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-21" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-21-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-21.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-22" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-22-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-22.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-23" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-23-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-23.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-24" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-24-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-24.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-25" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-25-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-25.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-26" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-26-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-26.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-27" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-27-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-27.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-28" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-28-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-28.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-29" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-29-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-29.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-30" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-30-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-30.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-31" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-31-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-31.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-32" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-32-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-32.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-33" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-33-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-33.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-34" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-34-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-34.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-35" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-35-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-35.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-36" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-36-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-36.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-37" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-37-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-37.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-38" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-38-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-38.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-39" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-39-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-39.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-40" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-40-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-40.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-41" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-41-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-41.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-42" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-42-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-42.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-43" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-43-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-43.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-44" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-44-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-44.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-45" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-45-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-45.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-46" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-46-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-46.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-47" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-47-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-47.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-48" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-48-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-48.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-49" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-49-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-49.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-50" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-50-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-50.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-51" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-51-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-51.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-52" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-52-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-52.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-53" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-53-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-53.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-54" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-54-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-54.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-55" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-55-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-55.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-56" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-56-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-56.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-57" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-57-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-57.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-58" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-58-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-58.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-59" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-59-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-59.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-60" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-60-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-60.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-61" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-61-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-61.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-62" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-62-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-62.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-63" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-63-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-63.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-64" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-64-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-64.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-65" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-65-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-65.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-66" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-66-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-66.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-67" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-67-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-67.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-68" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-68-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-68.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-69" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-69-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-69.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-70" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-70-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-70.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-71" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-71-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-71.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-72" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-72-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-72.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-73" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-73-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-73.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-74" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-74-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-74.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-75" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-75-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-75.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-76" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-76-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-76.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-77" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-77-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-77.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-78" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-78-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-78.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-79" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-79-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-79.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-80" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-80-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-80.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-81" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-81-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-81.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-82" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-82-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-82.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-83" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-83-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-83.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-84" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-84-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-84.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-85" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-85-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-85.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-86" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-86-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-86.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-87" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-87-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-87.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-88" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-88-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-88.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-89" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-89-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-89.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-90" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-90-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-90.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-91" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-91-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-91.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-92" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-92-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-92.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-93" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-93-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-93.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-94" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-94-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-94.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-95" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-95-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-95.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-96" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-96-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-96.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-97" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-97-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-97.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-98" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-98-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-98.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-99" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-99-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-99.png" class="img-fluid" width="1152"></p>
+</div>
+<div id="tabset-1-100" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-100-tab">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-7-100.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="subjects-with-bad-coverage" class="level2">
+<h2 class="anchored" data-anchor-id="subjects-with-bad-coverage">Subjects with bad coverage</h2>
+<p>There are issues with the orientation of the images for a small number of participants. We can visualize them here to see what the problem is.</p>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>niftis <span class="ot">=</span> <span class="fu">readNifti</span>(badDat<span class="sc">$</span>files)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the ones that had bad coverage</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">0</span>))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(niftis)){</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image</span>(niftis[[i]], <span class="at">index=</span><span class="dv">45</span>, <span class="at">lo=</span><span class="cn">FALSE</span>, <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,ulimit), <span class="at">crop=</span><span class="cn">FALSE</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(badDat<span class="sc">$</span>sub_id[i], <span class="at">outer=</span><span class="cn">FALSE</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1152"></p>
+<figcaption class="figure-caption">Axial slice (z=45) of fALFF data for all participants excluded from the analysis due to poor coverage.</figcaption>
+</figure>
+</div>
 </section>
 </section>
-<section id="group-level-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="group-level-analysis">Group-level analysis</h2>
-<section id="feat-and-easythresh" class="level3">
-<h3 class="anchored" data-anchor-id="feat-and-easythresh">FEAT and <code>easythresh</code></h3>
+<section id="group-level-analysis" class="level1">
+<h1>Group-level analysis</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>analysisDir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"abide_results"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># need age_at_scan in both models for testing nonlinear functions</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>form <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id"</span> )</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>formred <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>formredAge <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">" ~ sex + dx_group + func_mean_fd + func_fber + func_outlier + site_id"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>mask <span class="ot">=</span> maskfile</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># output Rdata file</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>output <span class="ot">=</span> <span class="fu">paste0</span>(analysisDir, <span class="st">'abideModels.rdata'</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>ncores <span class="ot">=</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="feat-and-easythresh" class="level2">
+<h2 class="anchored" data-anchor-id="feat-and-easythresh">FEAT and <code>easythresh</code></h2>
+<p>We can use FSL’s FEAT to do a group-level analysis. Here we create a text file with the list of images, and text files with the design matrix and contrasts for diagnosis and age.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># feat setup files directory</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>featDir <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'feat'</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(featDir, <span class="at">recursive=</span><span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write text file with all iamges</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dat<span class="sc">$</span>files, <span class="at">file =</span> <span class="fu">file.path</span>(featDir, <span class="st">'images.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create design file for feat</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># save contrast names</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># create design matrix without the intercept for feat and save it as a text file</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>design <span class="ot">=</span> <span class="fu">model.matrix</span>(<span class="fu">as.formula</span>(form), <span class="at">data=</span>dat)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(design, <span class="at">file=</span><span class="fu">file.path</span>(featDir, <span class="st">'design.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># create contrasts for dx and age</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">ncol=</span><span class="fu">ncol</span>(design))</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(contrasts) <span class="ot">=</span> <span class="fu">colnames</span>(design)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(contrasts) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'dx'</span>, <span class="st">'age'</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>contrasts[<span class="dv">1</span>, <span class="fu">which</span>(<span class="fu">colnames</span>(contrasts)<span class="sc">==</span><span class="st">'dx_groupHC'</span>)] <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>contrasts[<span class="dv">2</span>, <span class="fu">which</span>(<span class="fu">colnames</span>(contrasts)<span class="sc">==</span><span class="st">'age_at_scan'</span>)] <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># save contrasts</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(contrasts, <span class="at">file=</span><span class="fu">file.path</span>(featDir, <span class="st">'contrasts.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial"</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># output directory</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="va">featDir</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/abide_results/feat</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># merge images to 4d file</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">fslmerge</span> <span class="at">-t</span> <span class="va">$featDir</span>/falff_outcome.nii.gz <span class="va">$(</span><span class="fu">cat</span> <span class="va">$featDir</span>/images.txt<span class="va">)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert text file to .mat format for fsl</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Text2Vest</span> <span class="va">$featDir</span>/design.txt <span class="va">$featDir</span>/design.mat</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># convert contrast text file to fsl format</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Text2Vest</span> <span class="va">$featDir</span>/contrasts.txt <span class="va">$featDir</span>/design.con</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># mask file</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="va">mask</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/../../data/abide/neuroimaging/cpac/mask.nii.gz</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># run glm command</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="ex">fsl_glm</span> <span class="at">-i</span> <span class="va">$featDir</span>/falff_outcome.nii.gz <span class="at">-d</span> <span class="va">$featDir</span>/design.mat <span class="at">-c</span> <span class="va">$featDir</span>/design.con <span class="at">-m</span> <span class="va">$mask</span> <span class="dt">\</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>-o <span class="va">$featDir</span>/pe.nii.gz <span class="at">--out_z</span><span class="op">=</span><span class="va">$featDir</span>/zstat.nii.gz  <span class="at">--out_t</span><span class="op">=</span><span class="va">$featDir</span>/tstat.nii.gz <span class="at">--out_p</span><span class="op">=</span><span class="va">$featDir</span>/pstat.nii.gz <span class="at">--out_cope</span><span class="op">=</span><span class="va">$featDir</span>/cope.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
-<section id="randomise" class="level3">
-<h3 class="anchored" data-anchor-id="randomise"><code>Randomise</code></h3>
+<section id="randomise" class="level2">
+<h2 class="anchored" data-anchor-id="randomise"><code>Randomise</code></h2>
 </section>
-<section id="pbj-package-in-r" class="level3">
-<h3 class="anchored" data-anchor-id="pbj-package-in-r"><code>pbj</code> package in <code>R</code></h3>
+<section id="pbj-package-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="pbj-package-in-r"><code>pbj</code> package in <code>R</code></h2>
+<p>First, try to replicate the GLM results from fsl</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DX analysis</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>abideDXglm <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formred, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile, <span class="at">robust=</span><span class="cn">FALSE</span>, <span class="at">HC3 =</span> <span class="cn">FALSE</span>, <span class="at">transform=</span><span class="st">'t'</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>abideDXglm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Full formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id
+Reduced formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id  
+30307  voxels in mask
+StatMap quantiles (0, 0.01, 0.05, 0.95, 0.99, 1):
+ [ 0, 0, 0.01, 7.36, 11.2, 25.05 ]
+sqrtSigma: 
+  [n =  997 ; df =  1 ; rdf =  971 ]
+id variable is:
+ NULL
+lmPBJ inference settings:
+  robust =  FALSE ; HC3 =  FALSE ; transform =  t
+pbjInference not run yet.</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># effect size for diagnosis effect</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDXglm, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dxGLM'</span>), <span class="at">statMethod =</span> <span class="st">'Z'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing stat and coef images.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing sqrtSigma object.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$stat
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dxGLM/stat_z.nii.gz"
+
+$sqrtSigma
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dxGLM/sqrtSigma.rds"</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DX analysis</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>abideDX <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formred, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>abideDX</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Full formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id
+Reduced formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id  
+30307  voxels in mask
+StatMap quantiles (0, 0.01, 0.05, 0.95, 0.99, 1):
+ [ 0, 0, 0.01, 6.99, 10.66, 24.51 ]
+sqrtSigma: 
+  [n =  997 ; df =  1 ; rdf =  971 ]
+id variable is:
+ NULL
+lmPBJ inference settings:
+  robust =  TRUE ; HC3 =  TRUE ; transform =  none
+pbjInference not run yet.</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDX, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="4800"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDX, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing stat and coef images.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing sqrtSigma object.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$stat
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz"
+
+$sqrtSigma
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/sqrtSigma.rds"</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDX, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing stat and coef images.
+Writing sqrtSigma object.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$stat
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_s.nii.gz"
+
+$sqrtSigma
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/sqrtSigma.rds"</code></pre>
+</div>
+</div>
+<p>Load interactively with <code>fsleyes</code>. Open also with MNI 1mm template for better resolution viewing. <code>fsleyes</code> can overlay them correctly.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age analysis</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>abideAge <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formredAge, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideAge, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="4800"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing stat and coef images.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing sqrtSigma object.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$stat
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/age/stat_p.nii.gz"
+
+$sqrtSigma
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/age/sqrtSigma.rds"</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing stat and coef images.
+Writing sqrtSigma object.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$stat
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/age/stat_s.nii.gz"
+
+$sqrtSigma
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/age/sqrtSigma.rds"</code></pre>
+</div>
+</div>
 </section>
 </section>
-<section id="reporting-results" class="level2">
-<h2 class="anchored" data-anchor-id="reporting-results">Reporting results</h2>
+<section id="reporting-results" class="level1">
+<h1>Reporting results</h1>
 
 
 </section>
