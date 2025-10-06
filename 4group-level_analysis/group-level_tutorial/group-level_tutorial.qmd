@@ -76,6 +76,7 @@ templatefile = file.path(datadir, 'neuroimaging/MNI152_T1_3mm.nii.gz')
 dbresimagedir = file.path(datadir, 'neuroimaging/cpac/alff_res')
 # created below
 maskfile = file.path(datadir, 'neuroimaging/cpac/mask.nii.gz')
+overlapfile = file.path(datadir, 'neuroimaging/cpac/overlap.nii.gz')
 
 # load in data and get directories
 dat = ABIDE(datadir, derivatives=derivative)
@@ -109,7 +110,7 @@ abline(h=0.5, lty=2, lwd=2)
 # add number of exclusions as text in the top right corner of plot
 
 # subset to participants less than half a milimeter mean framewise displacement
-dat = dat[which(dat$func_mean_fd<0.5), ]
+dat = dat[which(dat$func_mean_fd<0.25), ]
 ```
 
 
@@ -130,6 +131,11 @@ It the iteratively excludes the participant that will increase the study-level m
 
 ```{r}
 imgs = simplify2array(readNifti(dat$files) )
+overlap = rowMeans(imgs!=0, dims=3)
+overlapImg = readNifti(dat$files[1])
+overlapImg[,,] = overlap[,,]
+writeNifti(overlapImg, file=overlapfile)
+
 # choose
 # number of people with zeros at that location
 inds=numeric()
