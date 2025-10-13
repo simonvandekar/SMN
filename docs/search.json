@@ -1363,5 +1363,54 @@
     "title": "Despicable Me group-level analysis",
     "section": "Reporting age effects",
     "text": "Reporting age effects\nFor this section, report the results from the FLAME or pbj analysis (you can choose which one) for the age effect.\n\nMethods\nDescribe the methods you used to analyze the results 1-2 paragraphs including a description of the first-level analysis and group-level analysis. It should be described well enough that someone could repeat your analyses.\n\n\nResults\nDescribe the results of your analyses on one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast."
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html",
+    "title": "Despicable Me group-level analysis",
+    "section": "",
+    "text": "Code\nknitr::opts_chunk$set(echo = TRUE, eval=TRUE)"
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#merge-in-demographic-variables",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#merge-in-demographic-variables",
+    "title": "Despicable Me group-level analysis",
+    "section": "Merge in demographic variables",
+    "text": "Merge in demographic variables\nFor the group-level analyses, we are going to look at how some demographic features are associated with BOLD response during the task.\n\nMerge in the demographic variables. They are located here data/RBC/HBN_BIDS/study-HBN_desc-participants.tsv in tab delimited format."
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#motion-qc",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#motion-qc",
+    "title": "Despicable Me group-level analysis",
+    "section": "Motion QC",
+    "text": "Motion QC\nThe motion files are included in the feat directories in the file mc/prefiltered_func_data_mcf_rel_mean.rms.\n\nAdd them to the sites data frame and create a plot to decide on a threshold for exclusion.\nCreate a list of participants to exclude based on the visual registration QA.\nMake the exclusions and create a Table 1 with the motion information.\n\n\n\nCode\n# get mean relative displacement from feat directories and add to sites dataframe\n\n# create a plot with the motion QA and decide on a threshold for exclusion\n\n# create list of participants to exclude based on our visual registration QA\nregExclude = c()"
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#study-level-mask",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#study-level-mask",
+    "title": "Despicable Me group-level analysis",
+    "section": "Study-level mask",
+    "text": "Study-level mask\n\nCreate an “overlap” image that shows the proportion of participants with data at each voxel based on the mask in their FEAT folder. Visualize the overlap image here with the MNI in the background.\nCreate a study-level mask that includes voxels with 100% of data (i.e. every participant has data).\nWrite a one-sentence comment on how the coverage looks."
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#group-level-model",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#group-level-model",
+    "title": "Despicable Me group-level analysis",
+    "section": "Group level model",
+    "text": "Group level model\n\nFSL OLS and FLAMEO\nFit an OLS model and FLAME model with the following design: \\[\nY_i(v) = \\beta_0(v) + \\beta_1(v)*\\text{age}_i + \\beta_2(v)*\\text{sex}_i + \\beta_3(v)*\\text{motion}_i,\n\\]\nwhere \\(Y_i\\) the the “cope” file for the difference between positive and negative emotional states. For age, use the centered age (subtract the mean age from each participant’s age).\nFor the group level contrasts, create three:\n\nThe mean effect across all participants.\nThe association with age (positive correlation with age).\nThe association with sex.\n\n\nFor each contrast, describe the interpretation of the effect.\n\nHint: For the OLS model, you can use the group-level tutorial that I presented in class. For the FLAME model, you can use the flameo function. You will need to pass the varcope images in addition to the cope images. The varcope images are also located in the feat directories.\n\n\npbj package\n\nUse the pbj package to fit the same model for the age and sex effects.\n\n\n\nVisualizations\n\nThreshold the statistical images for the age effect showing positive and negative regions at \\(Z\\ge 1.96\\) and create an image here with a particular slice for the three models (OLS, FLAMEO, pbj) that shows some of the difference between the age effects side-by-side. Note: I haven’t done this analysis yet. If it looks like there isn’t much showing, up, then let me know and we can discuss further."
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#spatial-extent-inference",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#spatial-extent-inference",
+    "title": "Despicable Me group-level analysis",
+    "section": "Spatial extent inference",
+    "text": "Spatial extent inference\n\neasythresh\n\nUse the easythresh function from FSL to perform spatial extent inference for the age effect on the FLAME output. Use a cluster-forming threshold of \\(p&lt;0.001\\).\nCreate a cluster table for the results.\n\n\n\npbj\nThis will take a little while longer to run because it is using bootstraps to compute \\(p\\)-values.\n\nUse the pbj package to perform spatial extent inference for the age effect. Use a cluster-forming threshold of \\(p&lt;0.001\\) and a family-wise error rate of \\(\\alpha=0.05\\). How many clusters are significant?\nCreate a cluster table for the results."
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#reporting-age-effects",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#reporting-age-effects",
+    "title": "Despicable Me group-level analysis",
+    "section": "Reporting age effects",
+    "text": "Reporting age effects\nFor this section, report the results from the FLAME or pbj analysis (you can choose which one) for the age effect.\n\nMethods\nDescribe the methods you used to analyze the results 1-2 paragraphs including a description of the first-level analysis and group-level analysis. It should be described well enough that someone could repeat your analyses.\n\n\nResults\nDescribe the results of your analyses on one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast."
   }
 ]
