@@ -1,0 +1,14 @@
+/ContrastName1	Task 
+/ContrastName2	Positive 
+/ContrastName3	Negative 
+/ContrastName4	Positive-Negative 
+/NumWaves	4
+/NumContrasts	4
+/PPheights		6.887426e-01	1.287833e+00	1.287208e+00	1.216715e+00
+/RequiredEffect		0.699	0.748	0.815	0.813
+
+/Matrix
+1.000000e+00 0.000000e+00 1.000000e+00 0.000000e+00 
+1.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 
+0.000000e+00 0.000000e+00 1.000000e+00 0.000000e+00 
+1.000000e+00 0.000000e+00 -1.000000e+00 0.000000e+00 

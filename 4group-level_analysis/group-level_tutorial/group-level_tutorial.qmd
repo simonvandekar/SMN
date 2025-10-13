@@ -245,7 +245,7 @@ We can use FSL's FEAT to do a group-level analysis using a simple GLM (least squ
 featDir = file.path(analysisDir, 'feat')
 dir.create(featDir, recursive=TRUE, showWarnings = FALSE)
 
-# write text file with all iamges
+# write text file with all images
 write.table(dat$files, file = file.path(featDir, 'images.txt'), row.names=FALSE, col.names=FALSE, quote=FALSE)
 
 # create design file for feat
@@ -285,13 +285,24 @@ fsl_glm -i $featDir/falff_outcome.nii.gz -d $featDir/design.mat -c $featDir/desi
 
 ## `flameo`: random effects model with subject-specific error variance
 
-FSL's FLAME model accounts for differences in variance among participants. It also can account for repeated measurements among participants. Might be helpful to review slides 12-16 in the [group-level analysis notes](4group-level_analysis/pptx/group-level_analysis.pdf).
+FSL's FLAME model accounts for differences in variance among participants. To do this, it needs an estimate of the variances of the outcome images.
+We don't have this for fALFF data, so we can't fit the model here.
+It also can account for repeated measurements among participants.
+Might be helpful to review slides 12-16 in the [group-level analysis notes](4group-level_analysis/pptx/group-level_analysis.pdf).
+
+
+
+
 
 ## `randomise`: permutation approach
 
 ## `pbj` package in `R`: robust variance estimation
 
-First, try to replicate the GLM results from fsl
+First, replicate the GLM results from fsl. This fits OLS at each voxel, and computes the same Z-statistics as FSL's FEAT.
+
+* `HC3` is an option for the heteroskedasticity consistent covariance estimator that improves small sample performance. It defaults to `TRUE`.
+* `transform=t` indicates that we want to transform the test statistics from t to Z-statistics.
+* `robust=FALSE` indicates that we want to use the standard OLS covariance estimator, which assumes homoskedasticity. It defaults to `TRUE`.
 
 ```{r}
 # DX analysis
@@ -302,7 +313,8 @@ write.statMap(abideDXglm, outdir=file.path(analysisDir, 'dxGLM'), statMethod = '
 ```
 
 
-This analysis uses the default settings, which includes a robust covariance estimator.
+This analysis uses the default settings, which includes a robust covariance estimator, which accommodates heteroskedasticity.
+Using `transform=t` converts the test statistics using the inverse CDF of the T-distribution and CDF of the standard normal. For hypothesis testing, this helps to make them more normal, especially for extreme values.
 
 ```{r}
 # DX analysis
@@ -315,6 +327,7 @@ abideDX
 ```{r, fig.height=30, fig.width=50}
 image(abideDX, cft_p=0.05, crop=TRUE, index = 18:47)
 write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'Z')
+write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'S')
 ```
 
 Load interactively with `fsleyes`. Open also with MNI 1mm template for better resolution viewing. `fsleyes` can overlay them correctly.
@@ -333,7 +346,7 @@ abideAge = lmPBJ(dat$files, form=form, formred=formredAge, mask=mask, data=dat, 
 
 ```{r, fig.height=30, fig.width=50}
 image(abideAge, cft_p=0.05, crop=TRUE, index = 18:47)
-write.statMap(abideAge, outdir=file.path(analysisDir, 'age'))
+write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'Z')
 write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'S')
 ```
 

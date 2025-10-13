@@ -68,7 +68,7 @@ Your grade will be determined from
 - In-class activity: implementation in FSL and R
 - "Voodoo" correlation
 - Advanced group-level analysis (distance-based)
-  - MDMR, PermANOVA, Semi-parametrics
+  - MDMR, PermANOVA, Semiparametrics
 
 
 ### Modern Topics: Reproducibility and Replicability

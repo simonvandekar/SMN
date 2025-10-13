@@ -851,7 +851,7 @@ Number of voxels added: 584</code></pre>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>featDir <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'feat'</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(featDir, <span class="at">recursive=</span><span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write text file with all iamges</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write text file with all images</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dat<span class="sc">$</span>files, <span class="at">file =</span> <span class="fu">file.path</span>(featDir, <span class="st">'images.txt'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">col.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create design file for feat</span></span>
@@ -895,14 +895,19 @@ Number of voxels added: 584</code></pre>
 </section>
 <section id="flameo-random-effects-model-with-subject-specific-error-variance" class="level2">
 <h2 class="anchored" data-anchor-id="flameo-random-effects-model-with-subject-specific-error-variance"><code>flameo</code>: random effects model with subject-specific error variance</h2>
-<p>FSL’s FLAME model accounts for differences in variance among participants. It also can account for repeated measurements among participants. Might be helpful to review slides 12-16 in the <a href="4group-level_analysis/pptx/group-level_analysis.pdf">group-level analysis notes</a>.</p>
+<p>FSL’s FLAME model accounts for differences in variance among participants. To do this, it needs an estimate of the variances of the outcome images. We don’t have this for fALFF data, so we can’t fit the model here. It also can account for repeated measurements among participants. Might be helpful to review slides 12-16 in the <a href="4group-level_analysis/pptx/group-level_analysis.pdf">group-level analysis notes</a>.</p>
 </section>
 <section id="randomise-permutation-approach" class="level2">
 <h2 class="anchored" data-anchor-id="randomise-permutation-approach"><code>randomise</code>: permutation approach</h2>
 </section>
 <section id="pbj-package-in-r-robust-variance-estimation" class="level2">
 <h2 class="anchored" data-anchor-id="pbj-package-in-r-robust-variance-estimation"><code>pbj</code> package in <code>R</code>: robust variance estimation</h2>
-<p>First, try to replicate the GLM results from fsl</p>
+<p>First, replicate the GLM results from fsl. This fits OLS at each voxel, and computes the same Z-statistics as FSL’s FEAT.</p>
+<ul>
+<li><code>HC3</code> is an option for the heteroskedasticity consistent covariance estimator that improves small sample performance. It defaults to <code>TRUE</code>.</li>
+<li><code>transform=t</code> indicates that we want to transform the test statistics from t to Z-statistics.</li>
+<li><code>robust=FALSE</code> indicates that we want to use the standard OLS covariance estimator, which assumes homoskedasticity. It defaults to <code>TRUE</code>.</li>
+</ul>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -943,7 +948,7 @@ $sqrtSigma
 [1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dxGLM/sqrtSigma.rds"</code></pre>
 </div>
 </div>
-<p>This analysis uses the default settings, which includes a robust covariance estimator.</p>
+<p>This analysis uses the default settings, which includes a robust covariance estimator, which accommodates heteroskedasticity. Using <code>transform=t</code> converts the test statistics using the inverse CDF of the T-distribution and CDF of the standard normal. For hypothesis testing, this helps to make them more normal, especially for extreme values.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -991,33 +996,48 @@ pbjInference not run yet.</code></pre>
 $sqrtSigma
 [1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/sqrtSigma.rds"</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideDX, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Writing stat and coef images.
+Writing sqrtSigma object.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$stat
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_s.nii.gz"
+
+$sqrtSigma
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/sqrtSigma.rds"</code></pre>
+</div>
 </div>
 <p>Load interactively with <code>fsleyes</code>. Open also with MNI 1mm template for better resolution viewing. <code>fsleyes</code> can overlay them correctly.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">fsleyes</span> /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The same approach but testing the age effect.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age analysis</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>abideAge <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formredAge, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile, <span class="at">transform=</span><span class="st">'t'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age analysis</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>abideAge <span class="ot">=</span> <span class="fu">lmPBJ</span>(dat<span class="sc">$</span>files, <span class="at">form=</span>form, <span class="at">formred=</span>formredAge, <span class="at">mask=</span>mask, <span class="at">data=</span>dat, <span class="at">template =</span> templatefile, <span class="at">transform=</span><span class="st">'t'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideAge, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideAge, <span class="at">cft_p=</span><span class="fl">0.05</span>, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index =</span> <span class="dv">18</span><span class="sc">:</span><span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="4800"></p>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>), <span class="at">statMethod =</span> <span class="st">'Z'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Writing stat and coef images.</code></pre>
@@ -1027,14 +1047,14 @@ $sqrtSigma
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$stat
-[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/age/stat_p.nii.gz"
+[1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/age/stat_z.nii.gz"
 
 $sqrtSigma
 [1] "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/age/sqrtSigma.rds"</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.statMap</span>(abideAge, <span class="at">outdir=</span><span class="fu">file.path</span>(analysisDir, <span class="st">'age'</span>), <span class="at">statMethod =</span> <span class="st">'S'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Writing stat and coef images.
