@@ -223,14 +223,13 @@ for(i in 1:length(niftis)){
 # Group-level analysis
 
 ```{r}
-analysisDir = file.path(getwd(), "abide_results")
+analysisDir = "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results"
+# file.path(getwd(), "/4group-level_analysis/group-level_tutorial/abide_results")
 # need age_at_scan in both models for testing nonlinear functions
 form = paste0(" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id" )
 formred = paste0(" ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id")
 formredAge = paste0(" ~ sex + dx_group + func_mean_fd + func_fber + func_outlier + site_id")
 mask = maskfile
-# output Rdata file
-output = paste0(analysisDir, 'abideModels.rdata')
 ncores = 4
 ```
 
@@ -325,7 +324,7 @@ abideDX
 
 
 ```{r, fig.height=30, fig.width=50}
-image(abideDX, cft_p=0.05, crop=TRUE, index = 18:47)
+image(abideDX, cft_p=0.01, crop=TRUE, index = 18:47)
 write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'Z')
 write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'S')
 ```
@@ -333,7 +332,7 @@ write.statMap(abideDX, outdir=file.path(analysisDir, 'dx'), statMethod = 'S')
 Load interactively with `fsleyes`. Open also with MNI 1mm template for better resolution viewing. `fsleyes` can overlay them correctly.
 
 ```{bash, eval=FALSE}
-fsleyes /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_p.nii.gz
+fsleyes /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz /Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results/dx/stat_z.nii.gz
 ```
 
 
@@ -349,6 +348,170 @@ image(abideAge, cft_p=0.05, crop=TRUE, index = 18:47)
 write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'Z')
 write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'S')
 ```
+
+
+Last model fitting the intercept after subtracting the mean out of each image. This will show regions that tend to have higher in fALFF (relative to the whole brain average) that are consistent across all participants.
+
+```{r, eval=FALSE}
+# intercept test
+formInt = " ~ 1"
+formredInt = " ~ 0"
+abideInt = lmPBJ(dat$files, form=formInt, formred=formredInt, mask=mask, data=dat, template = templatefile, transform='t')
+```
+
+```{r, fig.height=30, fig.width=50, eval=FALSE}
+image(abideInt, cft_p=0.05, crop=TRUE, index = 18:47)
+write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'Z')
+write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'S')
+```
+
+# Cluster extent inference
+
+## Using `easythresh` with FSL
+
+```{bash, eval=FALSE}
+# output directory
+featDir=$(pwd)/abide_results/feat
+# cluster forming threshold p<0.01. Note: NOT recommended based on prior literature showing it won't control the type 1 error rate
+cft=3.1
+# cluster extent threshold p<0.5. I set this anti-conservatively to include extra results for us to look at. easythresh will only include significant clusters in the output
+cet=0.5
+# split the zstat image into dx and age
+fslsplit $featDir/zstat.nii.gz $featDir/zstat_ -t
+mask=/Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/cpac/mask.nii.gz
+template=/Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz
+# output directory
+easyOutDir=$featDir/easythresh_cft${cft}_cet${cet}
+mkdir $easyOutDir 2>/dev/null
+
+# run easythresh command
+# cd to the output directory -- easythresh writes output to current directory
+curDir=$(pwd)
+cd $easyOutDir
+easythresh $featDir/zstat_0000.nii.gz $mask $cft $cet $template easythresh
+cd $curDur
+```
+
+
+## Using `easythresh` with `pbj` output
+
+Applying this analysis to the pbj GLM output.
+
+```{bash, eval=FALSE}
+pbjDir=$(pwd)/abide_results/dxGLM
+
+# other variables are defined above
+
+# output directory
+easyOutDir=$pbjDir/easythresh_cft${cft}_cet${cet}
+mkdir $easyOutDir 2>/dev/null
+
+# run easythresh command
+# cd to the output directory -- easythresh writes output to current directory
+curDir=$(pwd)
+cd $easyOutDir
+# run the command. Last argument is suffix for output images
+easythresh $pbjDir/stat_z.nii.gz $mask $cft $cet $template easythresh
+cd $curDur
+```
+
+Two tables of the output from `easythresh` using FSL analysis and `pbj` analysis as input. Results are for the diagnostic effect. They should be the same.
+
+```{r}
+# read in text file cluster_easythresh.txt and print as table using knitr
+easythreshFile = file.path(featDir, 'easythresh_cft3.1_cet0.5', 'cluster_easythresh.txt')
+easythreshTab = read.table(easythreshFile, header=TRUE, sep='\t', check.names = FALSE)
+knitr::kable(easythreshTab, caption = "Cluster extent inference results from FSL's easythresh command.")
+```
+
+```{r}
+pbjDir = file.path(analysisDir, 'dxGLM')
+# read in text file cluster_easythresh.txt and print as table using knitr
+easythreshFile = file.path(pbjDir, 'easythresh_cft3.1_cet0.5', 'cluster_easythresh.txt')
+easythreshTab = read.table(easythreshFile, header=TRUE, sep='\t', check.names = FALSE)
+knitr::kable(easythreshTab, caption = "Cluster extent inference results from FSL's easythresh command.")
+```
+
+## Using the `pbj` bootstrap procedure
+
+This uses a parametric bootstrap procedure to estimate the distribution of the maximum cluster size under the null hypothesis. It is semiparametric, in the sense that the robust covariance estimator allows misspecification of the spatial covariance structure.
+I've used a small number of bootstraps, here (500). In practice, I recommend 2000-5000.
+I've used a $p$-value cluster forming threshold (CTF) of 0.01.
+The code also has the option to specify the CFT in terms of the effect size or the chi-square statistic.
+The `rdata_rds` argument saves the bootstrap results to an RDS file, so you can load them later without re-running the bootstrap. When you pass this argument, it runs the analyses in the background, so you can go about other tasks in your Rstudio terminal.
+The `status` object will let you know when the bootstrap is done.
+
+The default method for `pbjInference` is to do CEI, but you can also compute $p$-values for local maxima, do FWER control, or specify a custom statistic, so it's really flexible, but you have to know what you're doing.
+
+### Parametric analysis with bootstrap inference
+
+This is using the parametric bootstrap to do inference for the diagnostic effect in the OLS model.
+
+```{r}
+rds = file.path(analysisDir, 'dxGLM', 'pbjBoot.rds')
+rdsDiamond = file.path(analysisDir, 'dxGLM', 'pbjBoot.rds')
+```
+
+
+```{r, eval=FALSE}
+# bootstrap with 500 resamples
+set.seed(123)
+nboot=500
+status = pbjInference(abideDXglm, nboot=nboot, rdata_rds=rds, cft_p=0.01)
+```
+
+```{r, eval=FALSE}
+# bootstrap with 500 resamples
+set.seed(123)
+nboot=500
+status = pbjInference(abideDXglm, nboot=nboot, rdata_rds=rdsDiamond, statistic=cluster, cft_p=0.01, kernel='diamond')
+```
+
+```{r, fig.cap="Cluster extent inference results from the parametric bootstrap procedure in the pbj package.", eval=FALSE}
+# load in results
+abideDXglm = readRDS(rds)
+abideDXglm
+image(abideDXdiamond, cft_p=0.01)
+knitr::kable(table.statMap(abideDXglm, cft_p=0.01)[1:10,], caption = "Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package.")
+#inferenceIndex(abideDX$pbj$obsStat, method='cei')
+```
+
+```{r, fig.cap="Cluster extent inference results from the parametric bootstrap procedure in the pbj package.", eval=FALSE}
+# load in results
+abideDXdiamond = readRDS(rdsDiamond)
+abideDXdiamond
+image(abideDXdiamond, cft_p=0.01)
+knitr::kable(table.statMap(abideDXdiamond, cft_p=0.01)[1:10,], caption = "Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package.")
+#inferenceIndex(abideDX$pbj$obsStat, method='cei')
+```
+
+
+### Semiparametric bootstrap inference with `pbj`
+
+This uses the "robust" covariance approach.
+
+```{r}
+rds = file.path(analysisDir, 'dx', 'pbjBoot.rds')
+```
+
+
+```{r, eval=FALSE}
+# bootstrap with 500 resamples
+set.seed(123)
+nboot=500
+status = pbjInference(abideDX, nboot=nboot, rdata_rds=rds, cft_p=0.01)
+```
+
+
+```{r, fig.cap="Cluster extent inference results from the semiparametric bootstrap procedure in the pbj package."}
+# load in results
+abideDX = readRDS(rds)
+abideDX
+image(abideDX, cft_p=0.01)
+knitr::kable(table.statMap(abideDX, cft_p=0.01)[1:10,], caption= "Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package.")
+#inferenceIndex(abideDX$pbj$obsStat, method='cei')
+```
+
 
 # Reporting results
 

@@ -1,0 +1,2 @@
+Cluster Index	Voxels	P	-log10(P)	MAX	MAX X (vox)	MAX Y (vox)	MAX Z (vox)	COG X (vox)	COG Y (vox)	COG Z (vox)
+1	53	0.0717	1.14	4.19	22	22	36	23.7	20.8	36.5
