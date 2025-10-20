@@ -10,7 +10,7 @@ format:
 
 
 ```{r}
-knitr::opts_chunk$set(echo = TRUE, eval=TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval=TRUE, cache=FALSE)
 ```
 
 # Overview
@@ -50,7 +50,7 @@ library(PCP)
 ## Outline of steps
 
 1. Download ABIDE data
-2. Data quality assurance
+2. Data quality checks
     * Create study level brain mask
     * Motion exclusions
     * Covariate exclusions
@@ -58,7 +58,10 @@ library(PCP)
     * FEAT and `easythresh`
     * `Randomise`
     * `pbj` package in `R`
-4. Reporting results
+4. Cluster extent inference
+    * `easythresh`
+    * `pbj` bootstrap procedure
+5. Reporting results
 
 # Download ABIDE data
 
@@ -367,7 +370,12 @@ write.statMap(abideAge, outdir=file.path(analysisDir, 'age'), statMethod = 'S')
 
 # Cluster extent inference
 
-## Using `easythresh` with FSL
+## Using `easythresh`
+
+`easythresh` is a command line tool from FSL to perform GRF-based cluster extent inference.
+It takes as input a Z-statistic image, a brain mask, a cluster-forming threshold (CFT), a cluster extent threshold (CET), and a template image for MNI space.
+It outputs thresholded images and a text file with cluster extent inference results.
+Here are two code chunks applying the `easythresh` command to the FSL FEAT results and the `pbj` OLS results.
 
 ```{bash, eval=FALSE}
 # output directory
@@ -393,9 +401,6 @@ cd $curDur
 ```
 
 
-## Using `easythresh` with `pbj` output
-
-Applying this analysis to the pbj GLM output.
 
 ```{bash, eval=FALSE}
 pbjDir=$(pwd)/abide_results/dxGLM
@@ -415,7 +420,7 @@ easythresh $pbjDir/stat_z.nii.gz $mask $cft $cet $template easythresh
 cd $curDur
 ```
 
-Two tables of the output from `easythresh` using FSL analysis and `pbj` analysis as input. Results are for the diagnostic effect. They should be the same.
+Two tables of the output from `easythresh` using FSL analysis and `pbj` analysis as input. Results are for the diagnostic effect. They should be identical because they are performing the exact same analysis.
 
 ```{r}
 # read in text file cluster_easythresh.txt and print as table using knitr
@@ -429,7 +434,7 @@ pbjDir = file.path(analysisDir, 'dxGLM')
 # read in text file cluster_easythresh.txt and print as table using knitr
 easythreshFile = file.path(pbjDir, 'easythresh_cft3.1_cet0.5', 'cluster_easythresh.txt')
 easythreshTab = read.table(easythreshFile, header=TRUE, sep='\t', check.names = FALSE)
-knitr::kable(easythreshTab, caption = "Cluster extent inference results from FSL's easythresh command.")
+knitr::kable(easythreshTab, caption = "Cluster extent inference results from FSL's easythresh command applied to the PBJ OLS results.")
 ```
 
 ## Using the `pbj` bootstrap procedure
@@ -449,46 +454,43 @@ This is using the parametric bootstrap to do inference for the diagnostic effect
 
 ```{r}
 rds = file.path(analysisDir, 'dxGLM', 'pbjBoot.rds')
-rdsDiamond = file.path(analysisDir, 'dxGLM', 'pbjBoot.rds')
 ```
 
+
+Using 500 bootstraps with an equivalent cluster-forming threshold of Z>3.1 (p<0.001) on the chi-square scale.
 
 ```{r, eval=FALSE}
 # bootstrap with 500 resamples
 set.seed(123)
 nboot=500
-status = pbjInference(abideDXglm, nboot=nboot, rdata_rds=rds, cft_p=0.01)
+# same as z>3.1 or p<0.001
+status = pbjInference(abideDXglm, nboot=nboot, rdata_rds=rds, cft_chisq = 3.1^2)
 ```
 
-```{r, eval=FALSE}
-# bootstrap with 500 resamples
-set.seed(123)
-nboot=500
-status = pbjInference(abideDXglm, nboot=nboot, rdata_rds=rdsDiamond, statistic=cluster, cft_p=0.01, kernel='diamond')
-```
+This uses the standard visualizations from the `pbj` package to show the results. The cluster extents and centroids should be the same as in the `easythresh` results above, since they are performing the same analysis, but the FWER p-value will be different because `pbj` uses the bootstrap procedure to compute p-values.
+Instead of reporting a max Z-statistic, the `pbj` package outputs the maximum robust effect size index (RESI), which is a standardized effect size index that is more comparable across different studies [Vandekar and Stephens, 2021](https://login.proxy.library.vanderbilt.edu/login?qurl=https%3A%2F%2Fonlinelibrary.wiley.com%2Fdoi%2F10.1002%2Fhbm.25374).
+The $p$-values are pretty similar to the results in `easythresh`, but not identical because of the different ways of estimating the null distribution of the maximum cluster size.
+Likely, they are similar because the assumptions of `easythresh` are valid at this high cluster forming threshold.
 
-```{r, fig.cap="Cluster extent inference results from the parametric bootstrap procedure in the pbj package.", eval=FALSE}
+```{r, fig.cap="Cluster extent inference results from the parametric bootstrap procedure in the pbj package.", eval=TRUE}
 # load in results
 abideDXglm = readRDS(rds)
 abideDXglm
-image(abideDXdiamond, cft_p=0.01)
-knitr::kable(table.statMap(abideDXglm, cft_p=0.01)[1:10,], caption = "Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package.")
-#inferenceIndex(abideDX$pbj$obsStat, method='cei')
-```
-
-```{r, fig.cap="Cluster extent inference results from the parametric bootstrap procedure in the pbj package.", eval=FALSE}
-# load in results
-abideDXdiamond = readRDS(rdsDiamond)
-abideDXdiamond
-image(abideDXdiamond, cft_p=0.01)
-knitr::kable(table.statMap(abideDXdiamond, cft_p=0.01)[1:10,], caption = "Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package.")
+image(abideDXglm, cft_chisq = 3.1^2)
+tabout = table.statMap(abideDXglm, cft_chisq=3.1^2)[1:10,]
+tabout[, 'easythresh p-val'] = NA
+# hard-coded. Only got the 8 largest clusters from easythresh
+tabout[1:8, 'easythresh p-val'] = easythreshTab$P
+# move Max RESI column to the back of tabout
+tabout = tabout[, c(setdiff(colnames(tabout), 'Max RESI'), 'Max RESI')]
+knitr::kable(tabout, caption = "Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package compared to the easythresh p-values.")
 #inferenceIndex(abideDX$pbj$obsStat, method='cei')
 ```
 
 
 ### Semiparametric bootstrap inference with `pbj`
 
-This uses the "robust" covariance approach.
+This uses the "robust" covariance approach. Now I'm running it at z>3.1, which is required by `easythresh`, but the bootstrap procedure is more flexible, so we can use z>2.32 as a threshold as well.
 
 ```{r}
 rds = file.path(analysisDir, 'dx', 'pbjBoot.rds')
@@ -499,7 +501,7 @@ rds = file.path(analysisDir, 'dx', 'pbjBoot.rds')
 # bootstrap with 500 resamples
 set.seed(123)
 nboot=500
-status = pbjInference(abideDX, nboot=nboot, rdata_rds=rds, cft_p=0.01)
+status = pbjInference(abideDX, nboot=nboot, rdata_rds=rds, cft_chisq = c(3.1, 2.32)^2)
 ```
 
 
@@ -507,11 +509,77 @@ status = pbjInference(abideDX, nboot=nboot, rdata_rds=rds, cft_p=0.01)
 # load in results
 abideDX = readRDS(rds)
 abideDX
-image(abideDX, cft_p=0.01)
-knitr::kable(table.statMap(abideDX, cft_p=0.01)[1:10,], caption= "Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package.")
+image(abideDX, cft_chisq=2.32^2)
+knitr::kable(table.statMap(abideDX, cft_chisq=2.32^2)[1:10,], caption= "Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package.")
 #inferenceIndex(abideDX$pbj$obsStat, method='cei')
 ```
 
 
+
+```{r, fig.cap="Cluster extent inference results from the semiparametric bootstrap procedure in the pbj package."}
+# load in results
+abideDX = readRDS(rds)
+abideDX
+image(abideDX, cft_chisq=2.32^2)
+knitr::kable(table.statMap(abideDX, cft_chisq=2.32^2)[1:10,], caption= "Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package using a CFT of Z>2.32.")
+#inferenceIndex(abideDX$pbj$obsStat, method='cei')
+```
+
 # Reporting results
+
+## Methods
+
+We used open-access data from the Autism Brain Imaging Data Exchange (ABIDE) to analyze associations of fractional amplitude of low frequency fluctuations (fALFF) with diagnosis and age.
+fALFF quantifies the strength of spontaneous brain activity during rest.
+resting state functional magnetic resonance imaging (rs-fMRI) data were preprocessed using the [CPAC pipeline](https://fcp-indi.github.io/docs/user/cpac/), and fALFF images were computed as the ratio of power in the 0-0.08Hz band to the power in the 0-0.25Hz band at each voxel. Further details of preprocessing are available on the preprocessed connectomes project website (http://preprocessed-connectomes-project.org/abide/).
+
+fALFF images were analyzed using voxel-wise linear models to assess associations with diagnosis (autism spectrum disorder vs. typically developing controls) and age, controlling for sex, mean relative framewise displacement, foreground-to-background energy ratio, mean number of outliers found in each volume, and site.
+Group-level analyses were performed using the `pbj` package in `R`, which implements robust variance estimation to accommodate unknown heteroskedasticity in the imaging data [Vandekar et. al. 2019](onlinelibrary.wiley.com/doi/abs/10.1111/biom.13114).
+Cluster extent inference (CEI) was performed using a cluster-forming threshold of $Z>2.32$. A parametric bootstrap procedure to estimate the distribution of the maximum cluster size using 500 bootstrap samples.
+
+## Results
+
+Classic visualization of the results includes:
+
+* Z-statistic images thresholded at the cluster forming threshold $p<0.01$ uncorrected
+* Tables of the largest clusters from cluster extent inference, including their FWER $p$-values.
+* Plot of the effect size within the significant clusters.
+
+```{r}
+clusterTable = table.statMap(abideDX, cft_chisq=2.32^2)
+knitr::kable(clusterTable[1:10,c(-1, -4)], caption= "Cluster-extent inference results using a CFT of Z>2.32.", row.names = FALSE)
+```
+
+
+This is an example of the brain visualization.
+You would typically include colorbars, hemisphere label (L/R), and slice labels in a publication figure, but the package doesn't have those features easily included at the moment. I would recommend saving the Z-statistic out and making the final figure in FSL or ITK-Snap.
+
+```{r, fig.height=20, fig.width=32, fig.cap="Z-statistic map for a significant cluster found in the posterior cingulate cortex and precuneus."}
+# get the Z-statistic map
+zstat = stat.statMap(abideDX, method = 'Z')
+# make it zero except in the significant ROI
+# CEI 2 is the second threshold used to compute CEI inference. Here, it was 2.32^2
+clusterMask = abideDX$pbj$ROIs$`CEI 2`
+clusterMask[ ! clusterMask %in% clusterTable$`Cluster ID`[clusterTable$`FWER p-value`<0.05] ] = 0
+# multiply their image arrays
+zstat[,,] = zstat[,,] * as.logical(clusterMask[,,])
+# z-index chosen within range of first (largest) cluster
+image(zstat, BGimg = templatefile, crop=TRUE, index=33:41)
+```
+
+
+```{r, fig.width=6, fig.height=6, fig.cap="fALFF in Cluster 1 comparing ASD and HC."}
+# plot effect size in cluster 1
+out = plotData.statMap(abideDX, emForm = "~ dx_group", cft_chisq=2.32^2, roiInds=1, statMethod = 'Z', main='Cluster 1: Diagnosis effect size')
+
+# plot fALFF by diagnosis as a scatter plot and overlay with emmeans estimates and confidence intervals
+EM = as.data.frame(out$emmeans[[1]])
+plot(jitter(as.numeric(out$data$dx_group), factor=1.5),
+     EM[ match(out$data$dx_group, EM$dx_group), 'emmean'] + resid(out$models[[1]]),
+     xlab='Diagnosis', ylab='fALFF', bty='l', xaxt='n', pch=16, col='lightgray', main='Cluster 1: fALFF by diagnosis')
+axis(1, at=1:2, labels=levels(out$data$dx_group))
+points(EM$emmean, pch=19)
+arrows(x0=1:2, y0=EM$emmean, x1=1:2, y1=EM$lower.CL, angle=90, length=0.1)
+arrows(x0=1:2, y0=EM$emmean, x1=1:2, y1=EM$upper.CL, angle=90, length=0.1)
+```
 

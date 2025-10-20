@@ -14,11 +14,11 @@ Date,Day,Section,Topic,In class interactive,Assignment,Due date
 1-Oct,Wednesday,Group-Level Analysis,,[Group-level analysis of *Despicable Me*](4group-level_analysis/group-level_tutorial/group-level_tutorial.html),,
 6-Oct,Monday,Group-Level Analysis,,[Group-level analysis of *Despicable Me*](4group-level_analysis/group-level_tutorial/group-level_tutorial.html),,
 8-Oct,Wednesday,Group-Level Analysis,,,,
-13-Oct,Monday,Group-Level Analysis,"Cluster extent inference, Gaussian field theory, TFCE, Excursion set inference",,[Group-level analysis of *Despicable Me*](4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html),27-Oct
+13-Oct,Monday,Group-Level Analysis,"Cluster extent inference, Gaussian field theory, TFCE, Excursion set inference",,[Group-level analysis of *Despicable Me*](4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html),31-Oct
 15-Oct,Wednesday,Group-Level Analysis,,[Group-level analysis of *Despicable Me*](4group-level_analysis/group-level_tutorial/group-level_tutorial.html),,
-20-Oct,Monday,Common Mistakes and Ongoing Challenges,"""Voodoo"" correlation, circularity errors, data leakage, the salmon",,,
-22-Oct,Wednesday,Modern Topics,"Harmonization, Centile estimation, Mask creation",,,
-27-Oct,Monday,Modern Topics,"Replicability, Inference for ML accuracy (Megan Jones)",,,
+20-Oct,Monday,Common Mistakes and Ongoing Challenges,"""Voodoo"" correlation, circularity errors, data leakage, the salmon",[Group-level analysis of *Despicable Me*](4group-level_analysis/group-level_tutorial/group-level_tutorial.html),,
+22-Oct,Wednesday,Modern Topics,"Replicability, Inference for ML accuracy (Megan Jones)",,,
+27-Oct,Monday,Modern Topics,"Harmonization, Centile estimation, Mask creation",,,
 29-Oct,Wednesday,Modern Topics,"More modern topics, if needed",,,
 3-Nov,Monday,Modern Topics: Misc,,,,
 5-Nov,Wednesday,,,,Machine learning *Despicable Me*,

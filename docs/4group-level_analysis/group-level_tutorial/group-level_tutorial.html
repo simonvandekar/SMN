@@ -188,15 +188,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#cluster-extent-inference" id="toc-cluster-extent-inference" class="nav-link" data-scroll-target="#cluster-extent-inference">Cluster extent inference</a>
   <ul class="collapse">
-  <li><a href="#using-easythresh-with-fsl" id="toc-using-easythresh-with-fsl" class="nav-link" data-scroll-target="#using-easythresh-with-fsl">Using <code>easythresh</code> with FSL</a></li>
-  <li><a href="#using-easythresh-with-pbj-output" id="toc-using-easythresh-with-pbj-output" class="nav-link" data-scroll-target="#using-easythresh-with-pbj-output">Using <code>easythresh</code> with <code>pbj</code> output</a></li>
+  <li><a href="#using-easythresh" id="toc-using-easythresh" class="nav-link" data-scroll-target="#using-easythresh">Using <code>easythresh</code></a></li>
   <li><a href="#using-the-pbj-bootstrap-procedure" id="toc-using-the-pbj-bootstrap-procedure" class="nav-link" data-scroll-target="#using-the-pbj-bootstrap-procedure">Using the <code>pbj</code> bootstrap procedure</a>
   <ul class="collapse">
   <li><a href="#parametric-analysis-with-bootstrap-inference" id="toc-parametric-analysis-with-bootstrap-inference" class="nav-link" data-scroll-target="#parametric-analysis-with-bootstrap-inference">Parametric analysis with bootstrap inference</a></li>
   <li><a href="#semiparametric-bootstrap-inference-with-pbj" id="toc-semiparametric-bootstrap-inference-with-pbj" class="nav-link" data-scroll-target="#semiparametric-bootstrap-inference-with-pbj">Semiparametric bootstrap inference with <code>pbj</code></a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#reporting-results" id="toc-reporting-results" class="nav-link" data-scroll-target="#reporting-results">Reporting results</a></li>
+  <li><a href="#reporting-results" id="toc-reporting-results" class="nav-link" data-scroll-target="#reporting-results">Reporting results</a>
+  <ul class="collapse">
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -223,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">eval=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">eval=</span><span class="cn">TRUE</span>, <span class="at">cache=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="overview" class="level1">
@@ -260,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="outline-of-steps">Outline of steps</h2>
 <ol type="1">
 <li>Download ABIDE data</li>
-<li>Data quality assurance
+<li>Data quality checks
 <ul>
 <li>Create study level brain mask</li>
 <li>Motion exclusions</li>
@@ -271,6 +274,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>FEAT and <code>easythresh</code></li>
 <li><code>Randomise</code></li>
 <li><code>pbj</code> package in <code>R</code></li>
+</ul></li>
+<li>Cluster extent inference
+<ul>
+<li><code>easythresh</code></li>
+<li><code>pbj</code> bootstrap procedure</li>
 </ul></li>
 <li>Reporting results</li>
 </ol>
@@ -1099,8 +1107,9 @@ $sqrtSigma
 </section>
 <section id="cluster-extent-inference" class="level1">
 <h1>Cluster extent inference</h1>
-<section id="using-easythresh-with-fsl" class="level2">
-<h2 class="anchored" data-anchor-id="using-easythresh-with-fsl">Using <code>easythresh</code> with FSL</h2>
+<section id="using-easythresh" class="level2">
+<h2 class="anchored" data-anchor-id="using-easythresh">Using <code>easythresh</code></h2>
+<p><code>easythresh</code> is a command line tool from FSL to perform GRF-based cluster extent inference. It takes as input a Z-statistic image, a brain mask, a cluster-forming threshold (CFT), a cluster extent threshold (CET), and a template image for MNI space. It outputs thresholded images and a text file with cluster extent inference results. Here are two code chunks applying the <code>easythresh</code> command to the FSL FEAT results and the <code>pbj</code> OLS results.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -1126,10 +1135,6 @@ $sqrtSigma
 <span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$curDur</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-<section id="using-easythresh-with-pbj-output" class="level2">
-<h2 class="anchored" data-anchor-id="using-easythresh-with-pbj-output">Using <code>easythresh</code> with <code>pbj</code> output</h2>
-<p>Applying this analysis to the pbj GLM output.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -1150,7 +1155,7 @@ $sqrtSigma
 <span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$curDur</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Two tables of the output from <code>easythresh</code> using FSL analysis and <code>pbj</code> analysis as input. Results are for the diagnostic effect. They should be the same.</p>
+<p>Two tables of the output from <code>easythresh</code> using FSL analysis and <code>pbj</code> analysis as input. Results are for the diagnostic effect. They should be identical because they are performing the exact same analysis.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -1306,11 +1311,11 @@ $sqrtSigma
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co"># read in text file cluster_easythresh.txt and print as table using knitr</span></span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>easythreshFile <span class="ot">=</span> <span class="fu">file.path</span>(pbjDir, <span class="st">'easythresh_cft3.1_cet0.5'</span>, <span class="st">'cluster_easythresh.txt'</span>)</span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>easythreshTab <span class="ot">=</span> <span class="fu">read.table</span>(easythreshFile, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">sep=</span><span class="st">'</span><span class="sc">\t</span><span class="st">'</span>, <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(easythreshTab, <span class="at">caption =</span> <span class="st">"Cluster extent inference results from FSL's easythresh command."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(easythreshTab, <span class="at">caption =</span> <span class="st">"Cluster extent inference results from FSL's easythresh command applied to the PBJ OLS results."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
-<caption>Cluster extent inference results from FSL’s easythresh command.</caption>
+<caption>Cluster extent inference results from FSL’s easythresh command applied to the PBJ OLS results.</caption>
 <colgroup>
 <col style="width: 12%">
 <col style="width: 6%">
@@ -1459,75 +1464,222 @@ $sqrtSigma
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>rds <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'dxGLM'</span>, <span class="st">'pbjBoot.rds'</span>)</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>rdsDiamond <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'dxGLM'</span>, <span class="st">'pbjBoot.rds'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>rds <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'dxGLM'</span>, <span class="st">'pbjBoot.rds'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>Using 500 bootstraps with an equivalent cluster-forming threshold of Z&gt;3.1 (p&lt;0.001) on the chi-square scale.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bootstrap with 500 resamples</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>nboot<span class="ot">=</span><span class="dv">500</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>status <span class="ot">=</span> <span class="fu">pbjInference</span>(abideDXglm, <span class="at">nboot=</span>nboot, <span class="at">rdata_rds=</span>rds, <span class="at">cft_p=</span><span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># same as z&gt;3.1 or p&lt;0.001</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>status <span class="ot">=</span> <span class="fu">pbjInference</span>(abideDXglm, <span class="at">nboot=</span>nboot, <span class="at">rdata_rds=</span>rds, <span class="at">cft_chisq =</span> <span class="fl">3.1</span><span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>This uses the standard visualizations from the <code>pbj</code> package to show the results. The cluster extents and centroids should be the same as in the <code>easythresh</code> results above, since they are performing the same analysis, but the FWER p-value will be different because <code>pbj</code> uses the bootstrap procedure to compute p-values. Instead of reporting a max Z-statistic, the <code>pbj</code> package outputs the maximum robust effect size index (RESI), which is a standardized effect size index that is more comparable across different studies <a href="https://login.proxy.library.vanderbilt.edu/login?qurl=https%3A%2F%2Fonlinelibrary.wiley.com%2Fdoi%2F10.1002%2Fhbm.25374">Vandekar and Stephens, 2021</a>. The <span class="math inline">\(p\)</span>-values are pretty similar to the results in <code>easythresh</code>, but not identical because of the different ways of estimating the null distribution of the maximum cluster size. Likely, they are similar because the assumptions of <code>easythresh</code> are valid at this high cluster forming threshold.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bootstrap with 500 resamples</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>nboot<span class="ot">=</span><span class="dv">500</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>status <span class="ot">=</span> <span class="fu">pbjInference</span>(abideDXglm, <span class="at">nboot=</span>nboot, <span class="at">rdata_rds=</span>rdsDiamond, <span class="at">statistic=</span>cluster, <span class="at">cft_p=</span><span class="fl">0.01</span>, <span class="at">kernel=</span><span class="st">'diamond'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in results</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>abideDXglm <span class="ot">=</span> <span class="fu">readRDS</span>(rds)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>abideDXglm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Full formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id
+Reduced formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id  
+30010  voxels in mask
+StatMap quantiles (0, 0.01, 0.05, 0.95, 0.99, 1):
+ [ 0, 0, 0.01, 6.05, 9.62, 18.77 ]
+sqrtSigma: 
+  [n =  914 ; df =  1 ; rdf =  888 ]
+id variable is:
+ NULL
+lmPBJ inference settings:
+  robust =  FALSE ; HC3 =  FALSE ; transform =  t
+pbjInference results:
+  CEI run with cft =  9.61</code></pre>
 </div>
-<div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in results</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>abideDXglm <span class="ot">=</span> <span class="fu">readRDS</span>(rds)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>abideDXglm</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDXdiamond, <span class="at">cft_p=</span><span class="fl">0.01</span>)</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">table.statMap</span>(abideDXglm, <span class="at">cft_p=</span><span class="fl">0.01</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,], <span class="at">caption =</span> <span class="st">"Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package."</span>)</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co">#inferenceIndex(abideDX$pbj$obsStat, method='cei')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDXglm, <span class="at">cft_chisq =</span> <span class="fl">3.1</span><span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>tabout <span class="ot">=</span> <span class="fu">table.statMap</span>(abideDXglm, <span class="at">cft_chisq=</span><span class="fl">3.1</span><span class="sc">^</span><span class="dv">2</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>tabout[, <span class="st">'easythresh p-val'</span>] <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># hard-coded. Only got the 8 largest clusters from easythresh</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>tabout[<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="st">'easythresh p-val'</span>] <span class="ot">=</span> easythreshTab<span class="sc">$</span>P</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co"># move Max RESI column to the back of tabout</span></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>tabout <span class="ot">=</span> tabout[, <span class="fu">c</span>(<span class="fu">setdiff</span>(<span class="fu">colnames</span>(tabout), <span class="st">'Max RESI'</span>), <span class="st">'Max RESI'</span>)]</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabout, <span class="at">caption =</span> <span class="st">"Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package compared to the easythresh p-values."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package compared to the easythresh p-values.</caption>
+<colgroup>
+<col style="width: 2%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 12%">
+<col style="width: 16%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Cluster ID</th>
+<th style="text-align: right;">Cluster Extent</th>
+<th style="text-align: left;">Centroid (vox)</th>
+<th style="text-align: right;">Unadjusted p-value</th>
+<th style="text-align: right;">FWER p-value</th>
+<th style="text-align: right;">easythresh p-val</th>
+<th style="text-align: right;">Max RESI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: left;">25, 22, 37</td>
+<td style="text-align: right;">0.0042087</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.0717</td>
+<td style="text-align: right;">0.1345862</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">24</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">34, 38, 29</td>
+<td style="text-align: right;">0.0100153</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: right;">0.1820</td>
+<td style="text-align: right;">0.1313660</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">21, 35, 41</td>
+<td style="text-align: right;">0.0120096</td>
+<td style="text-align: right;">0.146</td>
+<td style="text-align: right;">0.2100</td>
+<td style="text-align: right;">0.1210006</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: left;">39, 31, 44</td>
+<td style="text-align: right;">0.0377485</td>
+<td style="text-align: right;">0.282</td>
+<td style="text-align: right;">0.4260</td>
+<td style="text-align: right;">0.1347982</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: left;">37, 47, 29</td>
+<td style="text-align: right;">0.0377485</td>
+<td style="text-align: right;">0.282</td>
+<td style="text-align: right;">0.4260</td>
+<td style="text-align: right;">0.1255713</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">24, 24, 42</td>
+<td style="text-align: right;">0.0422093</td>
+<td style="text-align: right;">0.304</td>
+<td style="text-align: right;">0.4490</td>
+<td style="text-align: right;">0.1212052</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">32, 33, 44</td>
+<td style="text-align: right;">0.0544400</td>
+<td style="text-align: right;">0.366</td>
+<td style="text-align: right;">0.4970</td>
+<td style="text-align: right;">0.1130873</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">24, 15, 31</td>
+<td style="text-align: right;">0.0544400</td>
+<td style="text-align: right;">0.366</td>
+<td style="text-align: right;">0.4970</td>
+<td style="text-align: right;">0.1394304</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">44, 36, 38</td>
+<td style="text-align: right;">0.0608202</td>
+<td style="text-align: right;">0.394</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1121541</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: left;">37, 54, 37</td>
+<td style="text-align: right;">0.0695590</td>
+<td style="text-align: right;">0.424</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1292112</td>
+</tr>
+</tbody>
+</table>
+<p>Cluster extent inference results from the parametric bootstrap procedure in the pbj package.</p>
 </div>
-<div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in results</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>abideDXdiamond <span class="ot">=</span> <span class="fu">readRDS</span>(rdsDiamond)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>abideDXdiamond</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDXdiamond, <span class="at">cft_p=</span><span class="fl">0.01</span>)</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">table.statMap</span>(abideDXdiamond, <span class="at">cft_p=</span><span class="fl">0.01</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,], <span class="at">caption =</span> <span class="st">"Ten largest clusters from the parametric bootstrap procedure applied to OLS model in the pbj package."</span>)</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co">#inferenceIndex(abideDX$pbj$obsStat, method='cei')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#inferenceIndex(abideDX$pbj$obsStat, method='cei')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Cluster extent inference results from the parametric bootstrap procedure in the pbj package.</figcaption>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="semiparametric-bootstrap-inference-with-pbj" class="level3">
 <h3 class="anchored" data-anchor-id="semiparametric-bootstrap-inference-with-pbj">Semiparametric bootstrap inference with <code>pbj</code></h3>
-<p>This uses the “robust” covariance approach.</p>
+<p>This uses the “robust” covariance approach. Now I’m running it at z&gt;3.1, which is required by <code>easythresh</code>, but the bootstrap procedure is more flexible, so we can use z&gt;2.32 as a threshold as well.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>rds <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>, <span class="st">'pbjBoot.rds'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>rds <span class="ot">=</span> <span class="fu">file.path</span>(analysisDir, <span class="st">'dx'</span>, <span class="st">'pbjBoot.rds'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bootstrap with 500 resamples</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>nboot<span class="ot">=</span><span class="dv">500</span></span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>status <span class="ot">=</span> <span class="fu">pbjInference</span>(abideDX, <span class="at">nboot=</span>nboot, <span class="at">rdata_rds=</span>rds, <span class="at">cft_p=</span><span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bootstrap with 500 resamples</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>nboot<span class="ot">=</span><span class="dv">500</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>status <span class="ot">=</span> <span class="fu">pbjInference</span>(abideDX, <span class="at">nboot=</span>nboot, <span class="at">rdata_rds=</span>rds, <span class="at">cft_chisq =</span> <span class="fu">c</span>(<span class="fl">3.1</span>, <span class="fl">2.32</span>)<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in results</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>abideDX <span class="ot">=</span> <span class="fu">readRDS</span>(rds)</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>abideDX</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in results</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>abideDX <span class="ot">=</span> <span class="fu">readRDS</span>(rds)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>abideDX</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Full formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id
@@ -1542,12 +1694,12 @@ id variable is:
 lmPBJ inference settings:
   robust =  TRUE ; HC3 =  TRUE ; transform =  t
 pbjInference results:
-  CEI run with cft =  6.63</code></pre>
+  CEI run with cft =  9.61, 5.38</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDX, <span class="at">cft_p=</span><span class="fl">0.01</span>)</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">table.statMap</span>(abideDX, <span class="at">cft_p=</span><span class="fl">0.01</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,], <span class="at">caption=</span> <span class="st">"Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDX, <span class="at">cft_chisq=</span><span class="fl">2.32</span><span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">table.statMap</span>(abideDX, <span class="at">cft_chisq=</span><span class="fl">2.32</span><span class="sc">^</span><span class="dv">2</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,], <span class="at">caption=</span> <span class="st">"Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -1574,94 +1726,94 @@ pbjInference results:
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">6</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">171</td>
-<td style="text-align: left;">25, 22, 38</td>
-<td style="text-align: right;">0.0028155</td>
-<td style="text-align: right;">0.080</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">710</td>
+<td style="text-align: left;">29, 30, 36</td>
+<td style="text-align: right;">0.0006987</td>
+<td style="text-align: right;">0.036</td>
 <td style="text-align: right;">0.1336704</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">31</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">102</td>
-<td style="text-align: left;">32, 38, 29</td>
-<td style="text-align: right;">0.0057228</td>
-<td style="text-align: right;">0.144</td>
-<td style="text-align: right;">0.1261380</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">98</td>
-<td style="text-align: left;">41, 33, 41</td>
-<td style="text-align: right;">0.0062071</td>
-<td style="text-align: right;">0.154</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">187</td>
+<td style="text-align: left;">42, 33, 40</td>
+<td style="text-align: right;">0.0047842</td>
+<td style="text-align: right;">0.182</td>
 <td style="text-align: right;">0.1292265</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">26</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">98</td>
+<tr class="odd">
+<td style="text-align: left;">35</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">145</td>
 <td style="text-align: left;">38, 49, 30</td>
-<td style="text-align: right;">0.0062071</td>
-<td style="text-align: right;">0.154</td>
+<td style="text-align: right;">0.0066836</td>
+<td style="text-align: right;">0.228</td>
 <td style="text-align: right;">0.1232188</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">4</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">83</td>
-<td style="text-align: left;">20, 35, 42</td>
-<td style="text-align: right;">0.0076815</td>
-<td style="text-align: right;">0.178</td>
-<td style="text-align: right;">0.1190937</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;">18</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">74</td>
-<td style="text-align: left;">31, 29, 33</td>
-<td style="text-align: right;">0.0093532</td>
-<td style="text-align: right;">0.220</td>
-<td style="text-align: right;">0.1058707</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">2</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: left;">32, 33, 43</td>
-<td style="text-align: right;">0.0197056</td>
-<td style="text-align: right;">0.348</td>
-<td style="text-align: right;">0.1095327</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">20, 35, 41</td>
+<td style="text-align: right;">0.0083315</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">0.1190937</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">43</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">45</td>
-<td style="text-align: left;">27, 20, 23</td>
-<td style="text-align: right;">0.0197056</td>
+<tr class="odd">
+<td style="text-align: left;">55</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: left;">25, 20, 23</td>
+<td style="text-align: right;">0.0125374</td>
 <td style="text-align: right;">0.348</td>
 <td style="text-align: right;">0.0975146</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">9</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">44</td>
-<td style="text-align: left;">36, 16, 34</td>
-<td style="text-align: right;">0.0202606</td>
-<td style="text-align: right;">0.354</td>
+<tr class="even">
+<td style="text-align: left;">15</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: left;">37, 17, 33</td>
+<td style="text-align: right;">0.0143496</td>
+<td style="text-align: right;">0.376</td>
 <td style="text-align: right;">0.1148660</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">48</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: left;">40, 20, 24</td>
+<td style="text-align: right;">0.0147334</td>
+<td style="text-align: right;">0.384</td>
+<td style="text-align: right;">0.1088026</td>
+</tr>
 <tr class="even">
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">33</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">42</td>
 <td style="text-align: left;">37, 54, 37</td>
-<td style="text-align: right;">0.0302867</td>
-<td style="text-align: right;">0.438</td>
+<td style="text-align: right;">0.0365157</td>
+<td style="text-align: right;">0.618</td>
 <td style="text-align: right;">0.1262520</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: left;">50, 41, 35</td>
+<td style="text-align: right;">0.0421439</td>
+<td style="text-align: right;">0.660</td>
+<td style="text-align: right;">0.1038552</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">40</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">21, 39, 29</td>
+<td style="text-align: right;">0.0513619</td>
+<td style="text-align: right;">0.708</td>
+<td style="text-align: right;">0.0947552</td>
 </tr>
 </tbody>
 </table>
@@ -1669,12 +1821,170 @@ pbjInference results:
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#inferenceIndex(abideDX$pbj$obsStat, method='cei')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#inferenceIndex(abideDX$pbj$obsStat, method='cei')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Cluster extent inference results from the semiparametric bootstrap procedure in the pbj package.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load in results</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>abideDX <span class="ot">=</span> <span class="fu">readRDS</span>(rds)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>abideDX</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Full formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + dx_group + site_id
+Reduced formula:   ~ sex + age_at_scan + func_mean_fd + func_fber + func_outlier + site_id  
+30010  voxels in mask
+StatMap quantiles (0, 0.01, 0.05, 0.95, 0.99, 1):
+ [ 0, 0, 0.01, 5.75, 9.19, 18.86 ]
+sqrtSigma: 
+  [n =  914 ; df =  1 ; rdf =  888 ]
+id variable is:
+ NULL
+lmPBJ inference settings:
+  robust =  TRUE ; HC3 =  TRUE ; transform =  t
+pbjInference results:
+  CEI run with cft =  9.61, 5.38</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(abideDX, <span class="at">cft_chisq=</span><span class="fl">2.32</span><span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">table.statMap</span>(abideDX, <span class="at">cft_chisq=</span><span class="fl">2.32</span><span class="sc">^</span><span class="dv">2</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,], <span class="at">caption=</span> <span class="st">"Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package using a CFT of Z&gt;2.32."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Ten largest clusters from the semiparametric bootstrap procedure applied to robust model in the pbj package using a CFT of Z&gt;2.32.</caption>
+<colgroup>
+<col style="width: 3%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 22%">
+<col style="width: 15%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Cluster ID</th>
+<th style="text-align: right;">Cluster Extent</th>
+<th style="text-align: left;">Centroid (vox)</th>
+<th style="text-align: right;">Unadjusted p-value</th>
+<th style="text-align: right;">FWER p-value</th>
+<th style="text-align: right;">Max RESI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">710</td>
+<td style="text-align: left;">29, 30, 36</td>
+<td style="text-align: right;">0.0006987</td>
+<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">0.1336704</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">187</td>
+<td style="text-align: left;">42, 33, 40</td>
+<td style="text-align: right;">0.0047842</td>
+<td style="text-align: right;">0.182</td>
+<td style="text-align: right;">0.1292265</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">35</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">145</td>
+<td style="text-align: left;">38, 49, 30</td>
+<td style="text-align: right;">0.0066836</td>
+<td style="text-align: right;">0.228</td>
+<td style="text-align: right;">0.1232188</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">20, 35, 41</td>
+<td style="text-align: right;">0.0083315</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">0.1190937</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">55</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: left;">25, 20, 23</td>
+<td style="text-align: right;">0.0125374</td>
+<td style="text-align: right;">0.348</td>
+<td style="text-align: right;">0.0975146</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: left;">37, 17, 33</td>
+<td style="text-align: right;">0.0143496</td>
+<td style="text-align: right;">0.376</td>
+<td style="text-align: right;">0.1148660</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">48</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: left;">40, 20, 24</td>
+<td style="text-align: right;">0.0147334</td>
+<td style="text-align: right;">0.384</td>
+<td style="text-align: right;">0.1088026</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">37, 54, 37</td>
+<td style="text-align: right;">0.0365157</td>
+<td style="text-align: right;">0.618</td>
+<td style="text-align: right;">0.1262520</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: left;">50, 41, 35</td>
+<td style="text-align: right;">0.0421439</td>
+<td style="text-align: right;">0.660</td>
+<td style="text-align: right;">0.1038552</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">40</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">21, 39, 29</td>
+<td style="text-align: right;">0.0513619</td>
+<td style="text-align: right;">0.708</td>
+<td style="text-align: right;">0.0947552</td>
+</tr>
+</tbody>
+</table>
+<p>Cluster extent inference results from the semiparametric bootstrap procedure in the pbj package.</p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#inferenceIndex(abideDX$pbj$obsStat, method='cei')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption class="figure-caption">Cluster extent inference results from the semiparametric bootstrap procedure in the pbj package.</figcaption>
 </figure>
 </div>
@@ -1685,8 +1995,153 @@ pbjInference results:
 </section>
 <section id="reporting-results" class="level1">
 <h1>Reporting results</h1>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<p>We used open-access data from the Autism Brain Imaging Data Exchange (ABIDE) to analyze associations of fractional amplitude of low frequency fluctuations (fALFF) with diagnosis and age. fALFF quantifies the strength of spontaneous brain activity during rest. resting state functional magnetic resonance imaging (rs-fMRI) data were preprocessed using the <a href="https://fcp-indi.github.io/docs/user/cpac/">CPAC pipeline</a>, and fALFF images were computed as the ratio of power in the 0-0.08Hz band to the power in the 0-0.25Hz band at each voxel. Further details of preprocessing are available on the preprocessed connectomes project website (http://preprocessed-connectomes-project.org/abide/).</p>
+<p>fALFF images were analyzed using voxel-wise linear models to assess associations with diagnosis (autism spectrum disorder vs.&nbsp;typically developing controls) and age, controlling for sex, mean relative framewise displacement, foreground-to-background energy ratio, mean number of outliers found in each volume, and site. Group-level analyses were performed using the <code>pbj</code> package in <code>R</code>, which implements robust variance estimation to accommodate unknown heteroskedasticity in the imaging data <a href="onlinelibrary.wiley.com/doi/abs/10.1111/biom.13114">Vandekar et. al.&nbsp;2019</a>. Cluster extent inference (CEI) was performed using a cluster-forming threshold of <span class="math inline">\(Z&gt;2.32\)</span>. A parametric bootstrap procedure to estimate the distribution of the maximum cluster size using 500 bootstrap samples.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Classic visualization of the results includes:</p>
+<ul>
+<li>Z-statistic images thresholded at the cluster forming threshold <span class="math inline">\(p&lt;0.01\)</span> uncorrected</li>
+<li>Tables of the largest clusters from cluster extent inference, including their FWER <span class="math inline">\(p\)</span>-values.</li>
+<li>Plot of the effect size within the significant clusters.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>clusterTable <span class="ot">=</span> <span class="fu">table.statMap</span>(abideDX, <span class="at">cft_chisq=</span><span class="fl">2.32</span><span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(clusterTable[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">4</span>)], <span class="at">caption=</span> <span class="st">"Cluster-extent inference results using a CFT of Z&gt;2.32."</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Cluster-extent inference results using a CFT of Z&gt;2.32.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Cluster Extent</th>
+<th style="text-align: left;">Centroid (vox)</th>
+<th style="text-align: right;">FWER p-value</th>
+<th style="text-align: right;">Max RESI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">710</td>
+<td style="text-align: left;">29, 30, 36</td>
+<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">0.1336704</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">187</td>
+<td style="text-align: left;">42, 33, 40</td>
+<td style="text-align: right;">0.182</td>
+<td style="text-align: right;">0.1292265</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">145</td>
+<td style="text-align: left;">38, 49, 30</td>
+<td style="text-align: right;">0.228</td>
+<td style="text-align: right;">0.1232188</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">123</td>
+<td style="text-align: left;">20, 35, 41</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">0.1190937</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">92</td>
+<td style="text-align: left;">25, 20, 23</td>
+<td style="text-align: right;">0.348</td>
+<td style="text-align: right;">0.0975146</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">84</td>
+<td style="text-align: left;">37, 17, 33</td>
+<td style="text-align: right;">0.376</td>
+<td style="text-align: right;">0.1148660</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">83</td>
+<td style="text-align: left;">40, 20, 24</td>
+<td style="text-align: right;">0.384</td>
+<td style="text-align: right;">0.1088026</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">37, 54, 37</td>
+<td style="text-align: right;">0.618</td>
+<td style="text-align: right;">0.1262520</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">38</td>
+<td style="text-align: left;">50, 41, 35</td>
+<td style="text-align: right;">0.660</td>
+<td style="text-align: right;">0.1038552</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">21, 39, 29</td>
+<td style="text-align: right;">0.708</td>
+<td style="text-align: right;">0.0947552</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This is an example of the brain visualization. You would typically include colorbars, hemisphere label (L/R), and slice labels in a publication figure, but the package doesn’t have those features easily included at the moment. I would recommend saving the Z-statistic out and making the final figure in FSL or ITK-Snap.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the Z-statistic map</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>zstat <span class="ot">=</span> <span class="fu">stat.statMap</span>(abideDX, <span class="at">method =</span> <span class="st">'Z'</span>)</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># make it zero except in the significant ROI</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># CEI 2 is the second threshold used to compute CEI inference. Here, it was 2.32^2</span></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>clusterMask <span class="ot">=</span> abideDX<span class="sc">$</span>pbj<span class="sc">$</span>ROIs<span class="sc">$</span><span class="st">`</span><span class="at">CEI 2</span><span class="st">`</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>clusterMask[ <span class="sc">!</span> clusterMask <span class="sc">%in%</span> clusterTable<span class="sc">$</span><span class="st">`</span><span class="at">Cluster ID</span><span class="st">`</span>[clusterTable<span class="sc">$</span><span class="st">`</span><span class="at">FWER p-value</span><span class="st">`</span><span class="sc">&lt;</span><span class="fl">0.05</span>] ] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="co"># multiply their image arrays</span></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>zstat[,,] <span class="ot">=</span> zstat[,,] <span class="sc">*</span> <span class="fu">as.logical</span>(clusterMask[,,])</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="co"># z-index chosen within range of first (largest) cluster</span></span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(zstat, <span class="at">BGimg =</span> templatefile, <span class="at">crop=</span><span class="cn">TRUE</span>, <span class="at">index=</span><span class="dv">33</span><span class="sc">:</span><span class="dv">41</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="3072"></p>
+<figcaption class="figure-caption">Z-statistic map for a significant cluster found in the posterior cingulate cortex and precuneus.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot effect size in cluster 1</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>out <span class="ot">=</span> <span class="fu">plotData.statMap</span>(abideDX, <span class="at">emForm =</span> <span class="st">"~ dx_group"</span>, <span class="at">cft_chisq=</span><span class="fl">2.32</span><span class="sc">^</span><span class="dv">2</span>, <span class="at">roiInds=</span><span class="dv">1</span>, <span class="at">statMethod =</span> <span class="st">'Z'</span>, <span class="at">main=</span><span class="st">'Cluster 1: Diagnosis effect size'</span>)</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot fALFF by diagnosis as a scatter plot and overlay with emmeans estimates and confidence intervals</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>EM <span class="ot">=</span> <span class="fu">as.data.frame</span>(out<span class="sc">$</span>emmeans[[<span class="dv">1</span>]])</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">jitter</span>(<span class="fu">as.numeric</span>(out<span class="sc">$</span>data<span class="sc">$</span>dx_group), <span class="at">factor=</span><span class="fl">1.5</span>),</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>     EM[ <span class="fu">match</span>(out<span class="sc">$</span>data<span class="sc">$</span>dx_group, EM<span class="sc">$</span>dx_group), <span class="st">'emmean'</span>] <span class="sc">+</span> <span class="fu">resid</span>(out<span class="sc">$</span>models[[<span class="dv">1</span>]]),</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">'Diagnosis'</span>, <span class="at">ylab=</span><span class="st">'fALFF'</span>, <span class="at">bty=</span><span class="st">'l'</span>, <span class="at">xaxt=</span><span class="st">'n'</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col=</span><span class="st">'lightgray'</span>, <span class="at">main=</span><span class="st">'Cluster 1: fALFF by diagnosis'</span>)</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">labels=</span><span class="fu">levels</span>(out<span class="sc">$</span>data<span class="sc">$</span>dx_group))</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(EM<span class="sc">$</span>emmean, <span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="at">x0=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">y0=</span>EM<span class="sc">$</span>emmean, <span class="at">x1=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">y1=</span>EM<span class="sc">$</span>lower.CL, <span class="at">angle=</span><span class="dv">90</span>, <span class="at">length=</span><span class="fl">0.1</span>)</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="at">x0=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">y0=</span>EM<span class="sc">$</span>emmean, <span class="at">x1=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">y1=</span>EM<span class="sc">$</span>upper.CL, <span class="at">angle=</span><span class="dv">90</span>, <span class="at">length=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="group-level_tutorial_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption">fALFF in Cluster 1 comparing ASD and HC.</figcaption>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
