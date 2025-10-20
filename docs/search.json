@@ -1461,5 +1461,54 @@
     "title": "Group-level analysis tutorial",
     "section": "Using easythresh",
     "text": "Using easythresh\neasythresh is a command line tool from FSL to perform GRF-based cluster extent inference. It takes as input a Z-statistic image, a brain mask, a cluster-forming threshold (CFT), a cluster extent threshold (CET), and a template image for MNI space. It outputs thresholded images and a text file with cluster extent inference results. Here are two code chunks applying the easythresh command to the FSL FEAT results and the pbj OLS results.\n\n\nCode\n# output directory\nfeatDir=$(pwd)/abide_results/feat\n# cluster forming threshold p&lt;0.01. Note: NOT recommended based on prior literature showing it won't control the type 1 error rate\ncft=3.1\n# cluster extent threshold p&lt;0.5. I set this anti-conservatively to include extra results for us to look at. easythresh will only include significant clusters in the output\ncet=0.5\n# split the zstat image into dx and age\nfslsplit $featDir/zstat.nii.gz $featDir/zstat_ -t\nmask=/Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/cpac/mask.nii.gz\ntemplate=/Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/abide/neuroimaging/MNI152_T1_3mm.nii.gz\n# output directory\neasyOutDir=$featDir/easythresh_cft${cft}_cet${cet}\nmkdir $easyOutDir 2&gt;/dev/null\n\n# run easythresh command\n# cd to the output directory -- easythresh writes output to current directory\ncurDir=$(pwd)\ncd $easyOutDir\neasythresh $featDir/zstat_0000.nii.gz $mask $cft $cet $template easythresh\ncd $curDur\n\n\n\n\nCode\npbjDir=$(pwd)/abide_results/dxGLM\n\n# other variables are defined above\n\n# output directory\neasyOutDir=$pbjDir/easythresh_cft${cft}_cet${cet}\nmkdir $easyOutDir 2&gt;/dev/null\n\n# run easythresh command\n# cd to the output directory -- easythresh writes output to current directory\ncurDir=$(pwd)\ncd $easyOutDir\n# run the command. Last argument is suffix for output images\neasythresh $pbjDir/stat_z.nii.gz $mask $cft $cet $template easythresh\ncd $curDur\n\n\nTwo tables of the output from easythresh using FSL analysis and pbj analysis as input. Results are for the diagnostic effect. They should be identical because they are performing the exact same analysis.\n\n\nCode\n# read in text file cluster_easythresh.txt and print as table using knitr\neasythreshFile = file.path(featDir, 'easythresh_cft3.1_cet0.5', 'cluster_easythresh.txt')\neasythreshTab = read.table(easythreshFile, header=TRUE, sep='\\t', check.names = FALSE)\nknitr::kable(easythreshTab, caption = \"Cluster extent inference results from FSL's easythresh command.\")\n\n\n\nCluster extent inference results from FSL’s easythresh command.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCluster Index\nVoxels\nP\n-log10(P)\nMAX\nMAX X (vox)\nMAX Y (vox)\nMAX Z (vox)\nCOG X (vox)\nCOG Y (vox)\nCOG Z (vox)\n\n\n\n\n8\n53\n0.0717\n1.140\n4.19\n22\n22\n36\n23.7\n20.8\n36.5\n\n\n7\n33\n0.1820\n0.741\n4.10\n32\n36\n28\n32.8\n37.2\n27.6\n\n\n6\n30\n0.2100\n0.677\n3.79\n22\n32\n42\n20.2\n34.0\n40.5\n\n\n5\n16\n0.4260\n0.370\n4.20\n38\n30\n43\n38.3\n29.9\n42.7\n\n\n4\n16\n0.4260\n0.370\n3.93\n36\n46\n27\n36.3\n46.2\n28.2\n\n\n3\n15\n0.4490\n0.348\n3.80\n22\n22\n40\n22.6\n22.5\n40.6\n\n\n2\n13\n0.4970\n0.303\n3.56\n29\n32\n43\n30.7\n32.0\n42.6\n\n\n1\n13\n0.4970\n0.303\n4.33\n23\n14\n30\n23.2\n14.4\n29.9\n\n\n\n\n\n\n\nCode\npbjDir = file.path(analysisDir, 'dxGLM')\n# read in text file cluster_easythresh.txt and print as table using knitr\neasythreshFile = file.path(pbjDir, 'easythresh_cft3.1_cet0.5', 'cluster_easythresh.txt')\neasythreshTab = read.table(easythreshFile, header=TRUE, sep='\\t', check.names = FALSE)\nknitr::kable(easythreshTab, caption = \"Cluster extent inference results from FSL's easythresh command applied to the PBJ OLS results.\")\n\n\n\nCluster extent inference results from FSL’s easythresh command applied to the PBJ OLS results.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCluster Index\nVoxels\nP\n-log10(P)\nMAX\nMAX X (vox)\nMAX Y (vox)\nMAX Z (vox)\nCOG X (vox)\nCOG Y (vox)\nCOG Z (vox)\n\n\n\n\n8\n53\n0.0717\n1.140\n4.19\n22\n22\n36\n23.7\n20.8\n36.5\n\n\n7\n33\n0.1820\n0.741\n4.10\n32\n36\n28\n32.8\n37.2\n27.6\n\n\n6\n30\n0.2100\n0.677\n3.79\n22\n32\n42\n20.2\n34.0\n40.5\n\n\n5\n16\n0.4260\n0.370\n4.20\n38\n30\n43\n38.3\n29.9\n42.7\n\n\n4\n16\n0.4260\n0.370\n3.93\n36\n46\n27\n36.3\n46.2\n28.2\n\n\n3\n15\n0.4490\n0.348\n3.80\n22\n22\n40\n22.6\n22.5\n40.6\n\n\n2\n13\n0.4970\n0.303\n3.56\n29\n32\n43\n30.7\n32.0\n42.6\n\n\n1\n13\n0.4970\n0.303\n4.33\n23\n14\n30\n23.2\n14.4\n29.9"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#observation-of-high-correlations",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#observation-of-high-correlations",
+    "title": "Common mistakes and challenges",
+    "section": "Observation of high correlations",
+    "text": "Observation of high correlations\n\n“Eisenberger, Lieberman, and Williams (2003), writing in Science, described a game they created to expose individuals to social rejection in the laboratory. The authors measured the brain activity in 13 individuals at the same time as the actual rejection took place, and later obtained a self-report measure of how much distress the subject had experienced. Distress was correlated at r=.88 with activity in the anterior cingulate cortex (ACC).”\n“In another Science paper, Singer et al. (2004) found that the magnitude of differential activation within the ACC and left insula induced by an empathy-related manipulation was correlated between .52 and .72 with two scales of emotional empathy (the Empathic Concern Scale of Davis, and the Balanced Emotional Empathy Scale of Mehrabian).”\n“Writing in NeuroImage, Sander et al. (2005) reported that a subject’s proneness to anxiety reactions (as measured by an index of the Behavioral Inhibition System; Carver and White, 1994) correlated at r=.96 with the difference in activation of the right cuneus to attended versus ignored angry speech.”"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#upper-bound-on-the-correlation",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#upper-bound-on-the-correlation",
+    "title": "Common mistakes and challenges",
+    "section": "Upper bound on the correlation",
+    "text": "Upper bound on the correlation\n\nThey claim an upper bound of the true correlation based on a measurement error model.\nIf X_{obs} = X + \\epsilon_X and Y_{obs} = Y + \\epsilon_Y, the correlation \\rho_{X_{obs}, Y_{obs}} = \\rho_{X, Y} * \\sqrt{R_{X_{obs}} \\times R_{Y_{obs}}}\n\nFormula for reliability: \nR_{X_{obs}} = \\frac{Var(X)}{ Var(X) + Var(\\epsilon_X)}\n\n\nReliability of behavioral measures: “… therefore, a range of .7 - .8 would seem to be a somewhat optimistic estimate for the smaller and more ad hoc scales used in much of the research described below”\nReliability of fMRI: “fMRI measures computed at the voxel level will not often have reliabilities greater than about .7”"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#observed-correlations",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#observed-correlations",
+    "title": "Common mistakes and challenges",
+    "section": "Observed correlations",
+    "text": "Observed correlations\n\nThey contacted many investigators to collect data across studies.\nCalled a meta-analysis"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#the-explanation",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#the-explanation",
+    "title": "Common mistakes and challenges",
+    "section": "The explanation",
+    "text": "The explanation\n\nCircularity analysis\n\n\nCorrelation Histogram"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#references",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#references",
+    "title": "Common mistakes and challenges",
+    "section": "References",
+    "text": "References\n\nRelated to post-selection inference\nFiedler 2011\nLieberman, Berkman, Wager 2009"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#section",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#section",
+    "title": "Common mistakes and challenges",
+    "section": "",
+    "text": "Correlation Histogram"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#illustration-of-circularity",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#illustration-of-circularity",
+    "title": "Common mistakes and challenges",
+    "section": "Illustration of circularity",
+    "text": "Illustration of circularity\n\nCorrelation Histogram"
   }
 ]
