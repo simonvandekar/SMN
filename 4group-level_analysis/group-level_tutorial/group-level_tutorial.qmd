@@ -224,7 +224,7 @@ for(i in 1:length(niftis)){
 ```
 
 
-# Group-level analysis
+# Model estimation
 
 ```{r}
 analysisDir = "/Users/vandeks/Library/CloudStorage/Box-Box/SMN/4group-level_analysis/group-level_tutorial/abide_results"
@@ -298,6 +298,8 @@ Might be helpful to review slides 12-16 in the [group-level analysis notes](4gro
 
 
 ## `randomise`: permutation approach
+
+Not included as part of this tutorial yet.
 
 ## `pbj` package in `R`: robust variance estimation
 
@@ -378,6 +380,9 @@ It takes as input a Z-statistic image, a brain mask, a cluster-forming threshold
 It outputs thresholded images and a text file with cluster extent inference results.
 Here are two code chunks applying the `easythresh` command to the FSL FEAT results and the `pbj` OLS results.
 
+
+### 'easythresh' applied to FSL output
+
 ```{bash, eval=FALSE}
 # output directory
 featDir=$(pwd)/abide_results/feat
@@ -397,10 +402,11 @@ mkdir $easyOutDir 2>/dev/null
 # cd to the output directory -- easythresh writes output to current directory
 curDir=$(pwd)
 cd $easyOutDir
-easythresh $featDir/zstat_0000.nii.gz $mask $cft $cet $template easythresh
+easythresh $featDir/zstat_0000.nii.gz $mask $cft $cet $template 
 cd $curDur
 ```
 
+### 'easythresh' applied to `pbj` output
 
 
 ```{bash, eval=FALSE}
@@ -571,7 +577,7 @@ image(zstat, BGimg = templatefile, crop=TRUE, index=33:41)
 
 ```{r, fig.width=6, fig.height=6, fig.cap="fALFF in Cluster 1 comparing ASD and HC."}
 # plot effect size in cluster 1
-out = plotData.statMap(abideDX, emForm = "~ dx_group", cft_chisq=2.32^2, roiInds=1, statMethod = 'Z', main='Cluster 1: Diagnosis effect size')
+out = plotData.statMap(abideDX, emForm = "~ dx_group", cft_chisq=2.32^2, roiInds=1, statMethod = 'Z')
 
 # plot fALFF by diagnosis as a scatter plot and overlay with emmeans estimates and confidence intervals
 EM = as.data.frame(out$emmeans[[1]])

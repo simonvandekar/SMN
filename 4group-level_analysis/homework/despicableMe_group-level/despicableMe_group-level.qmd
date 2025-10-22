@@ -6,11 +6,15 @@ format:
     toc: true
     standalone: true
     code-fold: true
+    embed-resources: true
 ---
 
 
 ```{r}
 knitr::opts_chunk$set(echo = TRUE, eval=TRUE)
+Sys.setenv("FSLDIR" = "/Users/vandeks/fsl")
+Sys.setenv("FSLOUTPUTTYPE" = "NIFTI_GZ")
+templatefile='/Users/vandeks/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz'
 ```
 
 
@@ -35,28 +39,33 @@ sites$feat[ match(names(feats), sites$subject)] = feats
 ```
 
 
+
 ## Merge in demographic variables
 
 For the group-level analyses, we are going to look at how some demographic features are associated with BOLD response during the task.
 
 * Merge in the demographic variables. They are located here `data/RBC/HBN_BIDS/study-HBN_desc-participants.tsv` in tab delimited format.
 
-## Motion QC
+
+
+## Motion and Registration QC
 
 The motion files are included in the feat directories in the file `mc/prefiltered_func_data_mcf_rel_mean.rms`.
 
-* Add them to the sites data frame and create a plot to decide on a threshold for exclusion.
-* Create a list of participants to exclude based on the visual registration QA.
-* Make the exclusions and create a Table 1 with the motion information.
+* Add them to the sites data frame and create a plot to decide on a threshold for exclusion using either 0.5mm.
+* Create a Table 1 with the age, site, and motion, with sex as the columns.
+* Registration mostly looked good across all participants. One student noted a T1 image with serious motion artifact, so exclude that too.
+* Some people are missing motion files or the mask, probably because FEAT failed to run. Normally, you would debug that. Because we have limited time, we will exclude them for this analysis.
 
-```{r}
-# get mean relative displacement from feat directories and add to sites dataframe
+**Hint:** You should have 51 participants total included in the data after making exclusions.
 
-# create a plot with the motion QA and decide on a threshold for exclusion
 
-# create list of participants to exclude based on our visual registration QA
-regExclude = c()
-```
+
+
+## Registration to the template space
+
+I already registered all of the images to the MNI template and put the output in the participant feat directories in the `stats_reg` folder.
+
 
 
 ## Study-level mask
@@ -70,64 +79,76 @@ regExclude = c()
 ## Group level model
 
 
-### FSL OLS and FLAMEO
 
-Fit an OLS model and FLAME model with the following design:
+
+### FSL FLAME
+
+Fit a FLAME model with the following design:
 $$
-Y_i(v) = \beta_0(v) + \beta_1(v)*\text{age}_i + \beta_2(v)*\text{sex}_i + \beta_3(v)*\text{motion}_i,
+Y_i(v) = \beta_0(v) + \beta_1(v)*\text{age}_i + \beta_3(v)*\text{motion}_i,
 $$
 
 where $Y_i$ the the "cope" file for the difference between positive and negative emotional states.
 For age, use the centered age (subtract the mean age from each participant's age).
 
 
-For the group level contrasts, create three:
+For the group level contrasts, create one:
 
 1. The mean effect across all participants.
-2. The association with age (positive correlation with age).
-3. The association with sex.
 
-* For each contrast, describe the interpretation of the effect.
+* Describe the interpretation of the effect.
 
-**Hint:** For the OLS model, you can use the group-level tutorial that I presented in class. For the FLAME model, you can use the `flameo` function. You will need to pass the `varcope` images in addition to the `cope` images. The `varcope` images are also located in the feat directories.
+**Hint:** For the FLAME model, you can use the `flameo` function. You will need to pass the `varcope` images in addition to the `cope` images. The `varcope` images are also located in the feat directories.
+
 
 
 ### `pbj` package
 
-* Use the `pbj` package to fit the same model for the age and sex effects.
+* Use the `pbj` package to fit the same model for the age and intercept effects. **Hint:** to test the intercept effect you need to fit a model formula without the intercept.
 
 
 
 ### Visualizations
 
-* Threshold the statistical images for the age effect showing positive and negative regions at $Z\ge 1.96$ and create an image here with a particular slice for the three models (OLS, FLAMEO, pbj) that shows some of the difference between the age effects side-by-side. **Note:** I haven't done this analysis yet. If it looks like there isn't much showing, up, then let me know and we can discuss further.
+* Threshold the statistical images for the age effect showing positive and negative regions at $Z\ge 2.32$ and create an image here with a few slice for the two models (OLS, FLAMEO, pbj) that shows some of the difference between the intercept term side-by-side.
+* In 1-2 sentences, explain the interpretation of the effects (i.e. negative versus positive values).
 
 
 
-## Spatial extent inference
 
+## Cluster extent inference
 
 ### easythresh
 
-* Use the `easythresh` function from FSL to perform spatial extent inference for the age effect on the FLAME output. Use a cluster-forming threshold of $p<0.001$.
-* Create a cluster table for the results.
+* Use the `easythresh` function from FSL to perform cluster extent inference (CEI) for the intercept term of the FLAME output. Use a cluster-forming threshold of 2.32.
+* Use the `easythresh` function to perform cluster extent inference for the intercept term of the `pbj` output with a cluster-forming threshold of 2.32.
+* Create a cluster table for the results and compare the output.
+* What aspects are different and why? Things that can be different include:
+    + The Z-statistic image has different values.
+    + The clusters are different sizes. Why would they be?
+    + The CEI $p$-values are different. Why would they be?
 
 ### pbj
 
 This will take a little while longer to run because it is using bootstraps to compute $p$-values.
 
-* Use the `pbj` package to perform spatial extent inference for the age effect. Use a cluster-forming threshold of $p<0.001$ and a family-wise error rate of $\alpha=0.05$. How many clusters are significant?
+* Use the `pbj` package to perform spatial extent inference for the intercept term. Use a cluster-forming threshold of $Z \ge 2.32$. Run it with 1000 bootstrap samples.
 * Create a cluster table for the results.
+* Merge in the $p$-values from the `easythresh` results.
+* Show the first 10 rows of the table here.
+* In 1-3 sentences, describe what things are different and why?
 
-## Reporting age effects
 
-For this section, report the results from the FLAME or pbj analysis (you can choose which one) for the age effect.
+
+## Reporting task effect differences
+
+For this section, report the results from the pbj analysis (you can choose which one) for the intercept term.
 
 ### Methods
 
-Describe the methods you used to analyze the results 1-2 paragraphs including a description of the first-level analysis and group-level analysis. It should be described well enough that someone could repeat your analyses.
+Describe the methods you used to analyze the results 1-2 paragraphs including a description of the first-level analysis and group-level analysis. It should be described well enough that someone could repeat your analyses starting from the first-level analysis.
 
 ### Results
 
-Describe the results of your analyses on one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast.
+Describe the results of your analyses in one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast.
 
