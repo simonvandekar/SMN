@@ -4554,8 +4554,7 @@ vertical-align: -.125em;
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a>
-  <ul class="collapse">
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
   <li><a href="#merge-in-demographic-variables" id="toc-merge-in-demographic-variables" class="nav-link" data-scroll-target="#merge-in-demographic-variables">Merge in demographic variables</a></li>
   <li><a href="#motion-and-registration-qc" id="toc-motion-and-registration-qc" class="nav-link" data-scroll-target="#motion-and-registration-qc">Motion and Registration QC</a></li>
   <li><a href="#registration-to-the-template-space" id="toc-registration-to-the-template-space" class="nav-link" data-scroll-target="#registration-to-the-template-space">Registration to the template space</a></li>
@@ -4575,7 +4574,6 @@ vertical-align: -.125em;
   <ul class="collapse">
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -4609,12 +4607,12 @@ vertical-align: -.125em;
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>templatefile<span class="ot">=</span><span class="st">&#39;/Users/vandeks/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz&#39;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>We will perform a group-level analysis of the <em>Despicable Me</em> task.</p>
 </section>
-<section id="setup" class="level1">
-<h1>Setup</h1>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -4631,6 +4629,7 @@ vertical-align: -.125em;
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>sites<span class="sc">$</span>feat[ <span class="fu">match</span>(<span class="fu">names</span>(feats), sites<span class="sc">$</span>subject)] <span class="ot">=</span> feats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</section>
 <section id="merge-in-demographic-variables" class="level2">
 <h2 class="anchored" data-anchor-id="merge-in-demographic-variables">Merge in demographic variables</h2>
 <p>For the group-level analyses, we are going to look at how some demographic features are associated with BOLD response during the task.</p>
@@ -4732,7 +4731,6 @@ Y_i(v) = \beta_0(v) + \beta_1(v)*\text{age}_i + \beta_3(v)*\text{motion}_i,
 <p>Describe the results of your analyses in one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast.</p>
 
 
-</section>
 </section>
 </section>
 

@@ -1538,5 +1538,19 @@
     "title": "Despicable Me group-level analysis",
     "section": "Reporting task effect differences",
     "text": "Reporting task effect differences\nFor this section, report the results from the pbj analysis (you can choose which one) for the intercept term.\n\nMethods\nDescribe the methods you used to analyze the results 1-2 paragraphs including a description of the first-level analysis and group-level analysis. It should be described well enough that someone could repeat your analyses starting from the first-level analysis.\n\n\nResults\nDescribe the results of your analyses in one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast."
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#introduction",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#introduction",
+    "title": "Despicable Me group-level analysis",
+    "section": "Introduction",
+    "text": "Introduction\nWe will perform a group-level analysis of the Despicable Me task."
+  },
+  {
+    "objectID": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#setup",
+    "href": "4group-level_analysis/homework/despicableMe_group-level/despicableMe_group-level.html#setup",
+    "title": "Despicable Me group-level analysis",
+    "section": "Setup",
+    "text": "Setup\n\n\nCode\nsites = read.csv('/Users/vandeks/Library/CloudStorage/Box-Box/SMN/3first-level_analysis/homework/first-level_analysis/subject_assignment.csv')\nsites = sites[ ! sites$student %in% c('Yisu', 'Shuai', 'Laura') & !is.na(sites$student),]\n# list available feat directories\nfeats = sapply(strsplit(system(\"ls -d /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/*/*/func/*bold.feat\", intern = TRUE), \"/\"), function(x) x[[11]])\nsuppressWarnings(feats &lt;- sapply(sites$subject, function(x)\n  system(\n    paste0(\"ls -d /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/\", x, \"/*/func/*bold.feat 2&gt;/dev/null\"),\n    intern = TRUE) ))\nfeats = unlist(feats)\nsites$feat = NA\nsites$feat[ match(names(feats), sites$subject)] = feats"
   }
 ]

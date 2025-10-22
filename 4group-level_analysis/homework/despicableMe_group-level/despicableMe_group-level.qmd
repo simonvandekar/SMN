@@ -18,11 +18,11 @@ templatefile='/Users/vandeks/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz'
 ```
 
 
-# Introduction
+## Introduction
 
 We will perform a group-level analysis of the *Despicable Me* task.
 
-# Setup
+## Setup
 
 ```{r}
 sites = read.csv('/Users/vandeks/Library/CloudStorage/Box-Box/SMN/3first-level_analysis/homework/first-level_analysis/subject_assignment.csv')
