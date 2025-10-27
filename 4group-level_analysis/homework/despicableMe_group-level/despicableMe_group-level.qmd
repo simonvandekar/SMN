@@ -36,6 +36,9 @@ suppressWarnings(feats <- sapply(sites$subject, function(x)
 feats = unlist(feats)
 sites$feat = NA
 sites$feat[ match(names(feats), sites$subject)] = feats
+# A lot of motion artifact in their T1 image, so exclude them.
+regExclude = c('NDARAU939WUK', 'NDARAM675UR8', 'NDARAN262WK6', 'NDARAN814UPR', 'NDARAK738BGC', 'NDARAH948UF0')
+regExclude
 ```
 
 
@@ -110,7 +113,7 @@ For the group level contrasts, create one:
 
 ### Visualizations
 
-* Threshold the statistical images for the age effect showing positive and negative regions at $Z\ge 2.32$ and create an image here with a few slice for the two models (OLS, FLAMEO, pbj) that shows some of the difference between the intercept term side-by-side.
+* Threshold the statistical images for the overall mean (Intercept) effect showing positive and negative regions at $Z\ge 2.32$ and create an image here with a few slice for the two models (FLAME, pbj) that shows some of the difference between the intercept term side-by-side.
 * In 1-2 sentences, explain the interpretation of the effects (i.e. negative versus positive values).
 
 
@@ -150,5 +153,5 @@ Describe the methods you used to analyze the results 1-2 paragraphs including a 
 
 ### Results
 
-Describe the results of your analyses in one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast.
+Describe the results of your analyses in one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the overall mean (Intercept) effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast.
 

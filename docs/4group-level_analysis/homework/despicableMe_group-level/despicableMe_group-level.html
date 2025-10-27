@@ -4535,6 +4535,10 @@ vertical-align: -.125em;
     <a class="dropdown-item" href="../../../5common_mistakes_challenges/common_mistakes_challenges.html" rel target="_blank">
  <span class="dropdown-text">Common Mistakes and Challenges</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../../6modern_topics/modern_topics.html" rel target="_blank">
+ <span class="dropdown-text">Modern Topics</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -4626,8 +4630,15 @@ vertical-align: -.125em;
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">intern =</span> <span class="cn">TRUE</span>) ))</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>feats <span class="ot">=</span> <span class="fu">unlist</span>(feats)</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>sites<span class="sc">$</span>feat <span class="ot">=</span> <span class="cn">NA</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>sites<span class="sc">$</span>feat[ <span class="fu">match</span>(<span class="fu">names</span>(feats), sites<span class="sc">$</span>subject)] <span class="ot">=</span> feats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>sites<span class="sc">$</span>feat[ <span class="fu">match</span>(<span class="fu">names</span>(feats), sites<span class="sc">$</span>subject)] <span class="ot">=</span> feats</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># A lot of motion artifact in their T1 image, so exclude them.</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>regExclude <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&#39;NDARAU939WUK&#39;</span>, <span class="st">&#39;NDARAM675UR8&#39;</span>, <span class="st">&#39;NDARAN262WK6&#39;</span>, <span class="st">&#39;NDARAN814UPR&#39;</span>, <span class="st">&#39;NDARAK738BGC&#39;</span>, <span class="st">&#39;NDARAH948UF0&#39;</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>regExclude</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;NDARAU939WUK&quot; &quot;NDARAM675UR8&quot; &quot;NDARAN262WK6&quot; &quot;NDARAN814UPR&quot; &quot;NDARAK738BGC&quot;
+[6] &quot;NDARAH948UF0&quot;</code></pre>
+</div>
 </div>
 </section>
 <section id="merge-in-demographic-variables" class="level2">
@@ -4686,7 +4697,7 @@ Y_i(v) = \beta_0(v) + \beta_1(v)*\text{age}_i + \beta_3(v)*\text{motion}_i,
 <section id="visualizations" class="level3">
 <h3 class="anchored" data-anchor-id="visualizations">Visualizations</h3>
 <ul>
-<li>Threshold the statistical images for the age effect showing positive and negative regions at <span class="math inline">\(Z\ge 2.32\)</span> and create an image here with a few slice for the two models (OLS, FLAMEO, pbj) that shows some of the difference between the intercept term side-by-side.</li>
+<li>Threshold the statistical images for the overall mean (Intercept) effect showing positive and negative regions at <span class="math inline">\(Z\ge 2.32\)</span> and create an image here with a few slice for the two models (FLAME, pbj) that shows some of the difference between the intercept term side-by-side.</li>
 <li>In 1-2 sentences, explain the interpretation of the effects (i.e. negative versus positive values).</li>
 </ul>
 </section>
@@ -4728,7 +4739,7 @@ Y_i(v) = \beta_0(v) + \beta_1(v)*\text{age}_i + \beta_3(v)*\text{motion}_i,
 </section>
 <section id="results" class="level3">
 <h3 class="anchored" data-anchor-id="results">Results</h3>
-<p>Describe the results of your analyses in one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the age effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast.</p>
+<p>Describe the results of your analyses in one paragraph, including a final figure showing the significant clusters from the spatial extent inference for the overall mean (Intercept) effect. Include a table with the cluster information. You should interpret the location of the result and why you think it is relevant to the task and the contrast.</p>
 
 
 </section>

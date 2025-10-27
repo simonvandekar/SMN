@@ -27,6 +27,9 @@ website:
         - text: "Common Mistakes and Challenges"
           href: 5common_mistakes_challenges/common_mistakes_challenges.html
           target: "_blank"
+        - text: "Modern Topics"
+          href: 6modern_topics/modern_topics.html
+          target: "_blank"
 format:
   html:
     theme: cosmo
