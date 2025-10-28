@@ -1552,5 +1552,138 @@
     "title": "Despicable Me group-level analysis",
     "section": "Setup",
     "text": "Setup\n\n\nCode\nsites = read.csv('/Users/vandeks/Library/CloudStorage/Box-Box/SMN/3first-level_analysis/homework/first-level_analysis/subject_assignment.csv')\nsites = sites[ ! sites$student %in% c('Yisu', 'Shuai', 'Laura') & !is.na(sites$student),]\n# list available feat directories\nfeats = sapply(strsplit(system(\"ls -d /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/*/*/func/*bold.feat\", intern = TRUE), \"/\"), function(x) x[[11]])\nsuppressWarnings(feats &lt;- sapply(sites$subject, function(x)\n  system(\n    paste0(\"ls -d /Users/vandeks/Library/CloudStorage/Box-Box/SMN/data/RBC/HBN_BIDS/\", x, \"/*/func/*bold.feat 2&gt;/dev/null\"),\n    intern = TRUE) ))\nfeats = unlist(feats)\nsites$feat = NA\nsites$feat[ match(names(feats), sites$subject)] = feats"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html",
+    "href": "6modern_topics/modern_topics.html",
+    "title": "Modern Topics",
+    "section": "",
+    "text": "Bethlehem & Siedlitz et al. used a massive data set(over 100,000 participants) to fit “normative” trajectories across the lifespan.\nThey used generalized additive models for location, scale, and shape (GAMLSS).\nThey used random effects terms to account for scanner differences across sites.\n\n\n\n\nGrowth charts\n\n\n\n\n\n\nThey then used the normative curves to estimate where people fall relative to someone of the same age and sex. For a new observation \\(y_j\\), their centile is \\[\n\\mathbb{P}(Y \\le y_j\\mid \\text{age}_j, \\text{sex}_j, \\text{site}_j, \\text{software}_j)\n\\]\nInstead of conducting analyses relative to a control group, they compared the median of the centile values to 0.5.\n\nIt’s possible this improves power, because the full sample used to construct the GAMLSS models acts (heuristically) as the control group\n\n\n\n\n\nCentile comparisons\n\n\n\n\n\n\nThis whole GAMLSS/centile approach was repeated for every region in the Desikan-Killiany brain atlas.\n\n\n\n\nRegional centiles\n\n\n\nThen they computed multivariate centiles across all these regions.\nMultivariate centiles were computed as follows.\n\n\n\n\nMultivariate centiles\n\n\n\n\n\nMahalanobis centiles\n\n\n\n\n\n\nSince the beginning, there’s been interest multivariate centiles, that provide a single value to summarize a person’s overall deviance from the population.\nThe initial proposed methods to do this are unusual because they compute a Mahalanobis distance on the centile scale.\nGoal: Develop and evaluate a method that transforms the centiles to a multivariate normal, computes centiles based on the distance to the center of the distribution and back-transforms to the centile scale.\n\n\n\n\n\nMulti-level models are needed for centile estimation:\n\nTo adjust for technical (site/hardware/software) effects.\nTo use multiple measurements from the same individual.\n\nWe use random effects models (GAMLSS) to account for the correlation among measurements.\nDifferent approaches are needed to account for these repeated measurements:\n\nFor site effects, we want to estimate and remove these effects when computing centiles in a new dataset.\nFor person/family random effects, people aren’t really sure how to handle them. I think we want to compute centiles marginally.\n\nGoal: Figure out how to correctly estimate centiles from models with person/family random effects.\n\nFirst, you will have to define what “correctly” means, i.e. what is the centile value we would want to estimate.\nThen you have to figure out how to compute it for a new observation from a fitted model."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#brain-charts-for-the-human-lifespan",
+    "href": "6modern_topics/modern_topics.html#brain-charts-for-the-human-lifespan",
+    "title": "Modern Topics",
+    "section": "Brain charts for the human lifespan",
+    "text": "Brain charts for the human lifespan\n\nBethlehem & Siedlitz et al. used a massive data set(over 100,000 participants) to fit “normative” trajectories across the lifespan.\nThey used generalized additive models for location, scale, and shape (GAMLSS).\nThey used random effects terms to account for scanner differences across sites.\n\n\n\n\nGrowth charts"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#centiles",
+    "href": "6modern_topics/modern_topics.html#centiles",
+    "title": "Modern Topics",
+    "section": "Centiles",
+    "text": "Centiles\n\nThey then used the normative curves to estimate where people fall relative to someone of the same age and sex. For a new observation y_j, their centile is \n\\mathbb{P}(Y \\le y_j\\mid \\text{age}_j, \\text{sex}_j, \\text{site}_j, \\text{software}_j)\n\nInstead of conducting analyses relative to a control group, they compared the median of the centile values to 0.5.\n\nIt’s possible this improves power, because the full sample used to construct the GAMLSS models acts (heuristically) as the control group\n\n\n\n\n\nCentile comparisons"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#multivariate-centiles",
+    "href": "6modern_topics/modern_topics.html#multivariate-centiles",
+    "title": "Modern Topics",
+    "section": "Multivariate centiles",
+    "text": "Multivariate centiles\n\nThis whole GAMLSS/centile approach was repeated for every region in the Desikan-Killiany brain atlas.\n\n\n\n\nRegional centiles\n\n\n\nThen they computed multivariate centiles across all these regions.\nMultivariate centiles were computed as follows.\n\n\n\n\nMultivariate centiles\n\n\n\n\n\nMahalanobis centiles"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#multivariate-centiles-1",
+    "href": "6modern_topics/modern_topics.html#multivariate-centiles-1",
+    "title": "Modern Topics",
+    "section": "1. Multivariate centiles",
+    "text": "1. Multivariate centiles\n\nSince the beginning, there’s been interest multivariate centiles, that provide a single value to summarize a person’s overall deviance from the population.\nThe initial proposed methods to do this are unusual because they compute a Mahalanobis distance on the centile scale.\nGoal: Develop and evaluate a method that transforms the centiles to a multivariate normal, computes centiles based on the distance to the center of the distribution and back-transforms to the centile scale."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#centile-estimation-in-multilevel-models",
+    "href": "6modern_topics/modern_topics.html#centile-estimation-in-multilevel-models",
+    "title": "Modern Topics",
+    "section": "2. Centile estimation in multilevel models",
+    "text": "2. Centile estimation in multilevel models\n\nMulti-level models are needed for centile estimation:\n\nTo adjust for technical (site/hardware/software) effects.\nTo use multiple measurements from the same individual.\n\nWe use random effects models (GAMLSS) to account for the correlation among measurements.\nDifferent approaches are needed to account for these repeated measurements:\n\nFor site effects, we want to estimate and remove these effects when computing centiles in a new dataset.\nFor person/family random effects, people aren’t really sure how to handle them. I think we want to compute centiles marginally.\n\nGoal: Figure out how to correctly estimate centiles from models with person/family random effects.\n\nFirst, you will have to define what “correctly” means, i.e. what is the centile value we would want to estimate.\nThen you have to figure out how to compute it for a new observation from a fitted model."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#confidence-sets-for-a-fixed-effect-size",
+    "href": "6modern_topics/modern_topics.html#confidence-sets-for-a-fixed-effect-size",
+    "title": "Modern Topics",
+    "section": "3. Confidence sets for a fixed effect size",
+    "text": "3. Confidence sets for a fixed effect size\n\nXinyu’s confidence sets invert simultaneous confidence intervals and work for all effect size thresholds.\nIf people are only interested on one particular threshold, then these can be conservative.\nMethods exist for a single effect size threshold.\nGoal: Apply these methods to the robust effect size index and write code to implement it."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#bowring-paper-overview",
+    "href": "6modern_topics/modern_topics.html#bowring-paper-overview",
+    "title": "Modern Topics",
+    "section": "Bowring paper overview",
+    "text": "Bowring paper overview\n\nBowring et. al. 2021 implemented the single-threshold confidence set method for Cohen’s d effect size.\nTheir bootstrap procedure was more complicated than ours needs to be (we have a valid bootstrap already).\nYou will need to understand and implement the method they use."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#fdr-controlling-confidence-sets",
+    "href": "6modern_topics/modern_topics.html#fdr-controlling-confidence-sets",
+    "title": "Modern Topics",
+    "section": "4. FDR controlling confidence sets",
+    "text": "4. FDR controlling confidence sets\n\nXinyu’s method creates confidence sets that control the FWER.\nMany people like to control the FDR instead, because it is less conservative.\nGoal: Implement a confidence set method to control the FDR for the RESI for a single threshold.\nDo a literature search for this, because I know people are thinking about it already.\nI think for a given threshold s, it is similar to performing a test H_0(v): S(v) = s.\n\nI’ve talked to a colleague, and they suggested you need to do it separately for the upper and lower sets \n   \\begin{align*}\n   H_0(v) & : S(v) \\ge s \\\\\n   H_0(v) & : S(v) \\le  s \\\\\n   \\end{align*}"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#apply-cnns-for-brain-phenotype-associations",
+    "href": "6modern_topics/modern_topics.html#apply-cnns-for-brain-phenotype-associations",
+    "title": "Modern Topics",
+    "section": "5. Apply CNNs for brain-phenotype associations",
+    "text": "5. Apply CNNs for brain-phenotype associations\n\nMegan evaluated common ML models in her paper.\nConvolution neural networks are more flexible and can incorporate spatial information.\nGoal: Evaluate whether there is improved accuracy in predicting age and psychopathology variables in the RBC dataset.\nGoal: Evaluate validity of Megan’s semiparametric one-step estimator when using a CNN."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#background-for-cnns",
+    "href": "6modern_topics/modern_topics.html#background-for-cnns",
+    "title": "Modern Topics",
+    "section": "Background for CNNs",
+    "text": "Background for CNNs\n\nGood for image input. Can be used for phenotype prediction with sample sizes we have in neuroimaging? I’m not sure.\nReview by Mienye et al. 2025\nI’m no expert, but see if this is feasible."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#improved-accuracy-of-confidence-intervals",
+    "href": "6modern_topics/modern_topics.html#improved-accuracy-of-confidence-intervals",
+    "title": "Modern Topics",
+    "section": "6. Improved accuracy of confidence intervals",
+    "text": "6. Improved accuracy of confidence intervals\n\nConfidence interval coverage in “small” samples is still below nominal level using Megan’s methods\nLow coverage is due to finite-sample bias and the contribution of high-order terms in the Taylor expansion\nGoal: investigate approaches to improve small sample coverage\n\n“Normalizing transformations”\nIncorporating higher-order terms in the Taylor expansion\nUsing simulations"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#huge-concern-in-neuroimaging",
+    "href": "6modern_topics/modern_topics.html#huge-concern-in-neuroimaging",
+    "title": "Modern Topics",
+    "section": "Huge concern in neuroimaging",
+    "text": "Huge concern in neuroimaging\n\nReference from chatGPT"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#definition-of-replicability",
+    "href": "6modern_topics/modern_topics.html#definition-of-replicability",
+    "title": "Modern Topics",
+    "section": "Definition of replicability",
+    "text": "Definition of replicability\n\nReplicability is often defined in terms of the p-value. In this case, replicability is related to type 1 error and power.\nA more sensible approach, might be to define replicability in terms of the MSE of an effect size (vector across all V image locations)\n\n\n\\mathbb{E} \\lVert \\hat S - S \\rVert^2/V\n\n\nTangential math: For two independent samples the expected distance of their effect size (vectors across all image locations)\n\n\n\\mathbb{E} \\lVert \\hat S_1 - \\hat S_2 \\rVert^2 = 2 \\mathrm{tr}\\{\\mathrm{Var}(\\hat S_1)\\}\n *"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#evaluate-an-alternative-approach-for-mass-univariate-analysis",
+    "href": "6modern_topics/modern_topics.html#evaluate-an-alternative-approach-for-mass-univariate-analysis",
+    "title": "Modern Topics",
+    "section": "7. Evaluate an alternative approach for mass-univariate analysis",
+    "text": "7. Evaluate an alternative approach for mass-univariate analysis\n\nMass-univariate inference might have pretty low replicability\nWe’ve been exploring ecological methods to fit a mass-univariate model across the whole-brain together using dimension reduction.\nIt would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#rank-the-projects",
+    "href": "6modern_topics/modern_topics.html#rank-the-projects",
+    "title": "Modern Topics",
+    "section": "Rank the projects",
+    "text": "Rank the projects\n\nQuestions about the projects?\nRank the projects using the google form I sent in an email"
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#project-organization",
+    "href": "6modern_topics/modern_topics.html#project-organization",
+    "title": "Modern Topics",
+    "section": "Project organization",
+    "text": "Project organization\n\nOrganize your project like a statistical methods paper:\n\nIntroduction\nMethods\nResults\nAnalysis\nDiscussion\nReferences\n\nIntroduction should include\n\nBackground contextualizing the problem and why it is important (including relevant literature).\nExample of how this problem arises in data analysis. The best example, is one from the dataset you will analyze in your paper.\nA literature review describing what’s been done to try to address the problem, and why it is inadequate.\nA description of your method and why it addresses the problem better than existing methods.\n\nMethods should include\n\nThe dataset and what the goal of the analysis is.\nComparator methods.\nNotation/Theory/Description of your method.\nEvaluation approach (usually includes some simulations). What are the metrics for evaluation?\n\nResults\n\nSimulation analysis results.\nAnalysis results for your example.\n\nDiscussion\n\nOne paragraph recap.\nA paragraph for each important implication.\nConclusion paragraph: take-home message of your paper."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#project-grading",
+    "href": "6modern_topics/modern_topics.html#project-grading",
+    "title": "Modern Topics",
+    "section": "Project grading",
+    "text": "Project grading\nThe idea is that you can fill in all aspects of the paper outline at a shallow depth. I’m expecting you work 4-8 hours a week including class time. When I grade your submission, I’ll think about these things:\n\nContinued effort\n\nEach Friday, submit less than a page progress that week separately for each team member. It can include code snippets, screenshots, figures, photos of math/theory, etc.\nNo “dead-ends.” Your project as planned beginning of November may fail. You should re-direct/simplify if you hit a dead-end.\n\nIntroduction\n\nContextualized the problem\nContextualized the importance\nDescribed the existing methods\nSummarized your approach and the gap it addresses\n\nMethods\n\nYour approach is logical statistically. i.e., it’s neat, not unnecessarily complicate and addresses the problem.\nYour approach and metrics for evaluation are valid.\nThe methods you develop are actually valid for your example problem.\n\nResults\n\nYour results are presented neatly in figures that are easy to read.\n\nDiscussion\n\nYour conclusions about the results is correct/justified.\n\nClearly written\n\nChatGPT writes TOO MUCH. Your writing should be as short and accessible as possible. The best writing makes your idea seem obvious and simple.\n\nSubmission\n\nSubmit your code and .qmd file and compiled html or pdf.\n\nAuthor contributions\n\nEvery author should contribute. You will get a shared grade based on the final submission and presentation and a separate grade based on your weekly update."
+  },
+  {
+    "objectID": "6modern_topics/modern_topics.html#computing",
+    "href": "6modern_topics/modern_topics.html#computing",
+    "title": "Modern Topics",
+    "section": "Computing",
+    "text": "Computing\n\nYou will need access to computing and data.\nDepending on the project, it’s probably easiest if I give you access to my servers.\nWe will figure that out after you choose projects."
   }
 ]
