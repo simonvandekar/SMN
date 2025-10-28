@@ -166,8 +166,8 @@ $$
 ## Rank the projects
 
 * Questions about the projects?
-* Rank the projects using the google form I sent in an email
-    
+* Rank the projects using the [google form](https://docs.google.com/forms/d/e/1FAIpQLSe2iaw7JtUFCqgRnu5pclLNH32I-jDXHvuYY5VCd6E-ZA4umQ/viewform?usp=header)
+
 ## Project organization 
 
 * Organize your project like a statistical methods paper:
