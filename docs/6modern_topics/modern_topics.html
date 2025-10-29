@@ -530,7 +530,7 @@ Simon Vandekar
 <section id="huge-concern-in-neuroimaging" class="slide level2">
 <h2>Huge concern in neuroimaging</h2>
 <ul>
-<li>Reference from chatGPT</li>
+<li><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C43&amp;q=replicability+brain+imaging&amp;btnG=">Scholar search</a></li>
 </ul>
 </section>
 <section id="definition-of-replicability" class="slide level2">
@@ -553,8 +553,13 @@ Simon Vandekar
 <h2>7. Evaluate an alternative approach for mass-univariate analysis</h2>
 <ul>
 <li>Mass-univariate inference might have pretty low replicability</li>
-<li>We’ve been exploring ecological methods to fit a mass-univariate model across the whole-brain together using dimension reduction.</li>
-<li>It would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better.</li>
+<li>We’ve been exploring ecological methods (RDA) to fit a mass-univariate model across the whole-brain together using dimension reduction.</li>
+<li>Imagine the mass-univariate analysis as a multivariate model <span class="math display">
+\mathbb{E} Y = X \beta
+</span></li>
+<li>where <span class="math inline">Y \in \mathbb{R}^{n \times V}</span>, <span class="math inline">X \in \mathbb{R}^{n \times m}</span>, <span class="math inline">\beta \in \mathbb{R}^{m \times V}</span></li>
+<li>RDA does dimension reduction within the modeling framework.</li>
+<li>It would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better. My hypothesis is that is has better MSE due to lower variance and introducing some bias.</li>
 </ul>
 </section></section>
 <section>

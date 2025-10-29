@@ -1642,7 +1642,7 @@
     "href": "6modern_topics/modern_topics.html#huge-concern-in-neuroimaging",
     "title": "Modern Topics",
     "section": "Huge concern in neuroimaging",
-    "text": "Huge concern in neuroimaging\n\nReference from chatGPT"
+    "text": "Huge concern in neuroimaging\n\nScholar search"
   },
   {
     "objectID": "6modern_topics/modern_topics.html#definition-of-replicability",
@@ -1656,7 +1656,7 @@
     "href": "6modern_topics/modern_topics.html#evaluate-an-alternative-approach-for-mass-univariate-analysis",
     "title": "Modern Topics",
     "section": "7. Evaluate an alternative approach for mass-univariate analysis",
-    "text": "7. Evaluate an alternative approach for mass-univariate analysis\n\nMass-univariate inference might have pretty low replicability\nWe’ve been exploring ecological methods to fit a mass-univariate model across the whole-brain together using dimension reduction.\nIt would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better."
+    "text": "7. Evaluate an alternative approach for mass-univariate analysis\n\nMass-univariate inference might have pretty low replicability\nWe’ve been exploring ecological methods (RDA) to fit a mass-univariate model across the whole-brain together using dimension reduction.\nImagine the mass-univariate analysis as a multivariate model \n\\mathbb{E} Y = X \\beta\n\nwhere Y \\in \\mathbb{R}^{n \\times V}, X \\in \\mathbb{R}^{n \\times m}, \\beta \\in \\mathbb{R}^{m \\times V}\nRDA does dimension reduction within the modeling framework.\nIt would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better. My hypothesis is that is has better MSE due to lower variance and introducing some bias."
   },
   {
     "objectID": "6modern_topics/modern_topics.html#rank-the-projects",

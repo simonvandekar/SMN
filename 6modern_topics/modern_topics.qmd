@@ -135,7 +135,7 @@ $$
 
 ## Huge concern in neuroimaging
 
-* Reference from chatGPT
+* [Scholar search](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C43&q=replicability+brain+imaging&btnG=)
 
 ## Definition of replicability
 
@@ -158,8 +158,14 @@ $$
 ## 7. Evaluate an alternative approach for mass-univariate analysis
 
 * Mass-univariate inference might have pretty low replicability
-* We've been exploring ecological methods to fit a mass-univariate model across the whole-brain together using dimension reduction.
-* It would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better.
+* We've been exploring ecological methods (RDA) to fit a mass-univariate model across the whole-brain together using dimension reduction.
+* Imagine the mass-univariate analysis as a multivariate model
+$$
+\mathbb{E} Y = X \beta
+$$
+* where $Y \in \mathbb{R}^{n \times V}$, $X \in \mathbb{R}^{n \times m}$, $\beta \in \mathbb{R}^{m \times V}$
+* RDA does dimension reduction within the modeling framework.
+* It would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better. My hypothesis is that is has better MSE due to lower variance and introducing some bias.
 
 # Project administration
 
