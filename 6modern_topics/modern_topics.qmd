@@ -238,3 +238,4 @@ When I grade your submission, I'll think about these things:
 * You will need access to computing and data.
 * Depending on the project, it's probably easiest if I give you access to my servers.
 * We will figure that out after you choose projects.
+

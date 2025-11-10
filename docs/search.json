@@ -53,7 +53,7 @@
     "href": "index.html#course-schedule",
     "title": "Statistical Methods for Neuroimaging",
     "section": "Course Schedule",
-    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\nQuiz\n12-Sep\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nRecorded: Structural and functional preprocessing\n\nDespicable Me preprocessing\n22-Sep\n\n\n10-Sep\nWednesday\n\nRecorded: Functional preprocessing\nRecorded: Despicable Me preprocessing\n\n\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level fMRI Analysis\n\nQuiz\n26-Sep\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nTime Series Analysis\n\nFirst-level fMRI analysis of Despicable Me data\n6-Oct\n\n\n22-Sep\nMonday\nFirst-Level Analysis\nrs-fMRI First-Level Analysis\nRecorded: Despicable Me first-level analysis\n\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nRecorded: Estimation\n\nQuiz- see Brightspace\n30-Sep\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nRecorded: Multiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level ABIDE analysis\n\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\n\nGroup-level ABIDE analysis\n\n\n\n\n8-Oct\nWednesday\nGroup-Level Analysis\n\n\n\n\n\n\n13-Oct\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\nGroup-level analysis of Despicable Me\n31-Oct\n\n\n15-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level ABIDE analysis\n\n\n\n\n20-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage, the salmon\nGroup-level ABIDE analysis\n\n\n\n\n22-Oct\nWednesday\nModern Topics\nReplicability, Inference for ML accuracy (Megan Jones)\n\n\n\n\n\n27-Oct\nMonday\nModern Topics\nConfidence sets (Xinyu Zhang)\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics\nHarmonization, Centile estimation, Mask creation\n\n\n\n\n\n3-Nov\nMonday\nModern Topics: Misc\n\n\n\n\n\n\n5-Nov\nWednesday\n\n\n\nMachine learning Despicable Me\n\n\n\n10-Nov\nMonday\n\n\n\n\n\n\n\n12-Nov\nWednesday\n\n\n\n\n\n\n\n17-Nov\nMonday\n\n\n\n\n\n\n\n19-Nov\nWednesday\n\n\n\nFinal project reviews\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\n\nFinal project presentations\n\n\n\n\n\n3-Dec\nWednesday\n\nFinal project presentations"
+    "text": "Course Schedule\n\n\nCode\nlibrary(knitr)\nlibrary(kableExtra)\n\n# Read the CSV file\nschedule = read.csv(\"courseSchedule.csv\", na.strings=\"NA\", check.names=FALSE)\n\n# Display nicely\n kable(schedule, caption = \"Neuroimaging Course Schedule\", align = \"l\", escape=FALSE)\n\n\n\nNeuroimaging Course Schedule\n\n\nDate\nDay\nSection\nTopic\nIn class interactive\nAssignment\nDue date\n\n\n\n\n20-Aug\nWednesday\nIntroduction\nIntroduction and Setup\nSoftware debug\nQuiz & install software\n27-Aug\n\n\n25-Aug\nMonday\nData Modalities\nIntroduction to Neuroimaging Modalities\n\n\n\n\n\n27-Aug\nWednesday\nPreprocessing\nPreprocessing Pipeline\nRegistration with FSL\nQuiz\n12-Sep\n\n\n1-Sep\nMonday\n\nNo class: Labor day\n\n\n\n\n\n3-Sep\nWednesday\nPreprocessing\nStructural preprocessing\n\n\n\n\n\n8-Sep\nMonday\nPreprocessing\nRecorded: Structural and functional preprocessing\n\nDespicable Me preprocessing\n22-Sep\n\n\n10-Sep\nWednesday\n\nRecorded: Functional preprocessing\nRecorded: Despicable Me preprocessing\n\n\n\n\n15-Sep\nMonday\nFirst-Level Analysis\nFirst-Level fMRI Analysis\n\nQuiz\n26-Sep\n\n\n17-Sep\nWednesday\nFirst-Level Analysis\nTime Series Analysis\n\nFirst-level fMRI analysis of Despicable Me data\n6-Oct\n\n\n22-Sep\nMonday\nFirst-Level Analysis\nrs-fMRI First-Level Analysis\nRecorded: Despicable Me first-level analysis\n\n\n\n\n24-Sep\nWednesday\nGroup-Level Analysis\nRecorded: Estimation\n\nQuiz- see Brightspace\n30-Sep\n\n\n29-Sep\nMonday\nGroup-Level Analysis\nRecorded: Multiplicity, Type 1 error, FWER, FDR\n\n\n\n\n\n1-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level ABIDE analysis\n\n\n\n\n6-Oct\nMonday\nGroup-Level Analysis\n\nGroup-level ABIDE analysis\n\n\n\n\n8-Oct\nWednesday\nGroup-Level Analysis\n\n\n\n\n\n\n13-Oct\nMonday\nGroup-Level Analysis\nCluster extent inference, Gaussian field theory, TFCE, Excursion set inference\n\nGroup-level analysis of Despicable Me\n31-Oct\n\n\n15-Oct\nWednesday\nGroup-Level Analysis\n\nGroup-level ABIDE analysis\n\n\n\n\n20-Oct\nMonday\nCommon Mistakes and Ongoing Challenges\n“Voodoo” correlation, circularity errors, data leakage, the salmon\nGroup-level ABIDE analysis\n\n\n\n\n22-Oct\nWednesday\nModern Topics\nReplicability, Inference for ML accuracy (Megan Jones)\n\n\n\n\n\n27-Oct\nMonday\nModern Topics\nConfidence sets (Xinyu Zhang)\n\n\n\n\n\n29-Oct\nWednesday\nModern Topics\nOverview of projects\n\nDraft paper (for peer review)\n1-Dec\n\n\n3-Nov\nMonday\n\n\nWorking on projects\n\n\n\n\n5-Nov\nWednesday\n\n\nWorking on projects\n\n\n\n\n10-Nov\nMonday\n\n\nWorking on projects\n\n\n\n\n12-Nov\nWednesday\n\nCommon mistakes and challenges\n\n\n\n\n\n17-Nov\nMonday\n\n\nWorking on projects\n\n\n\n\n19-Nov\nWednesday\n\n\nInterim project presentations\n\n\n\n\n24-Nov\nMonday\n\nNo class: Thanksgiving break\n\n\n\n\n\n26-Nov\nWednesday\n\nNo class: Thanksgiving break\n\n\n\n\n\n1-Dec\nMonday\n\nPeer reviewing papers\n\nFinal paper (per group)\n5-Dec\n\n\n3-Dec\nWednesday\n\nFinal project presentations"
   },
   {
     "objectID": "3first-level_analysis/first-level_analysis.html",
@@ -1564,36 +1564,36 @@
     "objectID": "6modern_topics/modern_topics.html#brain-charts-for-the-human-lifespan",
     "href": "6modern_topics/modern_topics.html#brain-charts-for-the-human-lifespan",
     "title": "Modern Topics",
-    "section": "Brain charts for the human lifespan",
-    "text": "Brain charts for the human lifespan\n\nBethlehem & Siedlitz et al. used a massive data set(over 100,000 participants) to fit “normative” trajectories across the lifespan.\nThey used generalized additive models for location, scale, and shape (GAMLSS).\nThey used random effects terms to account for scanner differences across sites.\n\n\n\n\nGrowth charts"
+    "section": "",
+    "text": "Bethlehem & Siedlitz et al. used a massive data set(over 100,000 participants) to fit “normative” trajectories across the lifespan.\nThey used generalized additive models for location, scale, and shape (GAMLSS).\nThey used random effects terms to account for scanner differences across sites.\n\n\n\n\nGrowth charts"
   },
   {
     "objectID": "6modern_topics/modern_topics.html#centiles",
     "href": "6modern_topics/modern_topics.html#centiles",
     "title": "Modern Topics",
-    "section": "Centiles",
-    "text": "Centiles\n\nThey then used the normative curves to estimate where people fall relative to someone of the same age and sex. For a new observation y_j, their centile is \n\\mathbb{P}(Y \\le y_j\\mid \\text{age}_j, \\text{sex}_j, \\text{site}_j, \\text{software}_j)\n\nInstead of conducting analyses relative to a control group, they compared the median of the centile values to 0.5.\n\nIt’s possible this improves power, because the full sample used to construct the GAMLSS models acts (heuristically) as the control group\n\n\n\n\n\nCentile comparisons"
+    "section": "",
+    "text": "They then used the normative curves to estimate where people fall relative to someone of the same age and sex. For a new observation \\(y_j\\), their centile is \\[\n\\mathbb{P}(Y \\le y_j\\mid \\text{age}_j, \\text{sex}_j, \\text{site}_j, \\text{software}_j)\n\\]\nInstead of conducting analyses relative to a control group, they compared the median of the centile values to 0.5.\n\nIt’s possible this improves power, because the full sample used to construct the GAMLSS models acts (heuristically) as the control group\n\n\n\n\n\nCentile comparisons"
   },
   {
     "objectID": "6modern_topics/modern_topics.html#multivariate-centiles",
     "href": "6modern_topics/modern_topics.html#multivariate-centiles",
     "title": "Modern Topics",
-    "section": "Multivariate centiles",
-    "text": "Multivariate centiles\n\nThis whole GAMLSS/centile approach was repeated for every region in the Desikan-Killiany brain atlas.\n\n\n\n\nRegional centiles\n\n\n\nThen they computed multivariate centiles across all these regions.\nMultivariate centiles were computed as follows.\n\n\n\n\nMultivariate centiles\n\n\n\n\n\nMahalanobis centiles"
+    "section": "",
+    "text": "This whole GAMLSS/centile approach was repeated for every region in the Desikan-Killiany brain atlas.\n\n\n\n\nRegional centiles\n\n\n\nThen they computed multivariate centiles across all these regions.\nMultivariate centiles were computed as follows.\n\n\n\n\nMultivariate centiles\n\n\n\n\n\nMahalanobis centiles"
   },
   {
     "objectID": "6modern_topics/modern_topics.html#multivariate-centiles-1",
     "href": "6modern_topics/modern_topics.html#multivariate-centiles-1",
     "title": "Modern Topics",
-    "section": "1. Multivariate centiles",
-    "text": "1. Multivariate centiles\n\nSince the beginning, there’s been interest multivariate centiles, that provide a single value to summarize a person’s overall deviance from the population.\nThe initial proposed methods to do this are unusual because they compute a Mahalanobis distance on the centile scale.\nGoal: Develop and evaluate a method that transforms the centiles to a multivariate normal, computes centiles based on the distance to the center of the distribution and back-transforms to the centile scale."
+    "section": "",
+    "text": "Since the beginning, there’s been interest multivariate centiles, that provide a single value to summarize a person’s overall deviance from the population.\nThe initial proposed methods to do this are unusual because they compute a Mahalanobis distance on the centile scale.\nGoal: Develop and evaluate a method that transforms the centiles to a multivariate normal, computes centiles based on the distance to the center of the distribution and back-transforms to the centile scale."
   },
   {
     "objectID": "6modern_topics/modern_topics.html#centile-estimation-in-multilevel-models",
     "href": "6modern_topics/modern_topics.html#centile-estimation-in-multilevel-models",
     "title": "Modern Topics",
-    "section": "2. Centile estimation in multilevel models",
-    "text": "2. Centile estimation in multilevel models\n\nMulti-level models are needed for centile estimation:\n\nTo adjust for technical (site/hardware/software) effects.\nTo use multiple measurements from the same individual.\n\nWe use random effects models (GAMLSS) to account for the correlation among measurements.\nDifferent approaches are needed to account for these repeated measurements:\n\nFor site effects, we want to estimate and remove these effects when computing centiles in a new dataset.\nFor person/family random effects, people aren’t really sure how to handle them. I think we want to compute centiles marginally.\n\nGoal: Figure out how to correctly estimate centiles from models with person/family random effects.\n\nFirst, you will have to define what “correctly” means, i.e. what is the centile value we would want to estimate.\nThen you have to figure out how to compute it for a new observation from a fitted model."
+    "section": "",
+    "text": "Multi-level models are needed for centile estimation:\n\nTo adjust for technical (site/hardware/software) effects.\nTo use multiple measurements from the same individual.\n\nWe use random effects models (GAMLSS) to account for the correlation among measurements.\nDifferent approaches are needed to account for these repeated measurements:\n\nFor site effects, we want to estimate and remove these effects when computing centiles in a new dataset.\nFor person/family random effects, people aren’t really sure how to handle them. I think we want to compute centiles marginally.\n\nGoal: Figure out how to correctly estimate centiles from models with person/family random effects.\n\nFirst, you will have to define what “correctly” means, i.e. what is the centile value we would want to estimate.\nThen you have to figure out how to compute it for a new observation from a fitted model."
   },
   {
     "objectID": "6modern_topics/modern_topics.html#confidence-sets-for-a-fixed-effect-size",
@@ -1607,14 +1607,14 @@
     "href": "6modern_topics/modern_topics.html#bowring-paper-overview",
     "title": "Modern Topics",
     "section": "Bowring paper overview",
-    "text": "Bowring paper overview\n\nBowring et. al. 2021 implemented the single-threshold confidence set method for Cohen’s d effect size.\nTheir bootstrap procedure was more complicated than ours needs to be (we have a valid bootstrap already).\nYou will need to understand and implement the method they use."
+    "text": "Bowring paper overview\n\nBowring et. al. 2021 implemented the single-threshold confidence set method for Cohen’s \\(d\\) effect size.\nTheir bootstrap procedure was more complicated than ours needs to be (we have a valid bootstrap already).\nYou will need to understand and implement the method they use."
   },
   {
     "objectID": "6modern_topics/modern_topics.html#fdr-controlling-confidence-sets",
     "href": "6modern_topics/modern_topics.html#fdr-controlling-confidence-sets",
     "title": "Modern Topics",
     "section": "4. FDR controlling confidence sets",
-    "text": "4. FDR controlling confidence sets\n\nXinyu’s method creates confidence sets that control the FWER.\nMany people like to control the FDR instead, because it is less conservative.\nGoal: Implement a confidence set method to control the FDR for the RESI for a single threshold.\nDo a literature search for this, because I know people are thinking about it already.\nI think for a given threshold s, it is similar to performing a test H_0(v): S(v) = s.\n\nI’ve talked to a colleague, and they suggested you need to do it separately for the upper and lower sets \n   \\begin{align*}\n   H_0(v) & : S(v) \\ge s \\\\\n   H_0(v) & : S(v) \\le  s \\\\\n   \\end{align*}"
+    "text": "4. FDR controlling confidence sets\n\nXinyu’s method creates confidence sets that control the FWER.\nMany people like to control the FDR instead, because it is less conservative.\nGoal: Implement a confidence set method to control the FDR for the RESI for a single threshold.\nDo a literature search for this, because I know people are thinking about it already.\nI think for a given threshold \\(s\\), it is similar to performing a test \\(H_0(v): S(v) = s\\).\n\nI’ve talked to a colleague, and they suggested you need to do it separately for the upper and lower sets \\[\n   \\begin{align*}\n   H_0(v) & : S(v) \\ge s \\\\\n   H_0(v) & : S(v) \\le  s \\\\\n   \\end{align*}\n   \\]"
   },
   {
     "objectID": "6modern_topics/modern_topics.html#apply-cnns-for-brain-phenotype-associations",
@@ -1649,14 +1649,14 @@
     "href": "6modern_topics/modern_topics.html#definition-of-replicability",
     "title": "Modern Topics",
     "section": "Definition of replicability",
-    "text": "Definition of replicability\n\nReplicability is often defined in terms of the p-value. In this case, replicability is related to type 1 error and power.\nA more sensible approach, might be to define replicability in terms of the MSE of an effect size (vector across all V image locations)\n\n\n\\mathbb{E} \\lVert \\hat S - S \\rVert^2/V\n\n\nTangential math: For two independent samples the expected distance of their effect size (vectors across all image locations)\n\n\n\\mathbb{E} \\lVert \\hat S_1 - \\hat S_2 \\rVert^2 = 2 \\mathrm{tr}\\{\\mathrm{Var}(\\hat S_1)\\}\n *"
+    "text": "Definition of replicability\n\nReplicability is often defined in terms of the \\(p\\)-value. In this case, replicability is related to type 1 error and power.\nA more sensible approach, might be to define replicability in terms of the MSE of an effect size (vector across all \\(V\\) image locations)\n\n\\[\n\\mathbb{E} \\lVert \\hat S - S \\rVert^2/V\n\\]\n\nTangential math: For two independent samples the expected distance of their effect size (vectors across all image locations)\n\n\\[\n\\mathbb{E} \\lVert \\hat S_1 - \\hat S_2 \\rVert^2 = 2 \\mathrm{tr}\\{\\mathrm{Var}(\\hat S_1)\\}\n\\] *"
   },
   {
     "objectID": "6modern_topics/modern_topics.html#evaluate-an-alternative-approach-for-mass-univariate-analysis",
     "href": "6modern_topics/modern_topics.html#evaluate-an-alternative-approach-for-mass-univariate-analysis",
     "title": "Modern Topics",
     "section": "7. Evaluate an alternative approach for mass-univariate analysis",
-    "text": "7. Evaluate an alternative approach for mass-univariate analysis\n\nMass-univariate inference might have pretty low replicability\nWe’ve been exploring ecological methods (RDA) to fit a mass-univariate model across the whole-brain together using dimension reduction.\nImagine the mass-univariate analysis as a multivariate model \n\\mathbb{E} Y = X \\beta\n\nwhere Y \\in \\mathbb{R}^{n \\times V}, X \\in \\mathbb{R}^{n \\times m}, \\beta \\in \\mathbb{R}^{m \\times V}\nRDA does dimension reduction within the modeling framework.\nIt would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better. My hypothesis is that is has better MSE due to lower variance and introducing some bias."
+    "text": "7. Evaluate an alternative approach for mass-univariate analysis\n\nMass-univariate inference might have pretty low replicability\nWe’ve been exploring ecological methods (RDA) to fit a mass-univariate model across the whole-brain together using dimension reduction.\nImagine the mass-univariate analysis as a multivariate model \\[\n\\mathbb{E} Y = X \\beta\n\\]\nwhere \\(Y \\in \\mathbb{R}^{n \\times V}\\), \\(X \\in \\mathbb{R}^{n \\times m}\\), \\(\\beta \\in \\mathbb{R}^{m \\times V}\\)\nRDA does dimension reduction within the modeling framework.\nIt would be interesting to evaluate its MSE, bias, and variance relative to mass-univariate analysis to see whether it is better. My hypothesis is that is has better MSE due to lower variance and introducing some bias."
   },
   {
     "objectID": "6modern_topics/modern_topics.html#rank-the-projects",
@@ -1685,5 +1685,61 @@
     "title": "Modern Topics",
     "section": "Computing",
     "text": "Computing\n\nYou will need access to computing and data.\nDepending on the project, it’s probably easiest if I give you access to my servers.\nWe will figure that out after you choose projects."
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#circularity-definition",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#circularity-definition",
+    "title": "Common mistakes and challenges",
+    "section": "Circularity definition",
+    "text": "Circularity definition\n\nCircularity is reusing the same data for selection and inference\nCan occur in mass-univariate and machine learning analysis\nRelated to Selection bias and leads to\n\nEstimation bias (inflated effect sizes)\nInference bias (invalid p-values)"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#kriegeskorte-example-1",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#kriegeskorte-example-1",
+    "title": "Common mistakes and challenges",
+    "section": "Kriegeskorte Example 1",
+    "text": "Kriegeskorte Example 1\n\nFeature selection in ML (“pattern recognition”) models\nWhat causes the inflated prediction accuracy when using random data?\nHow can this be avoided?\n\nWhat are alternative feature selection strategies?\n\n\n\nML feature selection"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#kriegeskorte-example-2",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#kriegeskorte-example-2",
+    "title": "Common mistakes and challenges",
+    "section": "Kriegeskorte Example 2",
+    "text": "Kriegeskorte Example 2\n\nThis is the same idea as the “Voodoo correlation” discussion above\nSelection via valid inference procedures can lead to biased results in downstream analysis\nIt is very common to select regions to analyze based on “task active regions”.\n\nDepending on how this is defined it could cause bias.\nWould be another interesting project 😉.\n\n\n\nMass-univariate selection bias"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#conditional-probability-interpretation",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#conditional-probability-interpretation",
+    "title": "Common mistakes and challenges",
+    "section": "Conditional probability interpretation",
+    "text": "Conditional probability interpretation\n\nStatistically, the bias comes from \n  \\mathbb{E}[\\hat{\\beta}(v) | \\text{prior steps}] &gt; \\mathbb{E}[\\hat{\\beta}(v) ]"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#simons-reviewingeditorial-comments",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#simons-reviewingeditorial-comments",
+    "title": "Common mistakes and challenges",
+    "section": "Simon’s reviewing/editorial comments",
+    "text": "Simon’s reviewing/editorial comments\n\nIt can be hard to tell in a paper whether a selection procedure causes bias\nSelection procedures are very common in fMRI\nE.g. selecting task-active regions, as I mentioned on previous slide\nIt can be very difficult to determine whether the selection produces bias\nMy recommendations:\n\nNote as a reviewer that post hoc tests in selected regions are likely biased and ask them to qualitatively summarize the results with estimates instead of p-values/tests\nKeep an eye out for circularity, and think about whether it could introduce bias\n\nMeta-analysis or reanalysis examples showing effect-size inflation\nQuantitative estimates of inflation\nRelevance to current reproducibility discussions (Munafo et al., 2017)"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#common-types-of-circularity-analysis",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#common-types-of-circularity-analysis",
+    "title": "Common mistakes and challenges",
+    "section": "Common types of circularity analysis",
+    "text": "Common types of circularity analysis\n\nROI definition circularity\n\nSelected based on the data in some way\nProbably bias, potentially does not have to be if the selection contrast is statistically independent of the target contrast.\n\nFeature selection circularity as described above\nCross-validation leakage\n\nFeature selection or dimension reduction applied in full dataset\n\nPost-hoc region restriction\n\nE.g. selecting via “task-activation” or another contrast\nMight be ok, depends on the correlation between the contrasts."
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#best-practices",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#best-practices",
+    "title": "Common mistakes and challenges",
+    "section": "Best practices",
+    "text": "Best practices\n\nData-splitting and independent validation sets\nCross-validation done correctly (nested CV)\nPreregistered ROI definitions or selected from prior papers\nUse of external templates or meta-analytic ROIs (could also be biased if using public data)"
+  },
+  {
+    "objectID": "5common_mistakes_challenges/common_mistakes_challenges.html#statistical-approaches",
+    "href": "5common_mistakes_challenges/common_mistakes_challenges.html#statistical-approaches",
+    "title": "Common mistakes and challenges",
+    "section": "Statistical approaches",
+    "text": "Statistical approaches\nWon’t go into detail, here.\n\nSelective inference frameworks (Taylor & Tibshirani, 2015; Lee et al., 2016)\nBayesian hierarchical modeling to share information without circularity\nResampling-based correction (bootstrap split-half)"
   }
 ]

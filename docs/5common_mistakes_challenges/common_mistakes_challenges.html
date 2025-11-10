@@ -415,11 +415,129 @@ R_{X_{obs}} = \frac{Var(X)}{ Var(X) + Var(\epsilon_X)}
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/26162135/">Fiedler 2011</a></li>
 <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5017149/">Lieberman, Berkman, Wager 2009</a></li>
 </ul>
+</section></section>
+<section>
+<section id="circularity-analysis" class="title-slide slide level1 center">
+<h1>Circularity analysis</h1>
+<ul>
+<li>Consistent challenge in neuroimaging due to large amounts of data and complex processing.</li>
+<li>Also called “double-dipping”</li>
+<li>Slides today based on <a href="https://www.nature.com/articles/nn.2303">Kriegeskorte et al., 2009</a></li>
+</ul>
+</section>
+<section id="circularity-definition" class="slide level2">
+<h2>Circularity definition</h2>
+<ul>
+<li><strong>Circularity</strong> is reusing the same data for selection and inference</li>
+<li>Can occur in mass-univariate and machine learning analysis</li>
+<li>Related to <strong>Selection bias</strong> and leads to
+<ul>
+<li><strong>Estimation bias</strong> (inflated effect sizes)</li>
+<li><strong>Inference bias</strong> (invalid p-values)</li>
+</ul></li>
+</ul>
+</section>
+<section id="kriegeskorte-example-1" class="slide level2">
+<h2>Kriegeskorte Example 1</h2>
+<ul>
+<li>Feature selection in ML (“pattern recognition”) models</li>
+<li>What causes the inflated prediction accuracy when using random data?</li>
+<li>How can this be avoided?
+<ul>
+<li>What are alternative feature selection strategies?</li>
+</ul></li>
+</ul>
+
+<img data-src="figures/kriegeskorte_fig2.png" class="r-stretch quarto-figure-center"><p class="caption">ML feature selection</p></section>
+<section id="kriegeskorte-example-2" class="slide level2">
+<h2>Kriegeskorte Example 2</h2>
+<ul>
+<li>This is the same idea as the “Voodoo correlation” discussion above</li>
+<li>Selection via valid inference procedures can lead to biased results in downstream analysis</li>
+<li>It is very common to select regions to analyze based on “task active regions”.
+<ul>
+<li>Depending on how this is defined it could cause bias.</li>
+<li>Would be another interesting project 😉.</li>
+</ul></li>
+</ul>
+
+<img data-src="figures/kriegeskorte_fig3.png" class="r-stretch quarto-figure-center"><p class="caption">Mass-univariate selection bias</p></section>
+<section id="conditional-probability-interpretation" class="slide level2">
+<h2>Conditional probability interpretation</h2>
+<ul>
+<li>Statistically, the bias comes from <span class="math display">
+  \mathbb{E}[\hat{\beta}(v) | \text{prior steps}] &gt; \mathbb{E}[\hat{\beta}(v) ]
+</span></li>
+</ul>
+</section>
+<section id="simons-reviewingeditorial-comments" class="slide level2">
+<h2>Simon’s reviewing/editorial comments</h2>
+<ul>
+<li>It can be hard to tell in a paper whether a selection procedure causes bias</li>
+<li>Selection procedures are very common in fMRI</li>
+<li>E.g. selecting task-active regions, as I mentioned on previous slide</li>
+<li>It can be very difficult to determine whether the selection produces bias</li>
+<li>My recommendations:
+<ul>
+<li>Note as a reviewer that post hoc tests in selected regions are likely biased and ask them to qualitatively summarize the results with estimates instead of p-values/tests</li>
+<li>Keep an eye out for circularity, and think about whether it could introduce bias</li>
+</ul></li>
+<li>Meta-analysis or reanalysis examples showing effect-size inflation</li>
+<li>Quantitative estimates of inflation</li>
+<li>Relevance to current reproducibility discussions (Munafo et al., 2017)</li>
+</ul>
+</section>
+<section id="common-types-of-circularity-analysis" class="slide level2">
+<h2>Common types of circularity analysis</h2>
+<ul>
+<li><strong>ROI definition circularity</strong>
+<ul>
+<li>Selected based on the data in some way</li>
+<li>Probably bias, potentially does not have to be if the selection contrast is statistically independent of the target contrast.</li>
+</ul></li>
+<li><strong>Feature selection circularity</strong> as described above</li>
+<li><strong>Cross-validation leakage</strong>
+<ul>
+<li>Feature selection or dimension reduction applied in full dataset</li>
+</ul></li>
+<li><strong>Post-hoc region restriction</strong>
+<ul>
+<li>E.g. selecting via “task-activation” or another contrast</li>
+<li>Might be ok, depends on the correlation between the contrasts.</li>
+</ul></li>
+</ul>
+</section>
+<section id="best-practices" class="slide level2">
+<h2>Best practices</h2>
+<ul>
+<li>Data-splitting and independent validation sets</li>
+<li>Cross-validation done correctly (nested CV)</li>
+<li>Preregistered ROI definitions or selected from prior papers</li>
+<li>Use of external templates or meta-analytic ROIs (could also be biased if using public data)</li>
+</ul>
+</section>
+<section id="statistical-approaches" class="slide level2">
+<h2>Statistical approaches</h2>
+<p>Won’t go into detail, here.</p>
+<ul>
+<li>Selective inference frameworks (Taylor &amp; Tibshirani, 2015; Lee et al., 2016)</li>
+<li>Bayesian hierarchical modeling to share information without circularity</li>
+<li>Resampling-based correction (bootstrap split-half)</li>
+</ul>
+</section></section>
+<section id="replicability" class="title-slide slide level1 center">
+<h1>Replicability</h1>
+<ul>
+<li>Seen as very important topic right now</li>
+<li>Garden of forking paths</li>
+<li><a href="https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2012.00149/full">Carp, 2012</a></li>
+<li>Related to circularity as preprocessing steps may be “optimized” to improve results (motion, smoothing, etc.)</li>
+</ul>
 
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
